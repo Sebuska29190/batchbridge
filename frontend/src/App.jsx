@@ -2002,9 +2002,19 @@ export default function App() {
             </main>
 
             <footer className="footer">
-                Built with <a href="https://relay.link" target="_blank" rel="noopener noreferrer">Relay Protocol</a> • Data by <a href="https://routescan.io" target="_blank" rel="noopener noreferrer">Routescan</a>
-            </footer>
-
+    <div className="footer-content">
+        <div className="footer-legal-text">
+            © 2025 BatchBridge.xyz | Non-custodial Bridge Interface.
+            <br />
+            Operated with due diligence in accordance with ECHR standards of information freedom. 
+            All transactions are executed via decentralized protocols.
+        </div>
+        <div className="footer-links">
+            Built with <a href="https://relay.link" target="_blank" rel="noopener noreferrer">Relay</a> 
+            • Data by <a href="https://routescan.io" target="_blank" rel="noopener noreferrer">Routescan</a>
+        </div>
+    </div>
+</footer>
             {isCheckingRoutes && (
                 <div className="route-check-overlay" role="status" aria-live="polite">
                     <div className="route-check-card">
