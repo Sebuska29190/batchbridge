@@ -3,6 +3,7 @@ import { useAppKit, useDisconnect } from '@reown/appkit/react'
 import { useAccount, useWalletClient, useSwitchChain } from 'wagmi'
 import { useSendCalls } from 'wagmi/experimental'
 import { formatUnits, parseUnits } from 'viem'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import { BRIDGE_CHAINS, getChainById, COMMON_TOKENS } from './wagmi'
 import {
     fetchTokenHoldings,
@@ -2012,6 +2013,7 @@ export default function App() {
                 </div>
             )}
 
+            <SpeedInsights />
         </div>
     )
 }
