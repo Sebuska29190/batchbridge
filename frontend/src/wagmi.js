@@ -76,7 +76,7 @@ const metadata = {
     name: 'BatchBridge',
     description: 'Bridge multiple tokens across Ethereum, Base, and Arbitrum in a single batch transaction',
     url: typeof window !== 'undefined' ? window.location.origin : 'https://batchbridge.vercel.app',
-    icons: ['https://batchbridge.vercel.app/favicon.png']
+    icons: ['https://www.batchbridge.xyz/favicon.png']
 }
 
 export const wagmiAdapter = new WagmiAdapter({
