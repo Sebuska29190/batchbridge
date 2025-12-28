@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
     const allowedOrigins = [
-        'https://batchbridge.vercel.app',
+        'https://www.batchbridge.xyz/',
         'http://localhost:3000',
     ];
     const origin = req.headers.origin;
