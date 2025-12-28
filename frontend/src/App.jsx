@@ -4,6 +4,7 @@ import { useAccount, useWalletClient, useSwitchChain } from 'wagmi'
 import { useSendCalls } from 'wagmi/experimental'
 import { formatUnits, parseUnits } from 'viem'
 import { SpeedInsights } from '@vercel/speed-insights/react'
+import { Analytics } from '@vercel/analytics/react'
 import { BRIDGE_CHAINS, getChainById, COMMON_TOKENS } from './wagmi'
 import {
     fetchTokenHoldings,
@@ -2014,6 +2015,7 @@ export default function App() {
             )}
 
             <SpeedInsights />
+            <Analytics />
         </div>
     )
 }
