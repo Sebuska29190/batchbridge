@@ -1521,6 +1521,16 @@ export default function App() {
             </nav>
 
             <main className="main-content">
+                {/* --- SEKCOJA SEO DLA BING/GOOGLE --- */}
+<header className="page-seo-header">
+    <h1 className="seo-title">
+        Batch Bridge: Atomic Multi-Token Cross-Chain Transfers
+    </h1>
+    <p className="seo-subtitle">
+        Securely bridge and swap multiple assets across Ethereum, Base, Arbitrum, and more in a single transaction.
+    </p>
+</header>
+{/* --- KONIEC SEKCOJI SEO --- */}
                 {!isConnected ? (
                     <div className="hero">
                         <div className="hero-text">
