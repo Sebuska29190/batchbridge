@@ -1,8 +1,8 @@
 {
   "accountAssociation": {
-    "header": "WYMIENIĆ_NA_WYGENEROWANY_HEADER",
-    "payload": "WYMIENIĆ_NA_WYGENEROWANY_PAYLOAD",
-    "signature": "WYMIENIĆ_NA_WYGENEROWANY_SIGNATURE"
+    "header": "",
+    "payload": "",
+    "signature": ""
   },
   "miniapp": {
     "version": "1",

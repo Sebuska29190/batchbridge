@@ -7,9 +7,9 @@ export const minikitConfig = {
     // 2. Wprowadź URL: https://batchbridge.vercel.app
     // 3. Podpisz manifest swoim kontem Farcaster
     // 4. Skopiuj wygenerowane credentials i wklej poniżej:
-    "header": "WYMIENIĆ_NA_WYGENEROWANY_HEADER",
-    "payload": "WYMIENIĆ_NA_WYGENEROWANY_PAYLOAD",
-    "signature": "WYMIENIĆ_NA_WYGENEROWANY_SIGNATURE"
+    "header": "",
+    "payload": "",
+    "signature": ""
   },
   miniapp: {
     version: "1",
