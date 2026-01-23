@@ -17,10 +17,10 @@
       "https://www.batchbridge.xyz/screenshot-portrait.png"
     ],
     "primaryCategory": "finance",
-    "tags": ["defi", "bridge", "swap", "batch", "tokens", "ethereum", "base", "arbitrum"],
+    "tags": ["defi", "bridge", "swap", "batch", "tokens"],
     "heroImageUrl": "https://www.batchbridge.xyz/hero.png",
-    "tagline": "Batch bridge tokens across chains",
-    "ogTitle": "BatchBridge - Multi-token Bridge",
+    "tagline": "Batch bridge across chains",
+    "ogTitle": "BatchBridge - Token Bridge",
     "ogDescription": "Bridge multiple tokens across Ethereum, Base, and Arbitrum in a single batch transaction",
     "ogImageUrl": "https://www.batchbridge.xyz/og-image.png",
     "noindex": false
