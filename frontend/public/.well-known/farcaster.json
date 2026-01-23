@@ -1,0 +1,28 @@
+{
+  "accountAssociation": {
+    "header": "WYMIENIĆ_NA_WYGENEROWANY_HEADER",
+    "payload": "WYMIENIĆ_NA_WYGENEROWANY_PAYLOAD",
+    "signature": "WYMIENIĆ_NA_WYGENEROWANY_SIGNATURE"
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "BatchBridge",
+    "homeUrl": "https://batchbridge.vercel.app",
+    "iconUrl": "https://batchbridge.vercel.app/icon.png",
+    "splashImageUrl": "https://batchbridge.vercel.app/hero.png",
+    "splashBackgroundColor": "#000000",
+    "subtitle": "Batch Swap & Bridge Tokens",
+    "description": "Bridge multiple tokens across Ethereum, Base, and Arbitrum in a single batch transaction using Relay Protocol with EIP-5792 support.",
+    "screenshotUrls": [
+      "https://batchbridge.vercel.app/screenshot-portrait.png"
+    ],
+    "primaryCategory": "finance",
+    "tags": ["defi", "bridge", "swap", "batch", "tokens", "ethereum", "base", "arbitrum"],
+    "heroImageUrl": "https://batchbridge.vercel.app/hero.png",
+    "tagline": "Batch swap and bridge tokens across chains",
+    "ogTitle": "BatchBridge - Multi-token Bridge",
+    "ogDescription": "Bridge multiple tokens across Ethereum, Base, and Arbitrum in a single batch transaction",
+    "ogImageUrl": "https://batchbridge.vercel.app/og-image.png",
+    "noindex": false
+  }
+}

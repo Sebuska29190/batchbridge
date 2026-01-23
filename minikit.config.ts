@@ -2,10 +2,14 @@ const ROOT_URL = 'https://batchbridge.vercel.app';
 
 export const minikitConfig = {
   accountAssociation: {
-    // To będzie dodane w kroku 5 po wygenerowaniu credentials
-    "header": "",
-    "payload": "",
-    "signature": ""
+    // ⚠️ WYMIENIĆ NA WYGENEROWANE CREDENTIALS Z BASE BUILD ACCOUNT ASSOCIATION TOOL
+    // 1. Przejdź do: https://base.org/build/account-association
+    // 2. Wprowadź URL: https://batchbridge.vercel.app
+    // 3. Podpisz manifest swoim kontem Farcaster
+    // 4. Skopiuj wygenerowane credentials i wklej poniżej:
+    "header": "WYMIENIĆ_NA_WYGENEROWANY_HEADER",
+    "payload": "WYMIENIĆ_NA_WYGENEROWANY_PAYLOAD",
+    "signature": "WYMIENIĆ_NA_WYGENEROWANY_SIGNATURE"
   },
   miniapp: {
     version: "1",
