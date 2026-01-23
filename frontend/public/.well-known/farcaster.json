@@ -19,7 +19,7 @@
     "primaryCategory": "finance",
     "tags": ["defi", "bridge", "swap", "batch", "tokens", "ethereum", "base", "arbitrum"],
     "heroImageUrl": "https://batchbridge.vercel.app/hero.png",
-    "tagline": "Batch swap and bridge tokens across chains",
+    "tagline": "Batch bridge tokens across chains",
     "ogTitle": "BatchBridge - Multi-token Bridge",
     "ogDescription": "Bridge multiple tokens across Ethereum, Base, and Arbitrum in a single batch transaction",
     "ogImageUrl": "https://batchbridge.vercel.app/og-image.png",
