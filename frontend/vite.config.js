@@ -69,9 +69,9 @@ export default defineConfig({
             output: {
                 // Better chunk splitting for mobile performance
                 manualChunks: {
-                    vendor: ['react', 'react-dom', 'react-router-dom'],
-                    wallet: ['viem', 'wagmi', '@reown/appkit'],
-                    ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu']
+                    vendor: ['react', 'react-dom'],
+                    wallet: ['viem', 'wagmi', '@reown/appkit', '@reown/appkit-adapter-wagmi'],
+                    query: ['@tanstack/react-query']
                 },
                 chunkFileNames: 'assets/[name]-[hash].js',
                 entryFileNames: 'assets/[name]-[hash].js',
