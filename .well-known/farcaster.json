@@ -23,6 +23,7 @@
     "ogTitle": "BatchBridge - Token Bridge",
     "ogDescription": "Bridge multiple tokens across Ethereum, Base, and Arbitrum in a single batch transaction",
     "ogImageUrl": "https://www.batchbridge.xyz/og-image.png",
-    "noindex": false
+    "webhookUrl": "https://www.batchbridge.xyz/api/webhook",
+    "noindex": true
   }
 }
