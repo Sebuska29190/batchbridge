@@ -56,14 +56,8 @@ export default defineConfig({
     build: {
         outDir: 'dist',
         sourcemap: false,
-        // Mobile performance optimizations
-        minify: 'terser',
-        terserOptions: {
-            compress: {
-                drop_console: true,
-                drop_debugger: true
-            }
-        },
+        // Mobile performance optimizations - use esbuild (default, faster)
+        minify: 'esbuild',
         rollupOptions: {
             plugins: [nodePolyfills({ crypto: true, http: true })],
             output: {
