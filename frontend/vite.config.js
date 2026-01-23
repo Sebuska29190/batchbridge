@@ -56,11 +56,33 @@ export default defineConfig({
     build: {
         outDir: 'dist',
         sourcemap: false,
+        // Mobile performance optimizations
+        minify: 'terser',
+        terserOptions: {
+            compress: {
+                drop_console: true,
+                drop_debugger: true
+            }
+        },
         rollupOptions: {
-            plugins: [nodePolyfills({ crypto: true, http: true })]
+            plugins: [nodePolyfills({ crypto: true, http: true })],
+            output: {
+                // Better chunk splitting for mobile performance
+                manualChunks: {
+                    vendor: ['react', 'react-dom', 'react-router-dom'],
+                    wallet: ['viem', 'wagmi', '@reown/appkit'],
+                    ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu']
+                },
+                chunkFileNames: 'assets/[name]-[hash].js',
+                entryFileNames: 'assets/[name]-[hash].js',
+                assetFileNames: 'assets/[name]-[hash].[ext]'
+            }
         },
         commonjsOptions: {
             transformMixedEsModules: true
-        }
+        },
+        // Build size reporting
+        reportCompressedSize: true,
+        chunkSizeWarningLimit: 1000
     }
 })

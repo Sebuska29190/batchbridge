@@ -91,13 +91,37 @@ createAppKit({
     projectId,
     metadata,
 
-    // Only show installed/injected wallets
+    // Mobile wallet compatibility - enable all major wallet providers
     enableEIP6963: true,
     enableInjected: true,
-    enableWalletConnect: false,
-    enableCoinbase: false,
-    allWallets: 'HIDE',
+    enableWalletConnect: true,  // Essential for mobile wallets (MetaMask Mobile, Trust, Rainbow, etc.)
+    enableCoinbase: true,       // Popular mobile wallet
+    allWallets: 'SHOW',         // Show all available wallets for mobile users
     themeMode: 'dark',
+    
+    // Mobile-specific wallet configuration
+    mobileWallets: [
+        {
+            id: 'metamask',
+            name: 'MetaMask',
+            links: { native: 'metamask://', universal: 'https://metamask.app.link' }
+        },
+        {
+            id: 'trust',
+            name: 'Trust Wallet',
+            links: { native: 'trust://', universal: 'https://link.trustwallet.com' }
+        },
+        {
+            id: 'rainbow',
+            name: 'Rainbow',
+            links: { native: 'rainbow://', universal: 'https://rainbow.me' }
+        },
+        {
+            id: 'zerion',
+            name: 'Zerion',
+            links: { native: 'zerion://', universal: 'https://wallet.zerion.io' }
+        }
+    ],
 
     features: {
         analytics: false,
