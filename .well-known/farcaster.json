@@ -1,0 +1,15 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "frame": {
+    "version": "1",
+    "name": "BatchBridge",
+    "iconUrl": "https://batchbridge.vercel.app/icon.png",
+    "homeUrl": "https://batchbridge.vercel.app",
+    "imageUrl": "https://batchbridge.vercel.app/hero.png",
+    "buttonTitle": "Launch BatchBridge"
+  }
+}

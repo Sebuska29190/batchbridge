@@ -1,0 +1,20 @@
+{
+  "name": "batchbridge",
+  "version": "1.0.0",
+  "description": "Batch swap and bridge tokens using Relay with EIP-5792/EIP-7702 support",
+  "type": "module",
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "preview": "cd frontend && npm run preview",
+    "generate-manifest": "tsx scripts/generate-manifest.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
