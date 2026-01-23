@@ -268,3 +268,221 @@ We implement several safety measures:
 ## License
 
 MIT
+
+---
+
+# Base Mini App Integration
+
+BatchBridge is fully integrated as a **Base Mini App**, allowing users to access the token bridge directly from Farcaster, Warpcast, and other Base-compatible platforms.
+
+## Overview
+
+Base Mini Apps are web applications that can be embedded within Farcaster clients, providing a seamless user experience for on-chain interactions. This integration enables BatchBridge to reach a wider audience within the crypto community.
+
+## Prerequisites
+
+Before starting the integration process, ensure you have:
+
+1. ✅ **Deployed application** on Vercel: `https://www.batchbridge.xyz/`
+2. ✅ **Publicly accessible** manifest: `https://www.batchbridge.xyz/.well-known/farcaster.json`
+3. ✅ **Required images** in `frontend/public/`:
+   - `icon.png` (512×512px)
+   - `hero.png` (1200×630px)
+   - `screenshot-portrait.png` (1080×1920px)
+   - `og-image.png` (1200×630px)
+
+## Integration Steps
+
+### Step 1: Configure Base Mini App Manifest
+
+Create `minikit.config.ts` in the project root:
+
+```typescript
+// minikit.config.ts - Base Mini App configuration
+export const minikitConfig = {
+  accountAssociation: {
+    header: "eyJmaWQiOjE3MzE4LCJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4NzYwQjA0NDc5NjM4MTExNzNmRjg3YjAzYzA5OEJBQ0YxNzNCYkU0OCJ9",
+    payload: "eyJkb21haW4iOiJ4LWl0bGlzdC1xcy52ZXJjZWwuYXBwIn0",
+    signature: "0xf4d37c6998420d3ceeca3b89ec2d2009920108ea51eab76027d22c505a7221f654bbdefd44d09cbcc66b67f4ff2ff8f345c85f6d7e5c7279cf0f8e068633acf1b"
+  },
+  miniapp: {
+    name: "BatchBridge",
+    iconUrl: "https://www.batchbridge.xyz/icon.png",
+    heroImageUrl: "https://www.batchbridge.xyz/hero.png",
+    splashImageUrl: "https://www.batchbridge.xyz/og-image.png",
+    splashBackgroundColor: "#8B9E8B",
+    homeUrl: "https://www.batchbridge.xyz/",
+    description: "Bridge multiple tokens across Ethereum, Base, and Arbitrum in a single batch transaction",
+    subtitle: "Multi-token cross-chain bridge",
+    tagline: "Batch bridge tokens",
+    primaryCategory: "finance",
+    secondaryCategory: "tools",
+    tags: ["defi", "bridge", "ethereum", "base", "arbitrum"],
+    screenshotUrls: ["https://www.batchbridge.xyz/screenshot-portrait.png"],
+    webhookUrl: "https://www.batchbridge.xyz/api/webhook",
+    noindex: true
+  }
+} as const;
+```
+
+### Step 2: Generate accountAssociation Credentials
+
+1. **Disable Vercel Authentication** in Vercel Dashboard → Settings → Deployment Protection
+2. **Go to Base Build Account association tool**: https://base.org/build/account-association
+3. **Enter your app URL**: `https://www.batchbridge.xyz/`
+4. **Sign the manifest** with your Farcaster account
+5. **Copy the generated credentials** (header, payload, signature)
+6. **Update** `minikit.config.ts` with the new credentials
+
+### Step 3: Create Manifest Files
+
+Two manifest locations are required:
+
+1. **Root directory**: `.well-known/farcaster.json` (for Base verification)
+2. **Public directory**: `frontend/public/.well-known/farcaster.json` (for build output)
+
+Use the included script to generate manifests:
+```bash
+npm run generate-manifest
+```
+
+Or manually create the manifest with this structure:
+```json
+{
+  "accountAssociation": {
+    "header": "...",
+    "payload": "...",
+    "signature": "..."
+  },
+  "frame": {
+    "version": "1",
+    "name": "BatchBridge",
+    "iconUrl": "https://www.batchbridge.xyz/icon.png",
+    "homeUrl": "https://www.batchbridge.xyz/",
+    "imageUrl": "https://www.batchbridge.xyz/hero.png",
+    "buttonTitle": "Launch Bridge",
+    "splashImageUrl": "https://www.batchbridge.xyz/og-image.png",
+    "splashBackgroundColor": "#8B9E8B",
+    "webhookUrl": "https://www.batchbridge.xyz/api/webhook",
+    "noindex": true,
+    "primaryCategory": "finance",
+    "tags": ["defi", "bridge", "ethereum", "base", "arbitrum"],
+    "description": "Bridge multiple tokens across Ethereum, Base, and Arbitrum in a single batch transaction",
+    "subtitle": "Multi-token cross-chain bridge",
+    "tagline": "Batch bridge tokens",
+    "screenshotUrls": ["https://www.batchbridge.xyz/screenshot-portrait.png"]
+  }
+}
+```
+
+### Step 4: Add Base Verification Meta Tag
+
+Add the following meta tag to `frontend/index.html` inside the `<head>` section:
+
+```html
+<!-- Base Mini App Verification -->
+<meta name="base:app_id" content="6973ae8b88e3bac59cf3d563" />
+```
+
+### Step 5: Configure Vercel Deployment
+
+Update `vercel.json` to ensure proper headers and routing:
+
+```json
+{
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist",
+  "headers": [
+    {
+      "source": "/.well-known/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Content-Type", "value": "application/json" }
+      ]
+    }
+  ]
+}
+```
+
+### Step 6: Deploy and Verify
+
+1. **Commit and push** changes to GitHub
+2. **Monitor Vercel deployment**
+3. **Verify manifest availability**: `https://www.batchbridge.xyz/.well-known/farcaster.json`
+4. **Check meta tag presence** on homepage
+
+## Testing in Base Preview
+
+After deployment, test your integration:
+
+1. **Open Base Preview**: https://base.dev/preview
+2. **Enter your app URL**: `https://www.batchbridge.xyz/`
+3. **Check all tabs**:
+   - **Preview**: Verify app appearance and launch functionality
+   - **Metadata**: Confirm all manifest fields are correctly loaded
+   - **Account association**: Verify credentials are valid
+   - **Frame validation**: Ensure frame structure is correct
+
+### Common Test Scenarios:
+- ✅ Wallet connection within embed
+- ✅ Token selection and quote generation
+- ✅ Responsive design on mobile/desktop
+- ✅ Image loading (icon, hero, screenshot)
+- ✅ No JavaScript/CORS errors
+
+## Troubleshooting
+
+### "Manifest not found" Error
+- Check if `.well-known/farcaster.json` is publicly accessible
+- Verify Vercel Authentication is disabled during credential generation
+- Check CORS headers in `vercel.json`
+
+### "Invalid signature" Error
+- Ensure credentials in `minikit.config.ts` match generated values exactly
+- Verify you're using the same Farcaster account for signing
+- Regenerate credentials if needed
+
+### "Images not loading"
+- Confirm image URLs are correct and publicly accessible
+- Check image dimensions meet requirements
+- Verify file formats (PNG recommended)
+
+### Base Verification Failed
+- Ensure meta tag `<meta name="base:app_id" content="...">` is present in `<head>`
+- Check that the app_id matches your Base Mini App ID
+- Verify deployment is complete before testing
+
+## Optimization for Base Mini App
+
+### Performance
+- **Bundle optimization**: Code splitting, tree shaking
+- **Image optimization**: WebP format, proper compression
+- **Caching**: Configure cache headers for static assets
+
+### User Experience
+- **Mobile-first design**: Optimize for 320px-768px viewports
+- **Touch-friendly**: Minimum 44×44px interactive elements
+- **Loading states**: Show progress during wallet interactions
+
+### Security
+- **CSP headers**: Content Security Policy for embed safety
+- **Sandbox attributes**: Appropriate iframe sandboxing
+- **Input validation**: Sanitize user inputs
+
+## Additional Resources
+
+- **Base Mini App Documentation**: https://docs.base.org/mini-apps/
+- **Farcaster Frames Specification**: https://docs.farcaster.xyz/frames
+- **Base Build Tools**: https://base.org/build
+- **Vercel Deployment Guide**: https://vercel.com/docs
+
+## Support
+
+For issues with Base Mini App integration:
+1. Check the [Base Discord](https://discord.gg/base) #mini-apps channel
+2. Review deployment logs in Vercel Dashboard
+3. Test with `base.dev/preview` diagnostic tools
+
+---
+
+*BatchBridge is now fully integrated as a Base Mini App and ready for the Farcaster community!*
