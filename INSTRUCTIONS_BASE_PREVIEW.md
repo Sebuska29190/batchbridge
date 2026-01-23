@@ -1,134 +1,134 @@
-# Instrukcje testowania w base.dev/preview
+# Instructions for Testing in base.dev/preview
 
-Po wdrożeniu zmian na produkcję, przetestuj swoją aplikację w Base Preview tool.
+After deploying changes to production, test your application in the Base Preview tool.
 
-## Krok 1: Otwórz Base Preview
+## Step 1: Open Base Preview
 
-Przejdź do: **https://base.dev/preview**
+Go to: **https://base.dev/preview**
 
-## Krok 2: Dodaj URL aplikacji
+## Step 2: Add application URL
 
-W polu "Enter your app URL" wprowadź:
+In the "Enter your app URL" field, enter:
 ```
 https://batchbridge.vercel.app
 ```
 
-Kliknij "Preview" lub naciśnij Enter.
+Click "Preview" or press Enter.
 
-## Krok 3: Przejrzyj zakładki
+## Step 3: Review tabs
 
-Base Preview ma kilka zakładek do weryfikacji:
+Base Preview has several tabs for verification:
 
-### Zakładka "Preview"
-- **Podgląd embed**: Zobacz jak Twoja aplikacja będzie wyglądać jako embed w Farcaster
-- **Launch button**: Kliknij "Launch" aby otworzyć aplikację w podglądzie
-- **Sprawdź czy**: 
-  - Obrazy ładują się poprawnie (icon, hero)
-  - Tytuł i opis są poprawne
-  - Aplikacja uruchamia się bez błędów
+### "Preview" tab
+- **Embed preview**: See how your application will look as an embed in Farcaster
+- **Launch button**: Click "Launch" to open the application in preview
+- **Check if**:
+  - Images load correctly (icon, hero)
+  - Title and description are correct
+  - Application launches without errors
 
-### Zakładka "Metadata"
-- **Weryfikacja manifestu**: Sprawdź czy wszystkie pola manifestu są poprawnie wczytane
-- **Sprawdź czy nie ma brakujących pól**: 
-  - `name`, `iconUrl`, `homeUrl` - wymagane
-  - `screenshotUrls`, `heroImageUrl` - zalecane
-  - `description`, `subtitle` - dla lepszego UX
-- **Ostrzeżenia**: Napraw wszystkie warningi dotyczące metadanych
+### "Metadata" tab
+- **Manifest verification**: Check if all manifest fields are correctly loaded
+- **Check for missing fields**:
+  - `name`, `iconUrl`, `homeUrl` - required
+  - `screenshotUrls`, `heroImageUrl` - recommended
+  - `description`, `subtitle` - for better UX
+- **Warnings**: Fix all metadata warnings
 
-### Zakładka "Account association"
-- **Weryfikacja credentials**: Sprawdź czy `accountAssociation` credentials są poprawne
-- **Status**: Powinien pokazywać "Verified" lub podobny potwierdzający status
-- **Jeśli błąd**: Sprawdź czy credentials są identyczne z wygenerowanymi
+### "Account association" tab
+- **Credentials verification**: Check if `accountAssociation` credentials are correct
+- **Status**: Should show "Verified" or similar confirming status
+- **If error**: Check if credentials are identical to generated ones
 
-### Zakładka "Frame validation" (jeśli dotyczy)
-- Jeśli aplikacja ma Farcaster Frame, sprawdź walidację tutaj
+### "Frame validation" tab (if applicable)
+- If the application has a Farcaster Frame, check validation here
 
-## Krok 4: Testowanie uruchomienia aplikacji
+## Step 4: Testing application launch
 
-1. **Kliknij "Launch"** w zakładce Preview
-2. **Sprawdź czy aplikacja ładuje się poprawnie**
-3. **Przetestuj podstawowe funkcje**:
-   - Łączenie portfela
-   - Wybór tokenów
-   - Generowanie quote
-   - (Opcjonalnie) testowanie transakcji
+1. **Click "Launch"** in the Preview tab
+2. **Check if the application loads correctly**
+3. **Test basic functions**:
+   - Wallet connection
+   - Token selection
+   - Quote generation
+   - (Optional) transaction testing
 
-## Krok 5: Testowanie na różnych urządzeniach
+## Step 5: Testing on different devices
 
-Base Preview pozwala na testowanie różnych viewportów:
+Base Preview allows testing different viewports:
 
-1. **Mobile view**: Sprawdź responsywność na mobile
-2. **Desktop view**: Sprawdź wygląd na desktopie
-3. **Tablet view**: Sprawdź wygląd na tablecie
+1. **Mobile view**: Check responsiveness on mobile
+2. **Desktop view**: Check appearance on desktop
+3. **Tablet view**: Check appearance on tablet
 
-## Krok 6: Sprawdzenie błędów konsoli
+## Step 6: Checking console errors
 
-Otwórz DevTools (F12) i sprawdź:
-1. **Console tab**: Czy są jakieś błędy JavaScript
-2. **Network tab**: Czy wszystkie zasoby ładują się poprawnie
-3. **CORS errors**: Czy nie ma błędów CORS przy ładowaniu manifestu
+Open DevTools (F12) and check:
+1. **Console tab**: If there are any JavaScript errors
+2. **Network tab**: If all resources load correctly
+3. **CORS errors**: If there are no CORS errors when loading manifest
 
-## Typowe problemy i rozwiązania:
+## Common problems and solutions:
 
 ### Problem: "Invalid manifest"
-- Sprawdź czy `.well-known/farcaster.json` jest poprawnym JSON
-- Sprawdź czy wszystkie wymagane pola są obecne
-- Sprawdź czy URL do obrazów są dostępne
+- Check if `.well-known/farcaster.json` is valid JSON
+- Check if all required fields are present
+- Check if image URLs are accessible
 
 ### Problem: "Account association failed"
-- Sprawdź czy credentials w `minikit.config.ts` i `.well-known/farcaster.json` są identyczne
-- Sprawdź czy używasz tego samego konta Farcaster co przy generowaniu
-- Spróbuj wygenerować credentials ponownie
+- Check if credentials in `minikit.config.ts` and `.well-known/farcaster.json` are identical
+- Check if you're using the same Farcaster account as when generating
+- Try generating credentials again
 
 ### Problem: "Images not loading"
-- Sprawdź czy obrazy są dostępne pod podanymi URL
-- Sprawdź rozmiary obrazów (zalecane):
+- Check if images are accessible at the provided URLs
+- Check image sizes (recommended):
   - Icon: 512x512px
-  - Hero: 1200x630px  
+  - Hero: 1200x630px
   - Screenshot: 1080x1920px (portrait)
-- Sprawdź format (PNG zalecany)
+- Check format (PNG recommended)
 
 ### Problem: "App not launching properly"
-- Sprawdź czy główna aplikacja działa pod `https://batchbridge.vercel.app`
-- Sprawdź czy nie ma błędów JavaScript
-- Sprawdź czy portfel łączy się poprawnie w embed
+- Check if the main application works at `https://batchbridge.vercel.app`
+- Check if there are no JavaScript errors
+- Check if wallet connects correctly in embed
 
-## Krok 7: Zbierz feedback i zanotuj problemy
+## Step 7: Collect feedback and note problems
 
-Podczas testowania zanotuj:
-1. **Co działa dobrze**
-2. **Problemy do naprawienia**
-3. **Sugestie ulepszeń**
-4. **Błędy w konsoli**
+During testing, note:
+1. **What works well**
+2. **Problems to fix**
+3. **Improvement suggestions**
+4. **Console errors**
 
-## Krok 8: Iteracyjne poprawki
+## Step 8: Iterative fixes
 
-Jeśli znajdziesz problemy:
-1. **Napraw problemy** lokalnie
-2. **Wdróż poprawki** na produkcję
-3. **Przetestuj ponownie** w base.dev/preview
-4. **Powtarzaj** aż wszystkie testy przejdą
+If you find problems:
+1. **Fix problems** locally
+2. **Deploy fixes** to production
+3. **Test again** in base.dev/preview
+4. **Repeat** until all tests pass
 
-## Krok 9: Finalna weryfikacja
+## Step 9: Final verification
 
-Przed ogłoszeniem aplikacji jako gotowej, upewnij się że:
-- ✅ Wszystkie zakładki w Base Preview pokazują "Verified" lub "Success"
-- ✅ Aplikacja uruchamia się bez błędów
-- ✅ Obrazy ładują się poprawnie
-- ✅ Manifest jest kompletny
-- ✅ Account association jest zweryfikowane
+Before announcing the application as ready, make sure:
+- ✅ All tabs in Base Preview show "Verified" or "Success"
+- ✅ Application launches without errors
+- ✅ Images load correctly
+- ✅ Manifest is complete
+- ✅ Account association is verified
 
-## Dodatkowe testy:
+## Additional tests:
 
-### Test na różnych przeglądarkach:
+### Test on different browsers:
 - Chrome/Chromium
 - Firefox
-- Safari (jeśli możliwe)
+- Safari (if possible)
 
-### Test z różnymi portfelami:
+### Test with different wallets:
 - MetaMask
 - Coinbase Wallet
 - Rabby
-- Inne wspierane przez Twoją aplikację
+- Others supported by your application
 
-Po pomyślnym przejściu wszystkich testów, Twoja aplikacja jest gotowa do użycia jako Base Mini App!
+After successfully passing all tests, your application is ready to use as a Base Mini App!

@@ -1,124 +1,124 @@
-# Instrukcje wdrożenia zmian na produkcję
+# Deployment Instructions for Production
 
-Po zaktualizowaniu `minikit.config.ts` z `accountAssociation` credentials, musisz wdrożyć zmiany na produkcję (Vercel).
+After updating `minikit.config.ts` with `accountAssociation` credentials, you need to deploy the changes to production (Vercel).
 
-## Krok 1: Sprawdź zmiany przed wdrożeniem
+## Step 1: Check changes before deployment
 
-Upewnij się, że wszystkie zmiany są gotowe:
+Make sure all changes are ready:
 
-1. ✅ `minikit.config.ts` - zaktualizowany z credentials
-2. ✅ `.well-known/farcaster.json` - zaktualizowany manifest (lub gotowy do wygenerowania)
-3. ✅ Wszystkie nowe pliki obrazów są w `frontend/public/`
+1. ✅ `minikit.config.ts` - updated with credentials
+2. ✅ `.well-known/farcaster.json` - updated manifest (or ready to be generated)
+3. ✅ All new image files are in `frontend/public/`
 
-Sprawdź status zmian:
+Check the status of changes:
 ```bash
 git status
 ```
 
-Powinieneś zobaczyć zmodyfikowane/nowe pliki:
+You should see modified/new files:
 - `minikit.config.ts`
-- `.well-known/farcaster.json` (lub skrypt do jego generowania)
-- `INSTRUCTIONS_*.md` (pliki instrukcji)
-- `package.json` (nowy w głównym katalogu)
+- `.well-known/farcaster.json` (or script to generate it)
+- `INSTRUCTIONS_*.md` (instruction files)
+- `package.json` (new in root directory)
 - `scripts/generate-manifest.ts`
 
-## Krok 2: Commit zmian
+## Step 2: Commit changes
 
-Dodaj zmiany do gita i zrób commit:
+Add changes to git and commit:
 
 ```bash
-# Dodaj wszystkie zmienione pliki
+# Add all changed files
 git add .
 
-# Zrób commit ze znaczącą wiadomością
+# Commit with a meaningful message
 git commit -m "feat: Add Base Mini App configuration with accountAssociation credentials"
 
-# Lub jeśli chcesz podzielić na mniejsze commity:
+# Or if you want to split into smaller commits:
 git add minikit.config.ts .well-known/farcaster.json
 git commit -m "feat: Update minikit.config.ts with accountAssociation credentials"
 ```
 
-## Krok 3: Push do głównej gałęzi
+## Step 3: Push to main branch
 
-Wypchnij zmiany do głównej gałęzi (zwykle `main` lub `master`):
+Push changes to the main branch (usually `main` or `master`):
 
 ```bash
 git push origin main
 ```
 
-## Krok 4: Monitoruj deployment na Vercel
+## Step 4: Monitor deployment on Vercel
 
-Po pushu, Vercel automatycznie rozpocznie deployment:
+After pushing, Vercel will automatically start deployment:
 
-1. **Otwórz Vercel Dashboard**: https://vercel.com
-2. **Przejdź do projektu "batchbridge"**
-3. **Sprawdź zakładkę "Deployments"**
-4. **Monitoruj postęp deploymentu**
+1. **Open Vercel Dashboard**: https://vercel.com
+2. **Go to the "batchbridge" project**
+3. **Check the "Deployments" tab**
+4. **Monitor deployment progress**
 
-Czas deploymentu zwykle zajmuje 1-3 minuty.
+Deployment time usually takes 1-3 minutes.
 
-## Krok 5: Weryfikacja deploymentu
+## Step 5: Deployment verification
 
-Po zakończeniu deploymentu, zweryfikuj czy wszystko działa:
+After deployment completes, verify everything works:
 
-### Test 1: Sprawdź dostępność manifestu
-Otwórz w przeglądarce:
+### Test 1: Check manifest availability
+Open in browser:
 ```
 https://batchbridge.vercel.app/.well-known/farcaster.json
 ```
 
-Powinieneś zobaczyć poprawny JSON z `accountAssociation` credentials.
+You should see correct JSON with `accountAssociation` credentials.
 
-### Test 2: Sprawdź dostępność obrazów
-Sprawdź czy obrazy są dostępne:
+### Test 2: Check image availability
+Check if images are available:
 - `https://batchbridge.vercel.app/icon.png`
 - `https://batchbridge.vercel.app/hero.png`
 - `https://batchbridge.vercel.app/screenshot-portrait.png`
 
-### Test 3: Sprawdź główną aplikację
-Otwórz główną aplikację:
+### Test 3: Check main application
+Open the main application:
 ```
 https://batchbridge.vercel.app
 ```
 
-Upewnij się, że aplikacja działa poprawnie.
+Make sure the application works correctly.
 
-## Krok 6: (Opcjonalnie) Ponowne włączenie Deployment Protection
+## Step 6: (Optional) Re-enable Deployment Protection
 
-Jeśli chcesz zabezpieczyć swój deployment:
+If you want to secure your deployment:
 
-1. **Przejdź do Vercel Dashboard** → **Settings** → **Deployment Protection**
-2. **Włącz "Vercel Authentication"** (przełącz na ON)
-3. **Kliknij "Save"**
+1. **Go to Vercel Dashboard** → **Settings** → **Deployment Protection**
+2. **Enable "Vercel Authentication"** (toggle ON)
+3. **Click "Save"**
 
-**Uwaga**: Po włączeniu Vercel Authentication, Base Build Account association tool może mieć problem z weryfikacją w przyszłości. Zostaw wyłączone jeśli planujesz częste aktualizacje manifestu.
+**Note**: After enabling Vercel Authentication, the Base Build Account association tool may have issues with verification in the future. Leave it disabled if you plan frequent manifest updates.
 
-## Troubleshooting deploymentu:
+## Deployment troubleshooting:
 
 ### Problem: "Build failed"
-- Sprawdź logs deploymentu w Vercel
-- Upewnij się, że `package.json` w głównym katalogu nie koliduje z `frontend/package.json`
-- Sprawdź czy TypeScript kompiluje się poprawnie
+- Check deployment logs in Vercel
+- Make sure `package.json` in root directory doesn't conflict with `frontend/package.json`
+- Check if TypeScript compiles correctly
 
 ### Problem: "Manifest not found after deployment"
-- Sprawdź czy `.well-known/farcaster.json` jest w output directory
-- Sprawdź konfigurację `vercel.json` - czy `headers` są poprawnie skonfigurowane
-- Sprawdź czy plik został poprawnie skopiowany podczas build process
+- Check if `.well-known/farcaster.json` is in the output directory
+- Check `vercel.json` configuration - if `headers` are correctly configured
+- Check if the file was properly copied during build process
 
 ### Problem: "CORS errors"
-- Sprawdź konfigurację headers w `vercel.json`
-- Upewnij się, że `Access-Control-Allow-Origin` jest ustawione na `*` dla `.well-known/*`
+- Check headers configuration in `vercel.json`
+- Make sure `Access-Control-Allow-Origin` is set to `*` for `.well-known/*`
 
-## Krok 7: Po udanym deploymentcie
+## Step 7: After successful deployment
 
-Po pomyślnym wdrożeniu:
-1. **Zanotuj wersję deploymentu** z Vercel Dashboard
-2. **Przetestuj w `base.dev/preview`** (następny krok)
-3. **Powiadom zespół** o udanym wdrożeniu
+After successful deployment:
+1. **Note the deployment version** from Vercel Dashboard
+2. **Test in `base.dev/preview`** (next step)
+3. **Notify the team** about successful deployment
 
-## Automatyczne deploymenty:
+## Automatic deployments:
 
-Vercel automatycznie deployuje przy każdym pushu do `main`. Jeśli chcesz kontrolować kiedy deployować:
-1. Użyj feature branches
-2. Użyj Vercel's "Promote to Production"
-3. Skonfiguruj deployment rules w Vercel Settings
+Vercel automatically deploys on every push to `main`. If you want to control when to deploy:
+1. Use feature branches
+2. Use Vercel's "Promote to Production"
+3. Configure deployment rules in Vercel Settings

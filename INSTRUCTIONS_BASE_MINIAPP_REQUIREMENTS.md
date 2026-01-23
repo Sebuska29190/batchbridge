@@ -1,170 +1,170 @@
-# Dostosowanie aplikacji do wymagań Base Mini App
+# Adapting Your App to Base Mini App Requirements
 
-Po pomyślnej integracji manifestu, warto dostosować aplikację do najlepszych praktyk Base Mini App.
+After successful manifest integration, it's worth adapting your application to Base Mini App best practices.
 
-## 1. Optymalizacja dla embed w Farcaster
+## 1. Optimization for Farcaster Embed
 
-### Responsywny design
-- **Viewport**: Upewnij się, że aplikacja ma poprawny viewport meta tag
-- **Mobile-first**: Zoptymalizuj dla mobile (320px-768px)
-- **Touch-friendly**: Przyciski min. 44x44px, odpowiednie odstępy
+### Responsive Design
+- **Viewport**: Ensure your app has correct viewport meta tag
+- **Mobile-first**: Optimize for mobile (320px-768px)
+- **Touch-friendly**: Buttons min. 44x44px, appropriate spacing
 
-### Ograniczenia embed
-- **Wysokość iframe**: Rozważ stałą wysokość lub dynamiczne dostosowanie
-- **Komunikacja z parent**: Możliwość użycia `window.parent.postMessage` dla lepszej integracji
-- **Session management**: Zapamiętywanie stanu między sesjami w embed
+### Embed Limitations
+- **Iframe height**: Consider fixed height or dynamic adjustment
+- **Parent communication**: Ability to use `window.parent.postMessage` for better integration
+- **Session management**: Remembering state between embed sessions
 
-## 2. Integracja z Base SDK (opcjonalnie)
+## 2. Base SDK Integration (Optional)
 
-### Zainstaluj Base SDK
+### Install Base SDK
 ```bash
 cd frontend
 npm install @base-org/minikit
 ```
 
-### Podstawowa integracja
+### Basic Integration
 ```javascript
-// W głównym komponencie aplikacji
+// In your main app component
 import { initMiniApp } from '@base-org/minikit';
 
-// Inicjalizacja przy montowaniu komponentu
+// Initialize when component mounts
 useEffect(() => {
   initMiniApp({
-    // Konfiguracja
+    // Configuration
   });
 }, []);
 ```
 
-### Korzyści z Base SDK:
-- **Lepsza integracja z Warpcast/Farcaster**
-- **Dostęp do kontekstu użytkownika**
-- **Automatyczne zarządzanie sesją**
-- **Analytics i monitoring**
+### Benefits of Base SDK:
+- **Better integration with Warpcast/Farcaster**
+- **Access to user context**
+- **Automatic session management**
+- **Analytics and monitoring**
 
-## 3. Optymalizacja obrazów dla Mini App
+## 3. Image Optimization for Mini App
 
-### Wymagane rozmiary obrazów:
-- **Icon**: 512x512px (PNG, przezroczyste tło)
+### Required Image Sizes:
+- **Icon**: 512x512px (PNG, transparent background discouraged)
 - **Hero image**: 1200x630px (og:image ratio)
-- **Screenshot**: 1080x1920px (portrait dla mobile)
-- **Splash screen**: 1200x630px (dla lepszego ładowania)
+- **Screenshot**: 1080x1920px (portrait for mobile)
+- **Splash screen**: 1200x630px (for better loading)
 
-### Optymalizacja performance:
-- **Kompresja**: Użyj WebP z fallback do PNG
-- **Lazy loading**: Obrazy ładowane na żądanie
-- **CDN**: Użyj Vercel's Image Optimization
+### Performance Optimization:
+- **Compression**: Use WebP with PNG fallback
+- **Lazy loading**: Images loaded on demand
+- **CDN**: Use Vercel's Image Optimization
 
-## 4. Bezpieczeństwo i permissions
+## 4. Security and Permissions
 
-### Ograniczenia iframe:
-- **Sandbox attributes**: Ustaw odpowiednie atrybuty sandbox
-- **Permissions policy**: Skonfiguruj nagłówki dla embed
-- **CSP**: Content Security Policy dla bezpieczeństwa
+### Iframe Limitations:
+- **Sandbox attributes**: Set appropriate sandbox attributes
+- **Permissions policy**: Configure headers for embed
+- **CSP**: Content Security Policy for security
 
-### Portfel integration:
-- **Multiple wallet support**: Obsługa różnych providerów
-- **Fallback handling**: Graceful degradation gdy portfel nie jest dostępny
-- **Error messages**: Przyjazne komunikaty błędów
+### Wallet Integration:
+- **Multiple wallet support**: Support different providers
+- **Fallback handling**: Graceful degradation when wallet is not available
+- **Error messages**: User-friendly error messages
 
-## 5. Analytics i monitoring
+## 5. Analytics and Monitoring
 
-### Podstawowe metryki:
-- **User engagement**: Czas w aplikacji, interakcje
-- **Conversion rates**: Sukces transakcji, completion rates
-- **Error tracking**: Monitorowanie błędów
+### Basic Metrics:
+- **User engagement**: Time in app, interactions
+- **Conversion rates**: Transaction success, completion rates
+- **Error tracking**: Error monitoring
 
-### Narzędzia:
-- **Vercel Analytics**: Już zainstalowane w projekcie
-- **Custom events**: Dodaj tracking dla kluczowych akcji
-- **Console logging**: Strukturyzowane logi dla debugowania
+### Tools:
+- **Vercel Analytics**: Already installed in the project
+- **Custom events**: Add tracking for key actions
+- **Console logging**: Structured logs for debugging
 
-## 6. Testowanie na różnych platformach
+## 6. Testing on Different Platforms
 
-### Platformy do przetestowania:
-1. **Warpcast desktop** - embed w feedzie
-2. **Warpcast mobile** - aplikacja mobilna
-3. **Base.dev preview** - już testowane
-4. **Bezpośredni URL** - standalone experience
+### Platforms to Test:
+1. **Warpcast desktop** - embed in feed
+2. **Warpcast mobile** - mobile app
+3. **Base.dev preview** - already tested
+4. **Direct URL** - standalone experience
 
-### Test cases:
-- ✅ Łączenie portfela
-- ✅ Wybór tokenów
-- ✅ Generowanie quote
-- ✅ Wykonanie transakcji (testnet)
+### Test Cases:
+- ✅ Wallet connection
+- ✅ Token selection
+- ✅ Quote generation
+- ✅ Transaction execution (testnet)
 - ✅ Error handling
 - ✅ Loading states
 
-## 7. Performance optimization
+## 7. Performance Optimization
 
 ### Core Web Vitals:
 - **LCP (Largest Contentful Paint)**: < 2.5s
 - **FID (First Input Delay)**: < 100ms  
 - **CLS (Cumulative Layout Shift)**: < 0.1
 
-### Techniki optymalizacji:
-- **Code splitting**: Podział bundle na mniejsze części
-- **Tree shaking**: Usuwanie nieużywanego kodu
-- **Caching**: Skonfiguruj cache headers w Vercel
-- **Preloading**: Krytyczne zasoby preload
+### Optimization Techniques:
+- **Code splitting**: Split bundle into smaller parts
+- **Tree shaking**: Remove unused code
+- **Caching**: Configure cache headers in Vercel
+- **Preloading**: Preload critical resources
 
 ## 8. Accessibility (a11y)
 
-### Podstawowe wymagania:
-- **Keyboard navigation**: Obsługa klawiatury
-- **Screen readers**: Semantyczny HTML, aria attributes
-- **Color contrast**: Min. 4.5:1 dla tekstu
-- **Focus management**: Widoczny focus indicator
+### Basic Requirements:
+- **Keyboard navigation**: Keyboard support
+- **Screen readers**: Semantic HTML, aria attributes
+- **Color contrast**: Min. 4.5:1 for text
+- **Focus management**: Visible focus indicator
 
-## 9. Internationalization (i18n) - przyszłość
+## 9. Internationalization (i18n) - Future
 
-### Przygotowanie do wielojęzyczności:
-- **Struktura kodu**: Wydziel stringi do plików językowych
-- **Formatowanie**: Użyj Intl API dla dat, walut, liczb
-- **RTL support**: Obsługa języków od prawej do lewej
+### Preparation for Multilingual Support:
+- **Code structure**: Extract strings to language files
+- **Formatting**: Use Intl API for dates, currencies, numbers
+- **RTL support**: Support for right-to-left languages
 
-## 10. Dokumentacja dla użytkowników
+## 10. User Documentation
 
-### W aplikacji:
-- **Tooltips**: Krótkie wyjaśnienia funkcji
-- **Tutorial**: Onboarding dla nowych użytkowników
-- **Help section**: FAQ i troubleshooting
+### In-App:
+- **Tooltips**: Short explanations of features
+- **Tutorial**: Onboarding for new users
+- **Help section**: FAQ and troubleshooting
 
-### Zewnętrzna:
-- **Documentation site**: Szczegółowa dokumentacja API
-- **Video tutorials**: Demo użycia aplikacji
-- **Community support**: Discord/Telegram dla użytkowników
+### External:
+- **Documentation site**: Detailed API documentation
+- **Video tutorials**: Demo of app usage
+- **Community support**: Discord/Telegram for users
 
-## Checklista przed publikacją:
+## Pre-Publication Checklist:
 
-### Konfiguracja:
-- [ ] `minikit.config.ts` z poprawnymi credentials
-- [ ] `.well-known/farcaster.json` dostępny publicznie
-- [ ] Obrazy zoptymalizowane i dostępne
+### Configuration:
+- [ ] `minikit.config.ts` with correct credentials
+- [ ] `.well-known/farcaster.json` publicly available
+- [ ] Images optimized and available
 - [ ] Vercel deployment successful
 
-### Aplikacja:
-- [ ] Responsywny design
+### Application:
+- [ ] Responsive design
 - [ ] Mobile-friendly interface
-- [ ] Portfel integration działa
-- [ ] Error handling zaimplementowany
-- [ ] Loading states dla wszystkich akcji
+- [ ] Wallet integration works
+- [ ] Error handling implemented
+- [ ] Loading states for all actions
 
-### Testy:
-- [ ] Base.dev/preview - wszystkie zakładki Verified
-- [ ] Warpcast embed testowany
-- [ ] Performance testy przechodzą
-- [ ] Security audit przeprowadzony
+### Testing:
+- [ ] Base.dev/preview - all tabs Verified
+- [ ] Warpcast embed tested
+- [ ] Performance tests pass
+- [ ] Security audit conducted
 
-### Dokumentacja:
-- [ ] README zaktualizowany o Base Mini App
+### Documentation:
+- [ ] README updated about Base Mini App
 - [ ] Deployment instructions
 - [ ] Troubleshooting guide
 
-## Następne kroki po dostosowaniu:
+## Next Steps After Adaptation:
 
-1. **Promocja aplikacji** w społeczności Farcaster
-2. **Zbieranie feedbacku** od wczesnych użytkowników
-3. **Iteracyjne poprawki** na podstawie danych użycia
-4. **Rozszerzanie funkcjonalności** zgodnie z potrzebami użytkowników
+1. **Promote your app** in the Farcaster community
+2. **Collect feedback** from early users
+3. **Iterative improvements** based on usage data
+4. **Expand functionality** according to user needs
 
-Twoja aplikacja BatchBridge jest teraz w pełni zintegrowana z Base Mini App ecosystem i gotowa do użycia przez społeczność Farcaster!
+Your BatchBridge app is now fully integrated with the Base Mini App ecosystem and ready to be used by the Farcaster community!

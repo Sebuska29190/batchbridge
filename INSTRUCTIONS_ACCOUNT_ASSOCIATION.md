@@ -1,38 +1,38 @@
-# Instrukcje generowania accountAssociation credentials
+# Generating accountAssociation Credentials Instructions
 
-## Wymagania wstępne:
-1. ✅ Projekt wdrożony na Vercel: `https://batchbridge.vercel.app`
-2. ✅ Vercel Authentication wyłączone (Deployment Protection)
-3. ✅ Manifest dostępny: `https://batchbridge.vercel.app/.well-known/farcaster.json`
+## Prerequisites:
+1. ✅ Project deployed on Vercel: `https://batchbridge.vercel.app`
+2. ✅ Vercel Authentication disabled (Deployment Protection)
+3. ✅ Manifest available: `https://batchbridge.vercel.app/.well-known/farcaster.json`
 
-## Krok 1: Przejdź do Base Build Account association tool
+## Step 1: Go to Base Build Account association tool
 
-Otwórz przeglądarkę i przejdź do:
+Open your browser and go to:
 **https://base.org/build/account-association**
 
-## Krok 2: Wprowadź URL aplikacji
+## Step 2: Enter your app URL
 
-W polu "App URL" wprowadź:
+In the "App URL" field enter:
 ```
 https://batchbridge.vercel.app
 ```
 
-## Krok 3: Kliknij "Submit"
+## Step 3: Click "Submit"
 
-Po wprowadzeniu URL kliknij przycisk **"Submit"**.
+After entering the URL click the **"Submit"** button.
 
-## Krok 4: Podpisz manifest
+## Step 4: Sign the manifest
 
-System wyświetli prośbę o podpisanie manifestu:
+The system will display a request to sign the manifest:
 
-1. **Połącz swój portfel** (jeśli nie jest jeszcze połączony)
-2. **Wybierz konto Farcaster** które chcesz powiązać z aplikacją
-3. **Podpisz wiadomość** w swoim portfelu
-4. **Potwierdź podpisanie** transakcji
+1. **Connect your wallet** (if not already connected)
+2. **Select your Farcaster account** that you want to associate with the app
+3. **Sign the message** in your wallet
+4. **Confirm signing** the transaction
 
-## Krok 5: Skopiuj wygenerowane credentials
+## Step 5: Copy the generated credentials
 
-Po pomyślnym podpisaniu, zobaczysz wygenerowany obiekt `accountAssociation`:
+After successful signing, you'll see the generated `accountAssociation` object:
 
 ```json
 {
@@ -42,30 +42,30 @@ Po pomyślnym podpisaniu, zobaczysz wygenerowany obiekt `accountAssociation`:
 }
 ```
 
-**WAŻNE**: Skopiuj CAŁY obiekt z dokładnie tymi samymi wartościami.
+**IMPORTANT**: Copy the ENTIRE object with exactly the same values.
 
-## Krok 6: Weryfikacja
+## Step 6: Verification
 
-Kliknij przycisk **"Verify"** który się pojawi, aby potwierdzić, że credentials zostały poprawnie wygenerowane.
+Click the **"Verify"** button that appears to confirm that credentials were generated correctly.
 
 ## Troubleshooting:
 
 ### Problem: "Failed to fetch manifest"
-- Sprawdź czy `.well-known/farcaster.json` jest dostępny publicznie
-- Sprawdź czy Vercel Authentication jest wyłączone
-- Sprawdź konsole przeglądarki pod kątem błędów CORS
+- Check if `.well-known/farcaster.json` is publicly available
+- Check if Vercel Authentication is disabled
+- Check browser console for CORS errors
 
 ### Problem: "Invalid signature"
-- Upewnij się, że podpisałeś wiadomość właściwym kontem Farcaster
-- Spróbuj ponownie z innym kontem
+- Make sure you signed the message with the correct Farcaster account
+- Try again with a different account
 
 ### Problem: "Domain verification failed"
-- Upewnij się, że używasz dokładnie tego samego URL co wdrożona aplikacja
-- Sprawdź czy DNS jest poprawnie skonfigurowany
+- Make sure you're using exactly the same URL as your deployed app
+- Check if DNS is correctly configured
 
-## Co dalej?
+## What's Next?
 
-Po uzyskaniu credentials:
-1. Zaktualizuj `minikit.config.ts` z wygenerowanymi danymi
-2. Wdróż zmiany na produkcję
-3. Przetestuj w `base.dev/preview`
+After obtaining credentials:
+1. Update `minikit.config.ts` with the generated data
+2. Deploy changes to production
+3. Test in `base.dev/preview`

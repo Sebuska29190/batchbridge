@@ -1,52 +1,52 @@
-# Instrukcje integracji Base Mini App - Vercel Deployment
+# Base Mini App Integration Instructions - Vercel Deployment
 
-## Krok 1: Wyłączenie Deployment Protection w Vercel
+## Step 1: Disable Deployment Protection in Vercel
 
-Aby Base Build Account association tool mógł uzyskać dostęp do Twojego manifestu, musisz wyłączyć Deployment Protection (Vercel Authentication).
+For the Base Build Account association tool to access your manifest, you need to disable Deployment Protection (Vercel Authentication).
 
-### Procedura:
+### Procedure:
 
-1. **Zaloguj się do Vercel Dashboard** (https://vercel.com)
-2. **Wybierz projekt "batchbridge"** z listy projektów
-3. **Przejdź do Settings** → **Deployment Protection**
-4. **Wyłącz "Vercel Authentication"**:
-   - Znajdź przełącznik "Vercel Authentication"
-   - Przełącz go na pozycję OFF (wyłączone)
-   - Kliknij "Save" aby zapisać zmiany
+1. **Log in to Vercel Dashboard** (https://vercel.com)
+2. **Select the "batchbridge" project** from the project list
+3. **Go to Settings** → **Deployment Protection**
+4. **Disable "Vercel Authentication"**:
+   - Find the "Vercel Authentication" toggle
+   - Switch it to OFF (disabled)
+   - Click "Save" to save changes
 
-### Uwaga:
-- Wyłączenie Vercel Authentication pozwala Base Build Account association tool na dostęp do `.well-known/farcaster.json` bez autentykacji
-- Po zakończeniu procesu association możesz ponownie włączyć ochronę
+### Note:
+- Disabling Vercel Authentication allows the Base Build Account association tool to access `.well-known/farcaster.json` without authentication
+- After completing the association process, you can re-enable protection
 
-## Krok 2: Sprawdzenie czy aplikacja jest dostępna publicznie
+## Step 2: Verify application is publicly available
 
-Przed generowaniem credentials upewnij się, że:
-1. Aplikacja jest wdrożona na Vercel pod adresem: `https://batchbridge.vercel.app`
-2. Manifest jest dostępny pod adresem: `https://batchbridge.vercel.app/.well-known/farcaster.json`
-3. Obrazy są dostępne pod:
+Before generating credentials, make sure:
+1. The application is deployed on Vercel at: `https://batchbridge.vercel.app`
+2. The manifest is available at: `https://batchbridge.vercel.app/.well-known/farcaster.json`
+3. Images are available at:
    - `https://batchbridge.vercel.app/icon.png`
    - `https://batchbridge.vercel.app/hero.png`
    - `https://batchbridge.vercel.app/screenshot-portrait.png`
 
-## Krok 3: Generowanie accountAssociation credentials
+## Step 3: Generate accountAssociation credentials
 
-Po wyłączeniu Deployment Protection przejdź do:
+After disabling Deployment Protection, go to:
 1. **Base Build Account association tool**: https://base.org/build/account-association
-2. **Wpisz App URL**: `https://batchbridge.vercel.app`
-3. **Kliknij "Submit"**
-4. **Podpisz manifest** zgodnie z instrukcjami
-5. **Skopiuj wygenerowany `accountAssociation` object**
+2. **Enter App URL**: `https://batchbridge.vercel.app`
+3. **Click "Submit"**
+4. **Sign the manifest** according to instructions
+5. **Copy the generated `accountAssociation` object**
 
-## Krok 4: Aktualizacja konfiguracji
+## Step 4: Update configuration
 
-Po uzyskaniu credentials:
-1. Zaktualizuj `minikit.config.ts` z wygenerowanymi danymi
-2. Wdróż zmiany na produkcję
-3. Przetestuj w `base.dev/preview`
+After obtaining credentials:
+1. Update `minikit.config.ts` with the generated data
+2. Deploy changes to production
+3. Test in `base.dev/preview`
 
 ## Troubleshooting:
 
-Jeśli występują problemy:
-1. **403 Forbidden**: Upewnij się, że Vercel Authentication jest wyłączone
-2. **404 Not Found**: Sprawdź czy `.well-known/farcaster.json` istnieje w build output
-3. **CORS errors**: Sprawdź konfigurację headers w `vercel.json`
+If you encounter issues:
+1. **403 Forbidden**: Make sure Vercel Authentication is disabled
+2. **404 Not Found**: Check if `.well-known/farcaster.json` exists in build output
+3. **CORS errors**: Check headers configuration in `vercel.json`
