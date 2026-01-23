@@ -3,9 +3,15 @@ import { useAppKit, useDisconnect } from '@reown/appkit/react'
 import { useAccount, useWalletClient, useSwitchChain } from 'wagmi'
 import { useSendCalls } from 'wagmi/experimental'
 import { formatUnits, parseUnits } from 'viem'
+import { Attribution } from 'ox/erc8021'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { Analytics } from '@vercel/analytics/react'
 import { BRIDGE_CHAINS, getChainById, COMMON_TOKENS } from './wagmi'
+
+// Base Builder Code Attribution
+const DATA_SUFFIX = Attribution.toDataSuffix({
+  codes: ["bc_vl81sguo"], // obtained from base.dev > Settings > Builder Codes
+})
 import {
     fetchTokenHoldings,
     fetchTokenMetadata,
@@ -1166,6 +1172,13 @@ export default function App() {
                         await sendCallsAsync({
                             chainId: Number(chainId || sourceChain),
                             calls,
+                            // Base Builder Code Attribution
+                            capabilities: {
+                                dataSuffix: {
+                                    value: DATA_SUFFIX,
+                                    optional: true,
+                                },
+                            },
                         })
                     } catch (batchError) {
                         if (isUserRejection(batchError)) {
