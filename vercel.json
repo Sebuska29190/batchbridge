@@ -7,10 +7,14 @@
     "github": {
         "enabled": true,
         "autoAlias": true,
+        "silent": false,
         "productionBranch": "main",
         "autoJobCancelation": true
     },
     
+    "env": {
+        "NODE_VERSION": "18"
+    },
     
     "redirects": [
         {
