@@ -6,8 +6,11 @@
     
     "github": {
         "enabled": true,
-        "autoAlias": true
+        "autoAlias": true,
+        "productionBranch": "main",
+        "autoJobCancelation": true
     },
+    
     
     "redirects": [
         {
