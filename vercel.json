@@ -4,6 +4,11 @@
     "framework": "vite",
     "installCommand": "cd frontend && npm install",
     
+    "github": {
+        "enabled": true,
+        "autoAlias": true
+    },
+    
     "redirects": [
         {
             "source": "https://batchbridge.xyz/:path*",
@@ -20,10 +25,6 @@
             "destination": "https://www.batchbridge.xyz/:path*",
             "permanent": true
         }
-    ],
-    
-    "rewrites": [
-        { "source": "/api/:path*", "destination": "/api/:path*" }
     ],
     
     "headers": [
