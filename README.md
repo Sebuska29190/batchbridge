@@ -7,7 +7,7 @@ LIVE WEBSITE: https://www.batchbridge.xyz/
 [![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)](https://vitejs.dev)
 [![Relay Protocol](https://img.shields.io/badge/Powered%20by-Relay-8b5cf6)](https://relay.link)
 
-Batch swap and bridge multiple tokens into a single output token using Relay Protocol, with a single EIP-5792 batch transaction.
+Batch swap and bridge multiple tokens into a single output token using Relay Protocol, with a single EIP-5792 batch transaction
 
 ## Features
 
