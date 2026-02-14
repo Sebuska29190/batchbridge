@@ -583,7 +583,7 @@ h3 {
 }
 
 .refresh-btn:hover:not(:disabled) {
-  background: rgba(139, 158, 139, 0.1);
+  background: rgba(33, 114, 229, 0.1);
 }
 
 .refresh-btn:disabled {
@@ -700,11 +700,11 @@ h3 {
 }
 
 .token-item:hover {
-  background: rgba(139, 158, 139, 0.08);
+  background: rgba(33, 114, 229, 0.08);
 }
 
 .token-item.selected {
-  background: rgba(139, 158, 139, 0.15);
+  background: rgba(33, 114, 229, 0.15);
   border: 1px solid var(--accent);
 }
 
@@ -837,7 +837,7 @@ h3 {
 
 .token-amount input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(139, 158, 139, 0.2);
+  box-shadow: 0 0 0 2px rgba(33, 114, 229, 0.2);
 }
 
 .token-amount button {
@@ -845,14 +845,14 @@ h3 {
   font-size: 11px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
-  background: rgba(139, 158, 139, 0.1);
+  background: rgba(33, 114, 229, 0.1);
   color: var(--text-dark);
   cursor: pointer;
   transition: all var(--transition);
 }
 
 .token-amount button:hover {
-  background: rgba(139, 158, 139, 0.2);
+  background: rgba(33, 114, 229, 0.2);
 }
 
 .token-checkbox {
@@ -1153,7 +1153,7 @@ h3 {
 }
 
 .slippage-btn:hover {
-  background: rgba(139, 158, 139, 0.1);
+  background: rgba(33, 114, 229, 0.1);
 }
 
 .slippage-btn.active {
@@ -1207,7 +1207,7 @@ h3 {
   flex-direction: column;
   gap: 10px;
   padding: 16px;
-  background: rgba(139, 158, 139, 0.05);
+  background: rgba(33, 114, 229, 0.05);
   border-radius: var(--radius-sm);
 }
 
@@ -1268,7 +1268,7 @@ h3 {
   justify-content: center;
   gap: 12px;
   padding: 16px;
-  background: rgba(139, 158, 139, 0.1);
+  background: rgba(33, 114, 229, 0.1);
   border-radius: var(--radius-sm);
   font-size: 14px;
   color: var(--text-dark);
@@ -2238,7 +2238,7 @@ h3 {
   }
 
   .token-item:active {
-    background: rgba(139, 158, 139, 0.15);
+    background: rgba(33, 114, 229, 0.15);
     transform: scale(0.98);
   }
 
@@ -2338,142 +2338,4 @@ h3 {
     transform: translateX(-50%) translateY(0);
   }
 }
-/* ===== DEX-style reskin (Phase 1) ===== */
-:root {
-  --accent: #8b5cf6;
-  --accent-hover: #7c3aed;
-  --text-dark: #f4f4ff;
-  --text-muted: #9aa0bd;
-  --white: #121528;
-  --border: rgba(255, 255, 255, 0.12);
-  --success: #22c55e;
-  --error: #ef4444;
-}
-
-body {
-  background:
-    radial-gradient(circle at 8% 12%, rgba(139, 92, 246, 0.24), transparent 30%),
-    radial-gradient(circle at 90% 10%, rgba(59, 130, 246, 0.2), transparent 35%),
-    linear-gradient(160deg, #070911 0%, #0d1120 45%, #10162b 100%);
-  color: var(--text-dark);
-}
-
-.navbar {
-  backdrop-filter: blur(14px);
-}
-
-.logo-text {
-  color: #eef0ff;
-  letter-spacing: 0.01em;
-}
-
-.connect-btn,
-.account-btn,
-.btn-primary {
-  background: linear-gradient(135deg, #8b5cf6, #6d28d9 60%, #4f46e5);
-  color: #fff;
-  box-shadow: 0 8px 22px rgba(109, 40, 217, 0.4);
-}
-
-.connect-btn:hover,
-.account-btn:hover,
-.btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #9a6cff, #7c3aed 60%, #5b56f4);
-  transform: translateY(-1px);
-}
-
-.chain-btn {
-  background: rgba(19, 23, 39, 0.85);
-  color: #dce0ff;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-}
-
-.hero-title {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: #f6f7ff;
-}
-
-.hero-subtitle {
-  color: #b8bedf;
-}
-
-.hero-chain-pill,
-.card,
-.chain-selector-row,
-.token-panel,
-.bridge-panel,
-.route-check-card {
-  background: rgba(17, 22, 39, 0.82) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 14px 32px rgba(4, 6, 14, 0.45);
-  backdrop-filter: blur(12px);
-}
-
-.chain-selector label,
-.panel-header h3,
-.slippage-settings label {
-  color: #a8afcf;
-}
-
-.chain-option,
-.refresh-btn,
-.swap-chains-btn,
-.slippage-btn {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.16);
-  color: #e7e9ff;
-}
-
-.chain-option:hover:not(:disabled),
-.refresh-btn:hover:not(:disabled),
-.slippage-btn:hover {
-  border-color: rgba(167, 139, 250, 0.9);
-  background: rgba(139, 92, 246, 0.16);
-}
-
-.chain-option.active,
-.slippage-btn.active,
-.swap-chains-btn:hover {
-  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
-  border-color: transparent;
-  color: #fff;
-}
-
-.token-item {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid transparent;
-}
-
-.token-item:hover {
-  border-color: rgba(139, 92, 246, 0.55);
-  background: rgba(139, 92, 246, 0.1);
-}
-
-.status-message {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.status-message.success {
-  background: rgba(34, 197, 94, 0.14);
-}
-
-.status-message.warning {
-  background: rgba(245, 158, 11, 0.13);
-}
-
-.status-message.error {
-  background: rgba(239, 68, 68, 0.14);
-}
-
-.footer,
-.footer a,
-.token-symbol,
-.token-value,
-.token-balance,
-.status-message,
-.batch-limit-warning {
-  color: #d7dbf7;
-}
+/* ===== DEX-style reskin removed - using Uniswap/1inch style ===== */
