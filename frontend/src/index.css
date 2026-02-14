@@ -831,7 +831,7 @@ h3 {
   border-radius: var(--radius-sm);
   font-size: 12px;
   background: var(--white);
-  color: var(--text);
+  color: var(--error);
   outline: none;
 }
 
