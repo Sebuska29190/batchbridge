@@ -18,17 +18,28 @@
     
     "redirects": [
         {
-            "source": "https://batchbridge.xyz/:path*",
+            "source": "/:path*",
+            "has": [
+                {
+                    "type": "host",
+                    "value": "batchbridge.xyz"
+                }
+            ],
             "destination": "https://www.batchbridge.xyz/:path*",
             "permanent": true
         },
         {
-            "source": "http://batchbridge.xyz/:path*",
-            "destination": "https://www.batchbridge.xyz/:path*",
-            "permanent": true
-        },
-        {
-            "source": "http://www.batchbridge.xyz/:path*",
+            "source": "/:path*",
+            "has": [
+                {
+                    "type": "host",
+                    "value": "www.batchbridge.xyz"
+                },
+                {
+                    "type": "protocol",
+                    "value": "http"
+                }
+            ],
             "destination": "https://www.batchbridge.xyz/:path*",
             "permanent": true
         }
