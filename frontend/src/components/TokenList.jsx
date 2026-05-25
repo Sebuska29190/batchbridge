@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import { formatUsd } from '../bridgeService'
+import PriceChart from './PriceChart'
 
 const CheckIcon = memo(() => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -152,6 +153,7 @@ export default function TokenList({
                   <div className="token-row-details">
                     <span className="token-row-symbol">{token.symbol}</span>
                     <span className="token-row-balance">{token.balanceFormatted}</span>
+                    <PriceChart token={token} chainId={sourceChain} />
                   </div>
                 </div>
                 <div className="token-row-value">

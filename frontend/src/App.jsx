@@ -10,8 +10,9 @@ import TokenList from './components/TokenList'
 import BridgeActions from './components/BridgeActions'
 import TxHistory from './components/TxHistory'
 import { Toast } from './components/UI'
+import Portfolio from './components/Portfolio'
 import { getChainById } from './wagmi'
-import { SLIPPAGE_PRESETS } from './bridgeService'
+import { SLIPPAGE_PRESETS, formatUsd } from './bridgeService'
 import { t, setLocale, getLocale, initLocale } from './i18n'
 
 initLocale()
@@ -73,6 +74,18 @@ export default function App() {
           <HeroSection onConnect={wallet.openWallet} />
         ) : (
           <div className="bridge-container">
+            <details className="portfolio-collapse">
+              <summary className="portfolio-summary">📊 {t('portfolio')} — {formatUsd(bridge.selectedTotal || bridge.holdings.reduce((s, t) => s + (t.valueUsd || 0), 0))}</summary>
+              <Portfolio
+                holdings={bridge.holdings}
+                sourceChain={bridge.sourceChain}
+                selectedTokens={bridge.selectedTokens}
+                onSelectToken={(token) => {
+                  if (!bridge.outputToken) { bridge.showToast('Select output token first'); return }
+                  bridge.toggleToken(token)
+                }}
+              />
+            </details>
             <ChainSelector
               sourceChain={bridge.sourceChain}
               destChain={bridge.destChain}

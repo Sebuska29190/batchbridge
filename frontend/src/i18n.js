@@ -10,6 +10,7 @@ const pl = {
   advanced: { title: 'Tryb Zaawansowany', gasLimit: 'Limit Gazu', deadline: 'Deadline (min)', fallbacks: 'Korzystaj z fallbacków', extLiquidity: 'Zewnętrzna płynność' },
   search: { title: 'Szukaj tokena', placeholder: 'Szukaj po nazwie lub symbolu...', notFound: 'Nie znaleziono' },
   errors: { connectWallet: 'Najpierw połącz portfel', failed: 'Operacja nieudana', tryAgain: 'Spróbuj ponownie' },
+  portfolio: 'Portfel',
   footer: 'Niekustodialny interfejs bridge. Wszystkie transakcje wykonywane przez zdecentralizowane protokoły.',
 }
 
@@ -25,6 +26,7 @@ const en = {
   advanced: { title: 'Advanced Mode', gasLimit: 'Gas Limit', deadline: 'Deadline (min)', fallbacks: 'Use fallbacks', extLiquidity: 'External liquidity' },
   search: { title: 'Search token', placeholder: 'Search by name or symbol...', notFound: 'Not found' },
   errors: { connectWallet: 'Connect wallet first', failed: 'Operation failed', tryAgain: 'Try again' },
+  portfolio: 'Portfolio',
   footer: 'Non-custodial Bridge Interface. All transactions are executed via decentralized protocols.',
 }
 
