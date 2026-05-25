@@ -1,6 +1,6 @@
 import { createAppKit } from '@reown/appkit/react'
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
-import { mainnet, base, arbitrum } from '@reown/appkit/networks'
+import { mainnet, base, arbitrum, optimism, polygon } from '@reown/appkit/networks'
 
 const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID
 
@@ -22,6 +22,18 @@ export const BRIDGE_CHAINS = [
         name: 'Arbitrum',
         color: '#12AAFF',
         logo: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/arbitrum/info/logo.png',
+    },
+    {
+        id: 10,
+        name: 'Optimism',
+        color: '#FF0420',
+        logo: 'https://icons.llamao.fi/icons/chains/rsz_optimism.jpg',
+    },
+    {
+        id: 137,
+        name: 'Polygon',
+        color: '#8247E5',
+        logo: 'https://icons.llamao.fi/icons/chains/rsz_polygon.jpg',
     },
 ]
 
@@ -48,6 +60,20 @@ export const COMMON_TOKENS = {
         { address: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1', symbol: 'DAI', name: 'Dai Stablecoin', decimals: 18, logo: 'https://assets.coingecko.com/coins/images/9956/small/Badge_Dai.png' },
         { address: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f', symbol: 'WBTC', name: 'Wrapped Bitcoin', decimals: 8, logo: 'https://assets.coingecko.com/coins/images/7598/small/wrapped_bitcoin_wbtc.png' },
     ],
+    10: [
+        { address: '0x0000000000000000000000000000000000000000', symbol: 'ETH', name: 'Ethereum', decimals: 18, logo: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },
+        { address: '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85', symbol: 'USDC', name: 'USD Coin', decimals: 6, logo: 'https://assets.coingecko.com/coins/images/6319/small/usdc.png' },
+        { address: '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58', symbol: 'USDT', name: 'Tether USD', decimals: 6, logo: 'https://assets.coingecko.com/coins/images/325/small/Tether.png' },
+        { address: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1', symbol: 'DAI', name: 'Dai Stablecoin', decimals: 18, logo: 'https://assets.coingecko.com/coins/images/9956/small/Badge_Dai.png' },
+        { address: '0x68f180fcCe6836688e9084f035309E29Bf0A2095', symbol: 'WBTC', name: 'Wrapped Bitcoin', decimals: 8, logo: 'https://assets.coingecko.com/coins/images/7598/small/wrapped_bitcoin_wbtc.png' },
+    ],
+    137: [
+        { address: '0x0000000000000000000000000000000000000000', symbol: 'MATIC', name: 'Polygon', decimals: 18, logo: 'https://assets.coingecko.com/coins/images/4713/small/polygon.png' },
+        { address: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359', symbol: 'USDC', name: 'USD Coin', decimals: 6, logo: 'https://assets.coingecko.com/coins/images/6319/small/usdc.png' },
+        { address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F', symbol: 'USDT', name: 'Tether USD', decimals: 6, logo: 'https://assets.coingecko.com/coins/images/325/small/Tether.png' },
+        { address: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063', symbol: 'DAI', name: 'Dai Stablecoin', decimals: 18, logo: 'https://assets.coingecko.com/coins/images/9956/small/Badge_Dai.png' },
+        { address: '0x1bfd67037b42cf73acF2047067bd4F2C47D9BfD6', symbol: 'WBTC', name: 'Wrapped Bitcoin', decimals: 8, logo: 'https://assets.coingecko.com/coins/images/7598/small/wrapped_bitcoin_wbtc.png' },
+    ],
 }
 
 
@@ -69,7 +95,19 @@ const networks = [
         rpcUrls: {
             default: { http: ['https://arb1.arbitrum.io/rpc', 'https://arbitrum.llamarpc.com'] }
         }
-    }
+    },
+    {
+        ...optimism,
+        rpcUrls: {
+            default: { http: ['https://mainnet.optimism.io', 'https://optimism.llamarpc.com'] }
+        }
+    },
+    {
+        ...polygon,
+        rpcUrls: {
+            default: { http: ['https://polygon-rpc.com', 'https://polygon.llamarpc.com'] }
+        }
+    },
 ]
 
 const metadata = {

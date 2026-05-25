@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { Analytics } from '@vercel/analytics/react'
 import { useWallet } from './hooks/useWallet'
@@ -7,11 +8,19 @@ import HeroSection from './components/HeroSection'
 import ChainSelector from './components/ChainSelector'
 import TokenList from './components/TokenList'
 import BridgeActions from './components/BridgeActions'
+import TxHistory from './components/TxHistory'
 import { Toast } from './components/UI'
-import { getChainById, BRIDGE_CHAINS, COMMON_TOKENS } from './wagmi'
+import { getChainById } from './wagmi'
 import { SLIPPAGE_PRESETS } from './bridgeService'
+import { t, setLocale, getLocale, initLocale } from './i18n'
+
+initLocale()
 
 export default function App() {
+  const [showTxHistory, setShowTxHistory] = useState(false)
+  const [txHistoryRefresh, setTxHistoryRefresh] = useState(0)
+  const [locale, setLocaleState] = useState(getLocale())
+
   const wallet = useWallet()
   const bridge = useBridge({
     address: wallet.address,
@@ -19,15 +28,18 @@ export default function App() {
     connectionStatus: wallet.connectionStatus,
   })
 
-  const handleBridge = () => bridge.handleBridge({
-    walletClient: wallet.walletClient,
-    sendCallsAsync: wallet.sendCallsAsync,
-    resetBatchCalls: wallet.resetBatchCalls,
-    switchChainAsync: wallet.switchChainAsync,
-    connectedChainId: wallet.connectedChainId,
-    walletCapabilities: wallet.walletCapabilities,
-    DATA_SUFFIX: wallet.DATA_SUFFIX,
-  })
+  const handleBridge = async () => {
+    await bridge.handleBridge({
+      walletClient: wallet.walletClient,
+      sendCallsAsync: wallet.sendCallsAsync,
+      resetBatchCalls: wallet.resetBatchCalls,
+      switchChainAsync: wallet.switchChainAsync,
+      connectedChainId: wallet.connectedChainId,
+      walletCapabilities: wallet.walletCapabilities,
+      DATA_SUFFIX: wallet.DATA_SUFFIX,
+    })
+    setTxHistoryRefresh(n => n + 1)
+  }
 
   const handleSlippage = (val) => bridge.setSlippage(val)
   const handleCustomSlippage = (val) => {
@@ -40,6 +52,8 @@ export default function App() {
     }
   }
 
+  const switchLocale = (l) => { setLocale(l); setLocaleState(l) }
+
   return (
     <div className={`app-container ${wallet.isConnected ? 'connected' : ''}`}>
       <Navbar
@@ -49,6 +63,9 @@ export default function App() {
         openWallet={wallet.openWallet}
         openNetworks={wallet.openNetworks}
         disconnectWallet={wallet.disconnectWallet}
+        locale={locale}
+        onLocaleChange={switchLocale}
+        onShowHistory={() => setShowTxHistory(true)}
       />
 
       <main className="main-content">
@@ -141,10 +158,7 @@ export default function App() {
 
       <footer className="footer">
         <div className="footer-content">
-          <div className="footer-text">
-            © 2025 BatchBridge.xyz — Non-custodial Bridge Interface.
-            All transactions are executed via decentralized protocols.
-          </div>
+          <div className="footer-text">© 2025 BatchBridge.xyz — {t('footer')}</div>
           <div className="footer-links">
             Built with <a href="https://relay.link" target="_blank" rel="noopener noreferrer">Relay</a>
             {' · '}Data by <a href="https://routescan.io" target="_blank" rel="noopener noreferrer">Routescan</a>
@@ -158,12 +172,13 @@ export default function App() {
             <svg className="spin-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
             </svg>
-            <div className="overlay-title">Checking routes</div>
-            <div className="overlay-sub">Finding the best path to {bridge.outputToken?.symbol || 'your token'}...</div>
+            <div className="overlay-title">{t('quote.gettingQuote')}</div>
+            <div className="overlay-sub">Finding best path to {bridge.outputToken?.symbol || 'token'}...</div>
           </div>
         </div>
       )}
 
+      <TxHistory visible={showTxHistory} onClose={() => setShowTxHistory(false)} triggerRefresh={txHistoryRefresh} />
       <Toast message={bridge.toast} />
       <SpeedInsights />
       <Analytics />

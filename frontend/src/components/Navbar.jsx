@@ -1,9 +1,7 @@
-import { getChainById } from '../wagmi'
-
-export default function Navbar({ isConnected, address, connectedChainId, openWallet, openNetworks, disconnectWallet }) {
+export default function Navbar({ isConnected, address, connectedChainId, openWallet, openNetworks, disconnectWallet, locale, onLocaleChange, onShowHistory }) {
   return (
     <nav className="navbar">
-      <div className="logo">
+      <div className="logo" onClick={onShowHistory} style={{ cursor: 'pointer' }}>
         <div className="logo-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="17 1 21 5 17 9" />
@@ -15,6 +13,17 @@ export default function Navbar({ isConnected, address, connectedChainId, openWal
         <span className="logo-text">Batch<span className="logo-accent">Bridge</span></span>
       </div>
       <div className="nav-actions">
+        {isConnected && (
+          <button className="btn-icon" onClick={onShowHistory} title="Transaction History">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+          </button>
+        )}
+        <button className="btn-locale" onClick={() => onLocaleChange(locale === 'en' ? 'pl' : 'en')}>
+          {locale === 'en' ? 'PL' : 'EN'}
+        </button>
         {!isConnected ? (
           <button className="btn-connect" onClick={openWallet}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -37,4 +46,13 @@ export default function Navbar({ isConnected, address, connectedChainId, openWal
       </div>
     </nav>
   )
+}
+
+function getChainById(id) {
+  const chains = [
+    { id: 1, name: 'Ethereum' }, { id: 8453, name: 'Base' },
+    { id: 42161, name: 'Arbitrum' }, { id: 10, name: 'Optimism' },
+    { id: 137, name: 'Polygon' },
+  ]
+  return chains.find(c => c.id === Number(id))
 }
