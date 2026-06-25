@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import { useSwap } from '../hooks/useSwap';
+import { TokenModal } from './TokenModal';
 
 export default function SwapForm() {
   const swap = useSwap();
+  const [showSrcModal, setShowSrcModal] = useState(false);
+  const [showDstModal, setShowDstModal] = useState(false);
 
   return (
     <div className="swap-container">
@@ -17,26 +21,12 @@ export default function SwapForm() {
             className="swap-amount-input"
             min="0"
           />
-          <button className="token-select-btn" onClick={() => {}}>
+          <button className="token-select-btn" onClick={() => setShowSrcModal(true)}>
             {swap.srcToken ? (
               <><img src={swap.srcToken.logo} alt="" className="token-icon-sm" />{swap.srcToken.symbol}</>
             ) : 'Select'}
           </button>
         </div>
-        {swap.srcToken && (
-          <div className="token-grid" style={{ marginTop: '8px' }}>
-            {swap.SWAP_TOKEN_LIST.filter(t => t.address !== swap.dstToken?.address).map(token => (
-              <button
-                key={token.address}
-                className={`token-chip ${swap.srcToken?.address === token.address ? 'active' : ''}`}
-                onClick={() => swap.setSrcToken(token)}
-              >
-                <img src={token.logo} alt="" className="token-icon-sm" />
-                {token.symbol}
-              </button>
-            ))}
-          </div>
-        )}
       </div>
 
       {/* Swap Direction */}
@@ -53,26 +43,12 @@ export default function SwapForm() {
           <div className="swap-output-amount">
             {swap.quote ? swap.quote.dstAmountFormatted.slice(0, 10) : '0.0'}
           </div>
-          <button className="token-select-btn" onClick={() => {}}>
+          <button className="token-select-btn" onClick={() => setShowDstModal(true)}>
             {swap.dstToken ? (
               <><img src={swap.dstToken.logo} alt="" className="token-icon-sm" />{swap.dstToken.symbol}</>
             ) : 'Select'}
           </button>
         </div>
-        {swap.dstToken && (
-          <div className="token-grid" style={{ marginTop: '8px' }}>
-            {swap.SWAP_TOKEN_LIST.filter(t => t.address !== swap.srcToken?.address).map(token => (
-              <button
-                key={token.address}
-                className={`token-chip ${swap.dstToken?.address === token.address ? 'active' : ''}`}
-                onClick={() => swap.setDstToken(token)}
-              >
-                <img src={token.logo} alt="" className="token-icon-sm" />
-                {token.symbol}
-              </button>
-            ))}
-          </div>
-        )}
       </div>
 
       {/* Quote Info + Comparison */}
@@ -101,7 +77,6 @@ export default function SwapForm() {
         </div>
       )}
 
-      {/* Single quote (no comparison) */}
       {swap.quote && swap.allQuotes.length <= 1 && (
         <div className="quote-card glass-panel" style={{ padding: '12px' }}>
           <div className="quote-row">
@@ -184,6 +159,26 @@ export default function SwapForm() {
             View on Basescan ↗
           </a>
         </div>
+      )}
+
+      {/* Token Selection Modals */}
+      {showSrcModal && (
+        <TokenModal
+          tokens={swap.SWAP_TOKEN_LIST.filter(t => t.address !== swap.dstToken?.address)}
+          selected={swap.srcToken}
+          onSelect={(t) => { swap.setSrcToken(t); setShowSrcModal(false); }}
+          onClose={() => setShowSrcModal(false)}
+          title="Select token to pay"
+        />
+      )}
+      {showDstModal && (
+        <TokenModal
+          tokens={swap.SWAP_TOKEN_LIST.filter(t => t.address !== swap.srcToken?.address)}
+          selected={swap.dstToken}
+          onSelect={(t) => { swap.setDstToken(t); setShowDstModal(false); }}
+          onClose={() => setShowDstModal(false)}
+          title="Select token to receive"
+        />
       )}
     </div>
   );
