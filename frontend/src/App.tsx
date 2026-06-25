@@ -15,6 +15,7 @@ import Portfolio from './components/Portfolio'
 import { getChainById } from './wagmi'
 import { SLIPPAGE_PRESETS, formatUsd } from './bridgeService'
 import { t, setLocale, getLocale, initLocale } from './i18n'
+import CookieBanner from './components/CookieBanner'
 
 initLocale()
 
@@ -183,11 +184,14 @@ export default function App() {
         <div className="footer-content">
           <div className="footer-text">© 2025 BatchBridge.xyz —{mode === 'swap' ? ' Swap ' : ' Bridge '}· Non-custodial</div>
           <div className="footer-links">
+            <a href="/tos.html">Terms</a> · <a href="/privacy.html">Privacy</a> · {' '}
             Powered by <a href="https://1inch.io" target="_blank" rel="noopener noreferrer">1inch</a>
             {' · '}<a href="https://relay.link" target="_blank" rel="noopener noreferrer">Relay</a>
           </div>
         </div>
       </footer>
+
+      <CookieBanner />
 
       {bridge.isCheckingRoutes && (
         <div className="overlay" role="status" aria-live="polite">

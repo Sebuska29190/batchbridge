@@ -126,6 +126,18 @@ export async function getBestQuote(
   return quotes[0];
 }
 
+/** Get all quotes for comparison display */
+export async function getAllQuotes(
+  srcToken: string, dstToken: string, amount: string, decimals: number,
+): Promise<SwapQuote[]> {
+  if (!amount || parseFloat(amount) <= 0) return [];
+  const [oneInchQ, zeroXQ] = await Promise.all([
+    oneInchQuote(srcToken, dstToken, amount, decimals),
+    zeroXQuote(srcToken, dstToken, amount, decimals),
+  ]);
+  return [oneInchQ, zeroXQ].filter(Boolean) as SwapQuote[];
+}
+
 export async function getSwapTransaction(
   srcToken: string, dstToken: string, amount: string, decimals: number,
   from: string, slippage: number,

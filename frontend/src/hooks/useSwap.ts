@@ -4,6 +4,7 @@ import { base } from 'wagmi/chains';
 import {
   SWAP_TOKEN_LIST,
   getBestQuote,
+  getAllQuotes,
   getSwapTransaction,
   getTokenPrice,
   SWAP_SLIPPAGE_PRESETS,
@@ -63,6 +64,15 @@ export function useSwap() {
         amount,
         srcToken.decimals,
       );
+
+      // Also fetch all quotes for comparison
+      const all = await getAllQuotes(
+        srcToken.address,
+        dstToken.address,
+        amount,
+        srcToken.decimals,
+      );
+      setAllQuotes(all);
 
       if (!best) {
         setError('No route found for this pair. Try a different amount or pair.');

@@ -75,16 +75,42 @@ export default function SwapForm() {
         )}
       </div>
 
-      {/* Quote Info */}
-      {swap.quote && (
+      {/* Quote Info + Comparison */}
+      {swap.quote && swap.allQuotes.length > 1 && (
+        <div className="quote-card glass-panel" style={{ padding: '12px' }}>
+          <div className="quote-row" style={{ fontWeight: 600, marginBottom: '8px' }}>
+            <span>Best via</span>
+            <span className="text-gradient">{swap.quote.provider}</span>
+          </div>
+          {swap.allQuotes.map((q, i) => (
+            <div key={q.provider} className="quote-row" style={{
+              opacity: q.provider === swap.quote?.provider ? 1 : 0.6,
+              padding: '4px 0', borderBottom: i < swap.allQuotes.length - 1 ? '1px solid var(--border)' : 'none'
+            }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                {q.provider} {q.route[0] ? `(${q.route[0]})` : ''}
+                {q.provider === swap.quote?.provider && <span style={{ fontSize: '10px', color: 'var(--success)' }}>BEST</span>}
+              </span>
+              <span>{q.dstAmountFormatted.slice(0, 10)} {swap.dstToken?.symbol}</span>
+            </div>
+          ))}
+          <div className="quote-row" style={{ marginTop: '6px', borderTop: '1px solid var(--border)', paddingTop: '6px', fontSize: '12px' }}>
+            <span>Gas estimate</span>
+            <span>{swap.quote.gas.slice(0, 8)} gwei</span>
+          </div>
+        </div>
+      )}
+
+      {/* Single quote (no comparison) */}
+      {swap.quote && swap.allQuotes.length <= 1 && (
         <div className="quote-card glass-panel" style={{ padding: '12px' }}>
           <div className="quote-row">
-            <span>Best route via</span>
-            <span className="quote-val text-gradient">{swap.quote.provider} {swap.quote.route.join(' → ')}</span>
+            <span>Route via</span>
+            <span className="text-gradient">{swap.quote.provider} {swap.quote.route.join(' → ')}</span>
           </div>
           <div className="quote-row">
-            <span>Estimated gas</span>
-            <span>~{swap.quote.gas.slice(0, 6)} gwei</span>
+            <span>Output</span>
+            <span className="quote-val">{swap.quote.dstAmountFormatted.slice(0, 10)} {swap.dstToken?.symbol}</span>
           </div>
         </div>
       )}
