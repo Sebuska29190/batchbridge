@@ -56,7 +56,7 @@ export default function App() {
   const switchLocale = (l) => { setLocale(l); setLocaleState(l) }
 
   return (
-    <div className={`app-container ${wallet.isConnected ? 'connected' : ''}`}>
+    <div className={`app-container ${wallet.isConnected ? 'connected' : ''} hero-gradient`}>
       <Navbar
         isConnected={wallet.isConnected}
         address={wallet.address}
@@ -73,7 +73,7 @@ export default function App() {
         {!wallet.isConnected ? (
           <HeroSection onConnect={wallet.openWallet} />
         ) : (
-          <div className="bridge-container">
+          <div className="bridge-container glass-panel" style={{padding: '20px', borderRadius: 'var(--radius)'}}>
             <details className="portfolio-collapse">
               <summary className="portfolio-summary">📊 {t('portfolio')} — {formatUsd(bridge.selectedTotal || bridge.holdings.reduce((s, t) => s + (t.valueUsd || 0), 0))}</summary>
               <Portfolio

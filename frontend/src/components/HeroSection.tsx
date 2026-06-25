@@ -1,11 +1,15 @@
 import { BRIDGE_CHAINS } from '../wagmi'
 
-export default function HeroSection({ onConnect }) {
+export default function HeroSection({ onConnect }: { onConnect: () => void }) {
   return (
-    <div className="hero">
-      <div className="hero-content">
-        <div className="hero-badge">⚡ Batch Transactions</div>
-        <h1 className="hero-title">Bridge tokens<br />across chains</h1>
+    <div className="hero hero-gradient">
+      <div className="hero-content" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="hero-badge pulse-glow">⚡ Batch Transactions</div>
+        <h1 className="hero-title">
+          Bridge tokens
+          <br />
+          <span className="text-gradient">across chains</span>
+        </h1>
         <p className="hero-subtitle">
           Select multiple tokens and bridge them in a single EIP-5792 transaction
         </p>
@@ -18,7 +22,7 @@ export default function HeroSection({ onConnect }) {
         </button>
         <div className="hero-chains">
           {BRIDGE_CHAINS.map(chain => (
-            <div key={chain.id} className="hero-chain-pill" style={{ '--chain-color': chain.color }}>
+            <div key={chain.id} className="hero-chain-pill glass-panel" style={{ '--chain-color': chain.color } as React.CSSProperties}>
               <img src={chain.logo} alt={chain.name} className="chain-logo-sm" />
               {chain.name}
             </div>

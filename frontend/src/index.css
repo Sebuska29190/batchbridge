@@ -1,20 +1,20 @@
 /* ══════════════════════════════════════════════
-   BatchBridge — Uniswap-inspired DeFi Theme
+   BatchBridge — Premium Glass Theme v2
    ══════════════════════════════════════════════ */
 
 :root {
-  --bg: #0d0e13;
-  --bg-card: #191b21;
-  --bg-input: #1e2028;
-  --bg-hover: #23252f;
-  --border: #2c2f38;
-  --border-hover: #3b3f4a;
-  --text: #ffffff;
-  --text-secondary: #8a8f9d;
-  --text-tertiary: #5a5f6b;
-  --accent: #3bb2ff;
-  --accent-hover: #5cc1ff;
-  --accent-bg: rgba(59, 178, 255, 0.12);
+  --bg: #06080b;
+  --bg-card: rgba(15, 18, 25, 0.7);
+  --bg-input: rgba(20, 23, 30, 0.9);
+  --bg-hover: rgba(25, 29, 38, 0.95);
+  --border: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --text: #f1f4f9;
+  --text-secondary: #8b93a4;
+  --text-tertiary: #545b6b;
+  --accent: #3898ff;
+  --accent-hover: #5cb3ff;
+  --accent-bg: rgba(56, 152, 255, 0.12);
   --success: #22c55e;
   --error: #ef4444;
   --warning: #f59e0b;
@@ -23,6 +23,9 @@
   --radius-full: 9999px;
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'Space Grotesk', monospace;
+  --glass-blur: blur(16px);
+  --glass-bg: rgba(15, 18, 25, 0.6);
+  --glow: 0 0 40px rgba(56, 152, 255, 0.08);
   --shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
@@ -592,6 +595,32 @@ body {
 .spin-icon, .spin-icon-sm { width: 14px; height: 14px; animation: spin 1s linear infinite; }
 .spin-icon-lg { width: 28px; height: 28px; animation: spin 1s linear infinite; }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* ═══ Premium Glass & Glow ═══ */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  box-shadow: var(--glow);
+}
+.hero-gradient {
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(56, 152, 255, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 50% at 80% 100%, rgba(99, 102, 241, 0.04) 0%, transparent 50%);
+}
+.pulse-glow {
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(56, 152, 255, 0.3); }
+  50% { box-shadow: 0 0 20px 4px rgba(56, 152, 255, 0.15); }
+}
+.text-gradient {
+  background: linear-gradient(135deg, #3898ff 0%, #6366f1 50%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
 /* ═══ Responsive ═══ */
 @media (max-width: 640px) {
