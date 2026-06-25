@@ -1,162 +1,127 @@
-import { formatUnits, erc20Abi } from 'viem';
+import { createPublicClient, http, erc20Abi, formatUnits, parseUnits } from 'viem';
+import { base } from 'viem/chains';
 
-// ═══ API Endpoints ═══
-const ONEINCH_API = 'https://api.1inch.dev/swap/v6.0/8453';
-const ZEROX_API = 'https://api.0x.org/swap/v1';
+// ═══ ParaSwap API (free, no key) ═══
+const PARASWAP_API = 'https://apiv5.paraswap.io';
+const BASE_CHAIN_ID = 8453;
 
-// ═══ Base Chain Default Tokens ═══
-export const SWAP_TOKENS: Record<string, { address: string; symbol: string; name: string; decimals: number; logo: string }> = {
-  'ETH':  { address: '0x0000000000000000000000000000000000000000', symbol: 'ETH',  name: 'Ethereum',    decimals: 18, logo: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },
-  'USDC': { address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', symbol: 'USDC', name: 'USD Coin',    decimals: 6,  logo: 'https://assets.coingecko.com/coins/images/6319/small/usdc.png' },
-  'DAI':  { address: '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb', symbol: 'DAI',  name: 'Dai Stablecoin', decimals: 18, logo: 'https://assets.coingecko.com/coins/images/9956/small/Badge_Dai.png' },
-  'cbBTC':{ address: '0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf', symbol: 'cbBTC',name: 'Coinbase BTC', decimals: 8,  logo: 'https://assets.coingecko.com/coins/images/40143/small/cbbtc.png' },
-  'WETH': { address: '0x4200000000000000000000000000000000000006', symbol: 'WETH', name: 'Wrapped Ether',decimals: 18, logo: 'https://assets.coingecko.com/coins/images/2518/small/weth.png' },
-};
-
-export const SWAP_TOKEN_LIST = Object.values(SWAP_TOKENS);
-
-// ═══ Types ═══
-export interface SwapQuote {
-  provider: string;
-  srcToken: string;
-  dstToken: string;
-  srcAmount: string;
-  dstAmount: string;
-  dstAmountFormatted: string;
-  priceImpact: string;
-  route: string[];
-  gas: string;
-  gasUsd: string;
-  txData?: {
-    to: string;
-    data: string;
-    value: string;
-  };
-  approvalNeeded?: {
-    token: string;
-    spender: string;
-    amount: string;
-  };
+// ═══ Tokens ═══
+export interface SwapToken {
+  address: string; symbol: string; name: string; decimals: number; logo: string;
 }
-
-// ═══ Helpers ═══
-const isNative = (addr: string) => addr === '0x0000000000000000000000000000000000000000'
-  || addr === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
-
-// ═══ 1inch API ═══
-async function oneInchQuote(
-  srcToken: string, dstToken: string, amount: string, decimals: number,
-): Promise<SwapQuote | null> {
-  try {
-    const src = isNative(srcToken) ? '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' : srcToken;
-    const dst = isNative(dstToken) ? '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' : dstToken;
-    const amountWei = parseUnits(amount, decimals).toString();
-    const url = `${ONEINCH_API}/quote?src=${src}&dst=${dst}&amount=${amountWei}`;
-    const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
-    if (!resp.ok) return null;
-    const data = await resp.json();
-    return {
-      provider: '1inch', srcToken, dstToken, srcAmount: amount,
-      dstAmount: data.toAmount || data.dstAmount,
-      dstAmountFormatted: formatUnits(BigInt(data.toAmount || data.dstAmount), data.dstToken?.decimals || 18),
-      priceImpact: '0', route: (data.protocols || []).slice(0, 3).map((p: any) => p[0]?.name || 'Unknown'),
-      gas: data.estimatedGas?.toString() || '0', gasUsd: '0',
-    };
-  } catch { return null; }
-}
-
-async function oneInchSwap(
-  srcToken: string, dstToken: string, amount: string, decimals: number,
-  from: string, slippage: number,
-): Promise<SwapQuote | null> {
-  try {
-    const src = isNative(srcToken) ? '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' : srcToken;
-    const dst = isNative(dstToken) ? '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' : dstToken;
-    const amountWei = parseUnits(amount, decimals).toString();
-    const url = `${ONEINCH_API}/swap?src=${src}&dst=${dst}&amount=${amountWei}&from=${from}&slippage=${slippage}`;
-    const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
-    if (!resp.ok) return null;
-    const data = await resp.json();
-    const quote: SwapQuote = {
-      provider: '1inch', srcToken, dstToken, srcAmount: amount,
-      dstAmount: data.toAmount || data.dstAmount,
-      dstAmountFormatted: formatUnits(BigInt(data.toAmount || data.dstAmount), data.dstToken?.decimals || 18),
-      priceImpact: '0', route: (data.protocols || []).slice(0, 3).map((p: any) => p[0]?.name || 'Unknown'),
-      gas: data.tx?.gas?.toString() || '0', gasUsd: '0',
-      txData: { to: data.tx?.to, data: data.tx?.data, value: data.tx?.value || '0' },
-    };
-    if (data.tx?.from && !isNative(srcToken)) {
-      quote.approvalNeeded = { token: srcToken, spender: data.allowanceTarget || data.tx.to, amount: amountWei };
-    }
-    return quote;
-  } catch { return null; }
-}
-
-// ═══ 0x Protocol ═══
-async function zeroXQuote(
-  srcToken: string, dstToken: string, amount: string, decimals: number,
-): Promise<SwapQuote | null> {
-  try {
-    const amountWei = parseUnits(amount, decimals).toString();
-    const params = new URLSearchParams({ chainId: '8453', sellToken: srcToken, buyToken: dstToken, sellAmount: amountWei });
-    const resp = await fetch(`${ZEROX_API}/quote?${params}`, { headers: { '0x-api-version': 'v2', 'Accept': 'application/json' } });
-    if (!resp.ok) return null;
-    const data = await resp.json();
-    return {
-      provider: '0x', srcToken, dstToken, srcAmount: amount,
-      dstAmount: data.buyAmount, dstAmountFormatted: formatUnits(BigInt(data.buyAmount), data.buyTokenDecimals || 18),
-      priceImpact: '0', route: (data.route?.fills || []).map((f: any) => f.source || 'Unknown'),
-      gas: data.transaction?.gas || '0', gasUsd: data.gasUsd || '0',
-    };
-  } catch { return null; }
-}
-
-// ═══ Public API ═══
-export async function getBestQuote(
-  srcToken: string, dstToken: string, amount: string, decimals: number,
-): Promise<SwapQuote | null> {
-  if (!amount || parseFloat(amount) <= 0) return null;
-  const [oneInchQ, zeroXQ] = await Promise.all([
-    oneInchQuote(srcToken, dstToken, amount, decimals),
-    zeroXQuote(srcToken, dstToken, amount, decimals),
-  ]);
-  const quotes = [oneInchQ, zeroXQ].filter(Boolean) as SwapQuote[];
-  if (quotes.length === 0) return null;
-  quotes.sort((a, b) => (BigInt(b.dstAmount) > BigInt(a.dstAmount) ? 1 : -1));
-  return quotes[0];
-}
-
-/** Get all quotes for comparison display */
-export async function getAllQuotes(
-  srcToken: string, dstToken: string, amount: string, decimals: number,
-): Promise<SwapQuote[]> {
-  if (!amount || parseFloat(amount) <= 0) return [];
-  const [oneInchQ, zeroXQ] = await Promise.all([
-    oneInchQuote(srcToken, dstToken, amount, decimals),
-    zeroXQuote(srcToken, dstToken, amount, decimals),
-  ]);
-  return [oneInchQ, zeroXQ].filter(Boolean) as SwapQuote[];
-}
-
-export async function getSwapTransaction(
-  srcToken: string, dstToken: string, amount: string, decimals: number,
-  from: string, slippage: number,
-): Promise<SwapQuote | null> {
-  return oneInchSwap(srcToken, dstToken, amount, decimals, from, slippage);
-}
-
-export async function getTokenPrice(tokenAddress: string): Promise<number> {
-  try {
-    const addr = isNative(tokenAddress) ? SWAP_TOKENS['WETH'].address : tokenAddress;
-    const resp = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${addr.toLowerCase()}`);
-    const data = await resp.json();
-    const pair = data.pairs?.find((p: any) => p.chainId === 'base');
-    return pair?.priceUsd ? parseFloat(pair.priceUsd) : 0;
-  } catch { return 0; }
-}
+export const SWAP_TOKENS: SwapToken[] = [
+  { address: '0x0000000000000000000000000000000000000000', symbol: 'ETH',  name: 'Ethereum',       decimals: 18, logo: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },
+  { address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', symbol: 'USDC', name: 'USD Coin',       decimals: 6,  logo: 'https://assets.coingecko.com/coins/images/6319/small/usdc.png' },
+  { address: '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb', symbol: 'DAI',  name: 'Dai Stablecoin',  decimals: 18, logo: 'https://assets.coingecko.com/coins/images/9956/small/Badge_Dai.png' },
+  { address: '0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf', symbol: 'cbBTC',name: 'Coinbase BTC',   decimals: 8,  logo: 'https://assets.coingecko.com/coins/images/40143/small/cbbtc.png' },
+  { address: '0x4200000000000000000000000000000000000006', symbol: 'WETH', name: 'Wrapped Ether',   decimals: 18, logo: 'https://assets.coingecko.com/coins/images/2518/small/weth.png' },
+];
 
 export const SWAP_SLIPPAGE_PRESETS = [
   { label: '0.1%', value: 0.1 },
   { label: '0.5%', value: 0.5 },
   { label: '1.0%', value: 1.0 },
 ];
+
+const publicClient = createPublicClient({ chain: base, transport: http('https://mainnet.base.org') });
+
+function isNative(addr: string) { return addr === '0x0000000000000000000000000000000000000000'; }
+
+// ═══ Balance ═══
+export async function fetchBalance(address: `0x${string}`, token: SwapToken): Promise<string> {
+  try {
+    if (isNative(token.address)) {
+      const bal = await publicClient.getBalance({ address });
+      return formatUnits(bal, 18);
+    }
+    const bal = await publicClient.readContract({
+      address: token.address as `0x${string}`, abi: erc20Abi, functionName: 'balanceOf', args: [address],
+    });
+    return formatUnits(bal, token.decimals);
+  } catch { return '0'; }
+}
+
+export async function fetchAllBalances(address: `0x${string}`): Promise<Record<string, string>> {
+  const results: Record<string, string> = {};
+  await Promise.all(SWAP_TOKENS.map(async t => {
+    results[t.address] = await fetchBalance(address, t);
+  }));
+  return results;
+}
+
+// ═══ Quote ═══
+export interface SwapQuote {
+  provider: string; srcToken: string; dstToken: string; srcAmount: string;
+  dstAmount: string; dstAmountFormatted: string; route: string[];
+  gas: string; gasUsd: string; priceImpact: string;
+  txData?: { to: `0x${string}`; data: `0x${string}`; value: bigint };
+}
+
+export async function getQuote(
+  srcToken: SwapToken, dstToken: SwapToken, amount: string,
+): Promise<SwapQuote | null> {
+  try {
+    const srcAmountWei = parseUnits(amount, srcToken.decimals).toString();
+    const params = new URLSearchParams({
+      srcToken: srcToken.address,
+      destToken: dstToken.address,
+      srcDecimals: srcToken.decimals.toString(),
+      destDecimals: dstToken.decimals.toString(),
+      amount: srcAmountWei,
+      side: 'SELL',
+      network: BASE_CHAIN_ID.toString(),
+      partner: 'batchswap',
+    });
+
+    const resp = await fetch(`${PARASWAP_API}/prices?${params}`, {
+      headers: { 'Accept': 'application/json' },
+    });
+    if (!resp.ok) return null;
+
+    const data = await resp.json();
+    const pr = data.priceRoute;
+    if (!pr) return null;
+
+    const exchanges = pr.bestRoute?.[0]?.swaps?.flatMap((s: any) =>
+      s.swapExchanges?.map((e: any) => e.exchange) || []
+    ) || [];
+
+    return {
+      provider: 'ParaSwap',
+      srcToken: srcToken.address, dstToken: dstToken.address, srcAmount: amount,
+      dstAmount: pr.destAmount,
+      dstAmountFormatted: formatUnits(BigInt(pr.destAmount), dstToken.decimals),
+      route: [...new Set(exchanges)],
+      gas: pr.gasCost || '0', gasUsd: pr.gasCostUSD || '$0', priceImpact: '0',
+    };
+  } catch { return null; }
+}
+
+export async function getSwapTx(
+  srcToken: SwapToken, dstToken: SwapToken, amount: string, from: `0x${string}`, slippage: number,
+): Promise<SwapQuote | null> {
+  try {
+    const srcAmountWei = parseUnits(amount, srcToken.decimals).toString();
+    const body = {
+      srcToken: srcToken.address, destToken: dstToken.address,
+      srcDecimals: srcToken.decimals, destDecimals: dstToken.decimals,
+      srcAmount: srcAmountWei, userAddress: from, slippage: Math.floor(slippage * 100),
+      network: BASE_CHAIN_ID, side: 'SELL', partner: 'batchswap',
+    };
+
+    const resp = await fetch(`${PARASWAP_API}/transactions/${BASE_CHAIN_ID}?ignoreChecks=true`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!resp.ok) return null;
+
+    const data = await resp.json();
+    return {
+      provider: 'ParaSwap', srcToken: srcToken.address, dstToken: dstToken.address,
+      srcAmount: amount, dstAmount: data.destAmount || '0',
+      dstAmountFormatted: formatUnits(BigInt(data.destAmount || '0'), dstToken.decimals),
+      route: [], gas: data.gas || '0', gasUsd: '0', priceImpact: '0',
+      txData: { to: data.to as `0x${string}`, data: data.data as `0x${string}`, value: BigInt(data.value || '0') },
+    };
+  } catch { return null; }
+}

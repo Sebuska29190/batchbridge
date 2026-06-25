@@ -1,184 +1,228 @@
-import { useState } from 'react';
-import { useSwap } from '../hooks/useSwap';
+import { useState, useEffect } from 'react';
+import { useAccount } from 'wagmi';
+import { getQuote, getSwapTx, fetchBalance, SWAP_TOKENS, SWAP_SLIPPAGE_PRESETS } from '../swapService';
+import type { SwapToken, SwapQuote } from '../swapService';
 import { TokenModal } from './TokenModal';
 
 export default function SwapForm() {
-  const swap = useSwap();
+  const { address, isConnected } = useAccount();
+
+  const [srcToken, setSrcToken] = useState<SwapToken>(SWAP_TOKENS[0]); // ETH
+  const [dstToken, setDstToken] = useState<SwapToken>(SWAP_TOKENS[1]); // USDC
+  const [amount, setAmount] = useState('');
+  const [slippage, setSlippage] = useState(0.5);
+  const [balance, setBalance] = useState<string | null>(null);
+  const [dstBalance, setDstBalance] = useState<string | null>(null);
+
+  const [quote, setQuote] = useState<SwapQuote | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [swapping, setSwapping] = useState(false);
+  const [error, setError] = useState('');
+  const [txHash, setTxHash] = useState('');
+
   const [showSrcModal, setShowSrcModal] = useState(false);
   const [showDstModal, setShowDstModal] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+
+  // Fetch balance
+  useEffect(() => {
+    if (!address) { setBalance(null); return; }
+    fetchBalance(address, srcToken).then(setBalance);
+  }, [address, srcToken]);
+
+  useEffect(() => {
+    if (!address) { setDstBalance(null); return; }
+    fetchBalance(address, dstToken).then(setDstBalance);
+  }, [address, dstToken]);
+
+  function swapTokens() {
+    setSrcToken(dstToken);
+    setDstToken(srcToken);
+    setQuote(null); setAmount('');
+  }
+
+  function setMax() { if (balance) setAmount(balance); }
+
+  async function handleQuote() {
+    if (!amount || parseFloat(amount) <= 0) { setError('Enter an amount'); return; }
+    setError(''); setLoading(true); setQuote(null);
+    try {
+      const q = await getQuote(srcToken, dstToken, amount);
+      if (!q) setError('No route found for this pair');
+      else setQuote(q);
+    } catch (e: any) { setError(e?.message || 'Failed'); }
+    finally { setLoading(false); }
+  }
+
+  async function handleSwap() {
+    if (!address) { setError('Connect wallet'); return; }
+    setError(''); setSwapping(true);
+    try {
+      const q = await getSwapTx(srcToken, dstToken, amount, address, slippage);
+      if (!q?.txData) { setError('Failed to get swap data'); setSwapping(false); return; }
+      // Use ethereum provider
+      const win = window as any;
+      if (!win.ethereum) { setError('No wallet detected'); setSwapping(false); return; }
+      const tx = await win.ethereum.request({
+        method: 'eth_sendTransaction',
+        params: [{ from: address, to: q.txData.to, data: q.txData.data, value: '0x' + q.txData.value.toString(16) }],
+      });
+      setTxHash(tx);
+      setQuote(null); setAmount('');
+    } catch (e: any) {
+      if (e?.code === 4001) setError('Cancelled');
+      else setError(e?.message || 'Swap failed');
+    } finally { setSwapping(false); }
+  }
 
   return (
-    <div className="swap-container">
-      {/* Source Token */}
-      <div className="swap-section glass-panel" style={{ padding: '16px', borderRadius: 'var(--radius)' }}>
-        <div className="swap-label">You pay</div>
-        <div className="swap-input-row">
-          <input
-            type="number"
-            placeholder="0.0"
-            value={swap.amount}
-            onChange={(e) => swap.setAmount(e.target.value)}
-            className="swap-amount-input"
-            min="0"
-          />
-          <button className="token-select-btn" onClick={() => setShowSrcModal(true)}>
-            {swap.srcToken ? (
-              <><img src={swap.srcToken.logo} alt="" className="token-icon-sm" />{swap.srcToken.symbol}</>
-            ) : 'Select'}
-          </button>
-        </div>
-      </div>
-
-      {/* Swap Direction */}
-      <div className="swap-arrow-row">
-        <button className="swap-arrow-btn" onClick={swap.swapTokens} title="Swap tokens">
-          ↓↑
-        </button>
-      </div>
-
-      {/* Destination Token */}
-      <div className="swap-section glass-panel" style={{ padding: '16px', borderRadius: 'var(--radius)' }}>
-        <div className="swap-label">You receive</div>
-        <div className="swap-input-row">
-          <div className="swap-output-amount">
-            {swap.quote ? swap.quote.dstAmountFormatted.slice(0, 10) : '0.0'}
+    <div style={{ maxWidth: '480px', margin: '0 auto', width: '100%' }}>
+      {/* Swap Card */}
+      <div style={{
+        background: 'rgba(13,17,23,0.95)', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.08)',
+        padding: '8px', boxShadow: '0 4px 32px rgba(0,0,0,0.4)',
+      }}>
+        {/* Sell */}
+        <div style={{ padding: '16px', borderRadius: '20px', background: 'rgba(22,27,34,0.8)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <span style={{ fontSize: '14px', color: '#8b949e' }}>Sell</span>
+            {balance && <span style={{ fontSize: '13px', color: '#8b949e' }}>
+              Balance: {parseFloat(balance).toFixed(4)}{' '}
+              <button onClick={setMax} style={{ background: 'none', border: 'none', color: '#58a6ff', cursor: 'pointer', fontWeight: 600, fontSize: '12px' }}>MAX</button>
+            </span>}
           </div>
-          <button className="token-select-btn" onClick={() => setShowDstModal(true)}>
-            {swap.dstToken ? (
-              <><img src={swap.dstToken.logo} alt="" className="token-icon-sm" />{swap.dstToken.symbol}</>
-            ) : 'Select'}
-          </button>
-        </div>
-      </div>
-
-      {/* Quote Info + Comparison */}
-      {swap.quote && swap.allQuotes.length > 1 && (
-        <div className="quote-card glass-panel" style={{ padding: '12px' }}>
-          <div className="quote-row" style={{ fontWeight: 600, marginBottom: '8px' }}>
-            <span>Best via</span>
-            <span className="text-gradient">{swap.quote.provider}</span>
-          </div>
-          {swap.allQuotes.map((q, i) => (
-            <div key={q.provider} className="quote-row" style={{
-              opacity: q.provider === swap.quote?.provider ? 1 : 0.6,
-              padding: '4px 0', borderBottom: i < swap.allQuotes.length - 1 ? '1px solid var(--border)' : 'none'
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <input
+              type="number" placeholder="0" value={amount}
+              onChange={e => { setAmount(e.target.value); setQuote(null); }}
+              style={{
+                flex: 1, background: 'none', border: 'none', color: '#fff', fontSize: '36px', fontWeight: 500,
+                fontFamily: 'Inter, sans-serif', outline: 'none', width: 0,
+              }}
+            />
+            <button onClick={() => setShowSrcModal(true)} style={{
+              display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px 8px 8px',
+              borderRadius: '100px', background: 'rgba(56,152,255,0.15)', border: '1px solid rgba(56,152,255,0.25)',
+              color: '#58a6ff', fontWeight: 600, fontSize: '16px', cursor: 'pointer', whiteSpace: 'nowrap',
             }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                {q.provider} {q.route[0] ? `(${q.route[0]})` : ''}
-                {q.provider === swap.quote?.provider && <span style={{ fontSize: '10px', color: 'var(--success)' }}>BEST</span>}
-              </span>
-              <span>{q.dstAmountFormatted.slice(0, 10)} {swap.dstToken?.symbol}</span>
+              <img src={srcToken.logo} style={{ width: '24px', height: '24px', borderRadius: '50%' }} alt="" />
+              {srcToken.symbol} <span style={{ fontSize: '12px' }}>▼</span>
+            </button>
+          </div>
+          {amount && balance && parseFloat(amount) > parseFloat(balance) && (
+            <div style={{ color: '#f85149', fontSize: '12px', marginTop: '6px' }}>Insufficient balance</div>
+          )}
+        </div>
+
+        {/* Arrow */}
+        <div style={{ display: 'flex', justifyContent: 'center', margin: '-12px 0', zIndex: 1, position: 'relative' }}>
+          <button onClick={swapTokens} style={{
+            width: '40px', height: '40px', borderRadius: '12px', border: '4px solid rgba(13,17,23,0.95)',
+            background: 'rgba(22,27,34,1)', color: '#8b949e', cursor: 'pointer', display: 'flex',
+            alignItems: 'center', justifyContent: 'center', fontSize: '18px',
+          }}>↓</button>
+        </div>
+
+        {/* Buy */}
+        <div style={{ padding: '16px', borderRadius: '20px', background: 'rgba(22,27,34,0.8)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <span style={{ fontSize: '14px', color: '#8b949e' }}>Buy</span>
+            {dstBalance && <span style={{ fontSize: '13px', color: '#8b949e' }}>Balance: {parseFloat(dstBalance).toFixed(4)}</span>}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ flex: 1, fontSize: '36px', fontWeight: 500, color: quote ? '#fff' : '#484f58' }}>
+              {quote ? parseFloat(quote.dstAmountFormatted).toFixed(6) : '0'}
             </div>
-          ))}
-          <div className="quote-row" style={{ marginTop: '6px', borderTop: '1px solid var(--border)', paddingTop: '6px', fontSize: '12px' }}>
-            <span>Gas estimate</span>
-            <span>{swap.quote.gas.slice(0, 8)} gwei</span>
+            <button onClick={() => setShowDstModal(true)} style={{
+              display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px 8px 8px',
+              borderRadius: '100px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)',
+              color: '#fff', fontWeight: 600, fontSize: '16px', cursor: 'pointer', whiteSpace: 'nowrap',
+            }}>
+              <img src={dstToken.logo} style={{ width: '24px', height: '24px', borderRadius: '50%' }} alt="" />
+              {dstToken.symbol} <span style={{ fontSize: '12px', color: '#8b949e' }}>▼</span>
+            </button>
           </div>
         </div>
-      )}
+      </div>
 
-      {swap.quote && swap.allQuotes.length <= 1 && (
-        <div className="quote-card glass-panel" style={{ padding: '12px' }}>
-          <div className="quote-row">
-            <span>Route via</span>
-            <span className="text-gradient">{swap.quote.provider} {swap.quote.route.join(' → ')}</span>
+      {/* Quote details */}
+      {quote && (
+        <div style={{ margin: '12px 0', padding: '12px 16px', borderRadius: '16px', background: 'rgba(13,17,23,0.95)', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', padding: '4px 0' }}>
+            <span style={{ color: '#8b949e' }}>Rate</span>
+            <span style={{ color: '#fff' }}>1 {srcToken.symbol} ≈ {quote.dstAmountFormatted ? (parseFloat(quote.dstAmountFormatted) / parseFloat(amount || '1')).toFixed(6) : '0'} {dstToken.symbol}</span>
           </div>
-          <div className="quote-row">
-            <span>Output</span>
-            <span className="quote-val">{swap.quote.dstAmountFormatted.slice(0, 10)} {swap.dstToken?.symbol}</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', padding: '4px 0' }}>
+            <span style={{ color: '#8b949e' }}>Route</span>
+            <span style={{ color: '#58a6ff' }}>ParaSwap {quote.route.length > 0 ? `→ ${quote.route.join(' → ')}` : ''}</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', padding: '4px 0' }}>
+            <span style={{ color: '#8b949e' }}>Gas</span>
+            <span style={{ color: '#fff' }}>{quote.gasUsd}</span>
           </div>
         </div>
       )}
 
       {/* Error */}
-      {swap.error && (
-        <div className="status-msg error">{swap.error}</div>
-      )}
+      {error && <div style={{ color: '#f85149', fontSize: '13px', padding: '8px 0', textAlign: 'center' }}>{error}</div>}
 
-      {/* Slippage */}
-      <div className="slippage-section">
-        <div className="slippage-options">
-          {swap.SWAP_SLIPPAGE_PRESETS.map(p => (
-            <button
-              key={p.label}
-              className={`slip-btn ${swap.slippage === p.value && !swap.customSlippage ? 'active' : ''}`}
-              onClick={() => { swap.setSlippage(p.value); swap.setCustomSlippage(''); }}
-            >
-              {p.label}
-            </button>
-          ))}
-          <div className="slip-custom">
-            <input
-              type="number" placeholder="Custom" value={swap.customSlippage}
-              onChange={(e) => {
-                swap.setCustomSlippage(e.target.value);
-                const v = Number(e.target.value);
-                if (Number.isFinite(v)) swap.setSlippage(Math.min(Math.max(v, 0.01), 50));
-              }}
-              min="0.01" max="50" step="0.1"
-            />
-            <span>%</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Action Buttons */}
-      <div className="action-btn-row">
-        {!swap.quote ? (
-          <button
-            className="btn-primary btn-lg pulse-glow"
-            onClick={swap.handleGetQuote}
-            disabled={!swap.srcToken || !swap.dstToken || !swap.amount || swap.isLoadingQuote}
-          >
-            {swap.isLoadingQuote ? (
-              <><span className="spin-icon-sm" /> Getting Quote...</>
-            ) : 'Get Quote'}
-          </button>
-        ) : (
-          <button
-            className="btn-primary btn-lg pulse-glow"
-            onClick={swap.handleSwap}
-            disabled={swap.isSwapping || !swap.isConnected}
-          >
-            {swap.isSwapping ? (
-              <><span className="spin-icon-sm" /> {swap.status || 'Swapping...'}</>
-            ) : !swap.isConnected ? 'Connect Wallet' : 'Swap'}
-          </button>
-        )}
-      </div>
-
-      {/* TX Link */}
-      {swap.txHash && (
+      {/* TX link */}
+      {txHash && (
         <div style={{ textAlign: 'center', padding: '8px' }}>
-          <a
-            href={`https://basescan.org/tx/${swap.txHash}`}
-            target="_blank"
-            className="quote-val"
-            style={{ fontSize: '13px' }}
-          >
+          <a href={`https://basescan.org/tx/${txHash}`} target="_blank" style={{ color: '#58a6ff', fontSize: '13px' }}>
             View on Basescan ↗
           </a>
         </div>
       )}
 
-      {/* Token Selection Modals */}
+      {/* Action */}
+      <button
+        onClick={!quote ? handleQuote : handleSwap}
+        disabled={(!isConnected && !quote) || loading || swapping || (amount && balance && parseFloat(amount) > parseFloat(balance))}
+        style={{
+          width: '100%', padding: '18px', marginTop: '8px', borderRadius: '20px', border: 'none',
+          background: (!quote ? '#58a6ff' : '#db2777'),
+          color: '#fff', fontSize: '18px', fontWeight: 600, cursor: 'pointer',
+          opacity: (!isConnected && !quote) || loading || swapping ? 0.5 : 1,
+        }}
+      >
+        {!isConnected && !quote ? 'Connect Wallet' :
+         loading ? 'Fetching Best Price...' :
+         swapping ? 'Confirm in Wallet...' :
+         !quote ? 'Get Quote' :
+         `Swap ${srcToken.symbol} → ${dstToken.symbol}`}
+      </button>
+
+      {/* Settings */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
+        <button onClick={() => setShowSettings(!showSettings)} style={{
+          background: 'none', border: 'none', color: '#8b949e', cursor: 'pointer', fontSize: '14px',
+          display: 'flex', alignItems: 'center', gap: '4px',
+        }}>
+          ⚙ Slippage: {slippage}%
+        </button>
+      </div>
+      {showSettings && (
+        <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end', marginTop: '4px' }}>
+          {SWAP_SLIPPAGE_PRESETS.map(p => (
+            <button key={p.label} onClick={() => setSlippage(p.value)} style={{
+              padding: '4px 12px', borderRadius: '8px', background: slippage === p.value ? 'rgba(56,152,255,0.2)' : 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.06)', color: slippage === p.value ? '#58a6ff' : '#8b949e',
+              fontSize: '12px', cursor: 'pointer',
+            }}>{p.label}</button>
+          ))}
+        </div>
+      )}
+
       {showSrcModal && (
-        <TokenModal
-          tokens={swap.SWAP_TOKEN_LIST.filter(t => t.address !== swap.dstToken?.address)}
-          selected={swap.srcToken}
-          onSelect={(t) => { swap.setSrcToken(t); setShowSrcModal(false); }}
-          onClose={() => setShowSrcModal(false)}
-          title="Select token to pay"
-        />
+        <TokenModal tokens={SWAP_TOKENS} selected={srcToken} title="Select token"
+          onSelect={t => { setSrcToken(t); setShowSrcModal(false); setQuote(null); }}
+          onClose={() => setShowSrcModal(false)} />
       )}
       {showDstModal && (
-        <TokenModal
-          tokens={swap.SWAP_TOKEN_LIST.filter(t => t.address !== swap.srcToken?.address)}
-          selected={swap.dstToken}
-          onSelect={(t) => { swap.setDstToken(t); setShowDstModal(false); }}
-          onClose={() => setShowDstModal(false)}
-          title="Select token to receive"
-        />
+        <TokenModal tokens={SWAP_TOKENS} selected={dstToken} title="Select token"
+          onSelect={t => { setDstToken(t); setShowDstModal(false); setQuote(null); }}
+          onClose={() => setShowDstModal(false)} />
       )}
     </div>
   );
