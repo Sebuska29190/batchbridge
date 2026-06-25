@@ -18,9 +18,7 @@ export default defineConfig({
         host: '0.0.0.0',
         port: 3000,
         strictPort: false,
-        hmr: {
-            host: 'localhost',
-        },
+        hmr: { host: 'localhost' },
         proxy: {
             '/api/routescan': {
                 target: 'https://api.routescan.io',
@@ -38,11 +36,14 @@ export default defineConfig({
                 configure: (proxy) => {
                     proxy.on('proxyReq', (proxyReq) => {
                         const apiKey = process.env.ROUTESCAN_API_KEY;
-                        if (apiKey) {
-                            proxyReq.setHeader('Authorization', `Bearer ${apiKey}`);
-                        }
+                        if (apiKey) proxyReq.setHeader('Authorization', `Bearer ${apiKey}`);
                     });
                 },
+            },
+            '/api/paraswap': {
+                target: 'https://apiv5.paraswap.io',
+                changeOrigin: true,
+                rewrite: (path) => path.replace('/api/paraswap', ''),
             },
         },
     },
@@ -56,12 +57,10 @@ export default defineConfig({
     build: {
         outDir: 'dist',
         sourcemap: false,
-        // Mobile performance optimizations - use esbuild (default, faster)
         minify: 'esbuild',
         rollupOptions: {
             plugins: [nodePolyfills({ crypto: true, http: true })],
             output: {
-                // Better chunk splitting for mobile performance
                 manualChunks: {
                     vendor: ['react', 'react-dom'],
                     wallet: ['viem', 'wagmi', '@reown/appkit', '@reown/appkit-adapter-wagmi'],
@@ -72,10 +71,7 @@ export default defineConfig({
                 assetFileNames: 'assets/[name]-[hash].[ext]'
             }
         },
-        commonjsOptions: {
-            transformMixedEsModules: true
-        },
-        // Build size reporting
+        commonjsOptions: { transformMixedEsModules: true },
         reportCompressedSize: true,
         chunkSizeWarningLimit: 1000
     }
