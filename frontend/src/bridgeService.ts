@@ -1,4 +1,4 @@
-import { mainnet, base, arbitrum } from 'viem/chains';
+import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
 import { createPublicClient, http, erc20Abi, formatUnits } from 'viem';
 import { getChainById } from './wagmi';
 
@@ -117,7 +117,8 @@ const getPublicClient = (chainId) => {
         throw new Error(`No RPC configured for chain ${chainId}`);
     }
 
-    const viemChain = chainNumeric === 1 ? mainnet : chainNumeric === 8453 ? base : arbitrum;
+    const CHAIN_MAP = { 1: mainnet, 8453: base, 42161: arbitrum, 10: optimism, 137: polygon };
+    const viemChain = CHAIN_MAP[chainNumeric] || mainnet;
 
     return createPublicClient({
         chain: viemChain,
@@ -510,6 +511,7 @@ export const fetchTokenHoldings = async (address, chainId) => {
             allowFailure: true,
         });
     } catch (error) {
+        // Fallback: use Routescan-provided balances when on-chain verification fails
         onChainBalances = filteredItems.map(() => ({ status: 'failure' }));
     }
 
@@ -521,8 +523,10 @@ export const fetchTokenHoldings = async (address, chainId) => {
 
             if (onChainResult?.status === 'success' && onChainResult.result !== undefined) {
                 balance = onChainResult.result.toString();
-                if (balance === '0') return null;
             }
+            // If verification failed but Routescan has a balance, use it
+            
+            if (balance === '0') return null;
 
             return {
                 address: item.tokenAddress,
