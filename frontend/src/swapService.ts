@@ -1,9 +1,10 @@
 import { createPublicClient, http, erc20Abi, formatUnits, parseUnits } from 'viem';
 import { base } from 'viem/chains';
 
-// ═══ ParaSwap API (free, no key) ═══
-const PARASWAP_API = 'https://apiv5.paraswap.io';
+// ═══ ParaSwap API (proxied to avoid CORS) ═══
+const PARASWAP_API = '/api/paraswap';
 const BASE_CHAIN_ID = 8453;
+const NATIVE_ETH_ADDR = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
 
 // ═══ Tokens ═══
 export interface SwapToken {
@@ -26,6 +27,7 @@ export const SWAP_SLIPPAGE_PRESETS = [
 const publicClient = createPublicClient({ chain: base, transport: http('https://mainnet.base.org') });
 
 function isNative(addr: string) { return addr === '0x0000000000000000000000000000000000000000'; }
+function toParaAddr(addr: string) { return isNative(addr) ? NATIVE_ETH_ADDR : addr; }
 
 // ═══ Balance ═══
 export async function fetchBalance(address: `0x${string}`, token: SwapToken): Promise<string> {
@@ -63,14 +65,13 @@ export async function getQuote(
   try {
     const srcAmountWei = parseUnits(amount, srcToken.decimals).toString();
     const params = new URLSearchParams({
-      srcToken: srcToken.address,
-      destToken: dstToken.address,
+      srcToken: toParaAddr(srcToken.address),
+      destToken: toParaAddr(dstToken.address),
       srcDecimals: srcToken.decimals.toString(),
       destDecimals: dstToken.decimals.toString(),
       amount: srcAmountWei,
       side: 'SELL',
       network: BASE_CHAIN_ID.toString(),
-      partner: 'batchswap',
     });
 
     const resp = await fetch(`${PARASWAP_API}/prices?${params}`, {
@@ -80,11 +81,14 @@ export async function getQuote(
 
     const data = await resp.json();
     const pr = data.priceRoute;
-    if (!pr) return null;
+    if (!pr || pr.error) return null;
 
-    const exchanges = pr.bestRoute?.[0]?.swaps?.flatMap((s: any) =>
-      s.swapExchanges?.map((e: any) => e.exchange) || []
-    ) || [];
+    const exchanges: string[] = [];
+    for (const swap of (pr.bestRoute?.[0]?.swaps || [])) {
+      for (const ex of (swap.swapExchanges || [])) {
+        if (ex.exchange) exchanges.push(ex.exchange);
+      }
+    }
 
     return {
       provider: 'ParaSwap',
@@ -98,30 +102,35 @@ export async function getQuote(
 }
 
 export async function getSwapTx(
-  srcToken: SwapToken, dstToken: SwapToken, amount: string, from: `0x${string}`, slippage: number,
+  srcToken: SwapToken, dstToken: SwapToken, amount: string,
+  from: `0x${string}`, slippage: number,
 ): Promise<SwapQuote | null> {
   try {
     const srcAmountWei = parseUnits(amount, srcToken.decimals).toString();
-    const body = {
-      srcToken: srcToken.address, destToken: dstToken.address,
+    const body = JSON.stringify({
+      srcToken: toParaAddr(srcToken.address),
+      destToken: toParaAddr(dstToken.address),
       srcDecimals: srcToken.decimals, destDecimals: dstToken.decimals,
-      srcAmount: srcAmountWei, userAddress: from, slippage: Math.floor(slippage * 100),
-      network: BASE_CHAIN_ID, side: 'SELL', partner: 'batchswap',
-    };
+      srcAmount: srcAmountWei, userAddress: from,
+      slippage: Math.floor(slippage * 100),
+      network: BASE_CHAIN_ID, side: 'SELL',
+    });
 
-    const resp = await fetch(`${PARASWAP_API}/transactions/${BASE_CHAIN_ID}?ignoreChecks=true`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+    // Transaction endpoint requires POST — proxy it manually via fetch
+    const resp = await fetch(`/api/paraswap/transactions/${BASE_CHAIN_ID}?ignoreChecks=true`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body,
     });
     if (!resp.ok) return null;
 
     const data = await resp.json();
+    if (!data.to || !data.data) return null;
+
     return {
       provider: 'ParaSwap', srcToken: srcToken.address, dstToken: dstToken.address,
       srcAmount: amount, dstAmount: data.destAmount || '0',
       dstAmountFormatted: formatUnits(BigInt(data.destAmount || '0'), dstToken.decimals),
       route: [], gas: data.gas || '0', gasUsd: '0', priceImpact: '0',
-      txData: { to: data.to as `0x${string}`, data: data.data as `0x${string}`, value: BigInt(data.value || '0') },
+      txData: { to: data.to, data: data.data, value: BigInt(data.value || '0') },
     };
   } catch { return null; }
 }
