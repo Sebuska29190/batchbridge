@@ -1,4 +1,14 @@
-export default function Navbar({ isConnected, address, connectedChainId, openWallet, openNetworks, disconnectWallet, locale, onLocaleChange, onShowHistory }) {
+export default function Navbar({
+  isConnected, address, connectedChainId,
+  openWallet, openNetworks, disconnectWallet,
+  locale, onLocaleChange, onShowHistory,
+  mode, onModeChange,
+}: {
+  isConnected: boolean; address?: string; connectedChainId?: number;
+  openWallet: () => void; openNetworks: () => void; disconnectWallet: () => void;
+  locale: string; onLocaleChange: (l: string) => void; onShowHistory: () => void;
+  mode?: string; onModeChange?: (m: string) => void;
+}) {
   return (
     <nav className="navbar">
       <div className="logo" onClick={onShowHistory} style={{ cursor: 'pointer' }}>
@@ -10,8 +20,35 @@ export default function Navbar({ isConnected, address, connectedChainId, openWal
             <path d="M21 13v2a4 4 0 0 1-4 4H3" />
           </svg>
         </div>
-        <span className="logo-text">Batch<span className="logo-accent">Bridge</span></span>
+        <span className="logo-text">Batch<span className="logo-accent">{mode === 'swap' ? 'Swap' : 'Bridge'}</span></span>
       </div>
+
+      {/* Mode Tabs */}
+      {onModeChange && (
+        <div className="mode-tabs" style={{ display: 'flex', gap: '2px', background: 'var(--bg-card)', borderRadius: 'var(--radius-full)', padding: '3px' }}>
+          <button
+            onClick={() => onModeChange('swap')}
+            className={`mode-tab ${mode === 'swap' ? 'active' : ''}`}
+            style={{
+              padding: '6px 16px', borderRadius: 'var(--radius-full)', border: 'none',
+              background: mode === 'swap' ? 'var(--accent)' : 'transparent',
+              color: mode === 'swap' ? '#fff' : 'var(--text-secondary)', cursor: 'pointer',
+              fontWeight: 600, fontSize: '13px', transition: 'all 0.15s',
+            }}
+          >Swap</button>
+          <button
+            onClick={() => onModeChange('bridge')}
+            className={`mode-tab ${mode === 'bridge' ? 'active' : ''}`}
+            style={{
+              padding: '6px 16px', borderRadius: 'var(--radius-full)', border: 'none',
+              background: mode === 'bridge' ? 'var(--accent)' : 'transparent',
+              color: mode === 'bridge' ? '#fff' : 'var(--text-secondary)', cursor: 'pointer',
+              fontWeight: 600, fontSize: '13px', transition: 'all 0.15s',
+            }}
+          >Bridge</button>
+        </div>
+      )}
+
       <div className="nav-actions">
         {isConnected && (
           <button className="btn-icon" onClick={onShowHistory} title="Transaction History">
@@ -22,37 +59,27 @@ export default function Navbar({ isConnected, address, connectedChainId, openWal
           </button>
         )}
         <button className="btn-locale" onClick={() => onLocaleChange(locale === 'en' ? 'pl' : 'en')}>
-          {locale === 'en' ? 'PL' : 'EN'}
+          {locale.toUpperCase()}
         </button>
         {!isConnected ? (
           <button className="btn-connect" onClick={openWallet}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="1" y="4" width="22" height="16" rx="2" />
-              <path d="M1 10h22" />
+              <rect x="1" y="4" width="22" height="16" rx="2" /><path d="M1 10h22" />
             </svg>
-            Connect Wallet
+            Connect
           </button>
         ) : (
           <div className="connected-group">
             <button className="btn-chain" onClick={openNetworks}>
-              {getChainById(connectedChainId)?.name || 'Unknown'}
+              Chain {connectedChainId}
             </button>
             <button className="btn-account" onClick={disconnectWallet}>
               <span className="account-dot" />
-              {address?.slice(0, 6)}...{address?.slice(-4)}
+              {address?.slice(0,6)}...{address?.slice(-4)}
             </button>
           </div>
         )}
       </div>
     </nav>
   )
-}
-
-function getChainById(id) {
-  const chains = [
-    { id: 1, name: 'Ethereum' }, { id: 8453, name: 'Base' },
-    { id: 42161, name: 'Arbitrum' }, { id: 10, name: 'Optimism' },
-    { id: 137, name: 'Polygon' },
-  ]
-  return chains.find(c => c.id === Number(id))
 }
