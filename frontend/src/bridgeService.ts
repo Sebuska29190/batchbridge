@@ -1,6 +1,6 @@
 import { mainnet, base, arbitrum, optimism, polygon } from 'viem/chains';
 import { createPublicClient, http, erc20Abi, formatUnits } from 'viem';
-import { getChainById } from './wagmi';
+import { getChainById, COMMON_TOKENS } from './wagmi';
 
 const ALCHEMY_API_KEY = import.meta.env.VITE_ALCHEMY_API_KEY;
 const RELAY_API_BASE = 'https://api.relay.link';
@@ -454,40 +454,100 @@ export const fetchTokenHoldings = async (address, chainId) => {
     let nextToken = null;
     const LIMIT = 100;
     const MAX_PAGES = 10;
+    let routescanFailed = false;
 
+    // Step 1: Try Routescan (works for Ethereum mainnet)
     for (let page = 0; page < MAX_PAGES; page++) {
         let url = `/api/routescan?chainId=${chainId}&address=${address}&limit=${LIMIT}`;
         if (nextToken) {
             url += `&next=${encodeURIComponent(nextToken)}`;
         }
 
-        const response = await fetch(url, {
-            headers: {
-                'accept': 'application/json',
-            },
-        });
+        try {
+            const response = await fetch(url, {
+                headers: { 'accept': 'application/json' },
+            });
 
-        if (!response.ok) {
-            if (page === 0) throw new Error(`Failed to fetch holdings: ${response.status}`);
+            if (!response.ok) {
+                routescanFailed = true;
+                break;
+            }
+
+            const data = await response.json();
+            allItems = allItems.concat(data.items || []);
+
+            if (data.link?.nextToken) {
+                nextToken = data.link.nextToken;
+            } else {
+                break;
+            }
+        } catch {
+            routescanFailed = true;
             break;
         }
+    }
 
-        const data = await response.json();
-        allItems = allItems.concat(data.items || []);
+    // Step 2: Fallback — use COMMON_TOKENS + on-chain balance check for non-ETH chains
+    if (routescanFailed || allItems.length === 0) {
+        const commonTokens = COMMON_TOKENS[Number(chainId)] || [];
+        if (commonTokens.length > 0) {
+            const publicClient = getPublicClient(chainId);
+            const balanceCalls = commonTokens.map(t => ({
+                address: t.address,
+                abi: erc20Abi,
+                functionName: 'balanceOf',
+                args: [address],
+            }));
 
-        if (data.link?.nextToken) {
-            nextToken = data.link.nextToken;
-        } else {
-            break;
+            try {
+                const onChainBalances = await publicClient.multicall({
+                    contracts: balanceCalls,
+                    allowFailure: true,
+                });
+
+                for (let i = 0; i < commonTokens.length; i++) {
+                    const token = commonTokens[i];
+                    const result = onChainBalances[i];
+                    
+                    // For native token (ETH/MATIC), check native balance
+                    if (token.address === '0x0000000000000000000000000000000000000000') {
+                        try {
+                            const nativeBalance = await publicClient.getBalance({ address });
+                            if (nativeBalance > 0n) {
+                                allItems.push({
+                                    tokenAddress: token.address,
+                                    tokenSymbol: token.symbol,
+                                    tokenName: token.name,
+                                    tokenDecimals: token.decimals,
+                                    tokenQuantity: nativeBalance.toString(),
+                                    tokenValueInUsd: '0',
+                                    tokenPrice: '0',
+                                });
+                            }
+                        } catch {}
+                        continue;
+                    }
+
+                    if (result.status === 'success' && result.result > 0n) {
+                        allItems.push({
+                            tokenAddress: token.address,
+                            tokenSymbol: token.symbol,
+                            tokenName: token.name,
+                            tokenDecimals: token.decimals,
+                            tokenQuantity: result.result.toString(),
+                            tokenValueInUsd: '0',
+                            tokenPrice: '0',
+                        });
+                    }
+                }
+            } catch {}
         }
     }
 
     const filteredItems = allItems.filter(item => {
         if (!item.tokenSymbol || !item.tokenAddress) return false;
         if (item.tokenQuantity === '0') return false;
-        if (/[^\w\s.-]/.test(item.tokenSymbol)) return false;
-        const usdValue = parseFloat(item.tokenValueInUsd || '0');
-        if (usdValue <= 0) return false;
+        if (/[^\\w\\s.-]/.test(item.tokenSymbol)) return false;
         return true;
     });
 
