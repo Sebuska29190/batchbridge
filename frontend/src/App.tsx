@@ -8,6 +8,7 @@ import HeroSection from './components/HeroSection'
 import ChainSelector from './components/ChainSelector'
 import TokenList from './components/TokenList'
 import BridgeActions from './components/BridgeActions'
+import SwapForm from './components/SwapForm'
 import TxHistory from './components/TxHistory'
 import { Toast } from './components/UI'
 import Portfolio from './components/Portfolio'
@@ -17,10 +18,13 @@ import { t, setLocale, getLocale, initLocale } from './i18n'
 
 initLocale()
 
+type AppMode = 'bridge' | 'swap'
+
 export default function App() {
   const [showTxHistory, setShowTxHistory] = useState(false)
   const [txHistoryRefresh, setTxHistoryRefresh] = useState(0)
   const [locale, setLocaleState] = useState(getLocale())
+  const [mode, setMode] = useState<AppMode>('swap')
 
   const wallet = useWallet()
   const bridge = useBridge({
@@ -42,8 +46,8 @@ export default function App() {
     setTxHistoryRefresh(n => n + 1)
   }
 
-  const handleSlippage = (val) => bridge.setSlippage(val)
-  const handleCustomSlippage = (val) => {
+  const handleSlippage = (val: number) => bridge.setSlippage(val)
+  const handleCustomSlippage = (val: string) => {
     bridge.setCustomSlippage(val)
     if (!val) { bridge.setSlippage(null); return }
     const parsed = Number(val)
@@ -53,7 +57,7 @@ export default function App() {
     }
   }
 
-  const switchLocale = (l) => { setLocale(l); setLocaleState(l) }
+  const switchLocale = (l: string) => { setLocale(l); setLocaleState(l) }
 
   return (
     <div className={`app-container ${wallet.isConnected ? 'connected' : ''} hero-gradient`}>
@@ -67,20 +71,26 @@ export default function App() {
         locale={locale}
         onLocaleChange={switchLocale}
         onShowHistory={() => setShowTxHistory(true)}
+        mode={mode}
+        onModeChange={setMode}
       />
 
       <main className="main-content">
         {!wallet.isConnected ? (
           <HeroSection onConnect={wallet.openWallet} />
+        ) : mode === 'swap' ? (
+          <div className="bridge-container" style={{ maxWidth: '480px' }}>
+            <SwapForm />
+          </div>
         ) : (
-          <div className="bridge-container glass-panel" style={{padding: '20px', borderRadius: 'var(--radius)'}}>
+          <div className="bridge-container glass-panel" style={{ padding: '20px', borderRadius: 'var(--radius)' }}>
             <details className="portfolio-collapse">
-              <summary className="portfolio-summary">📊 {t('portfolio')} — {formatUsd(bridge.selectedTotal || bridge.holdings.reduce((s, t) => s + (t.valueUsd || 0), 0))}</summary>
+              <summary className="portfolio-summary">📊 {t('portfolio')} — {formatUsd(bridge.selectedTotal || bridge.holdings.reduce((s: number, t: any) => s + (t.valueUsd || 0), 0))}</summary>
               <Portfolio
                 holdings={bridge.holdings}
                 sourceChain={bridge.sourceChain}
                 selectedTokens={bridge.selectedTokens}
-                onSelectToken={(token) => {
+                onSelectToken={(token: any) => {
                   if (!bridge.outputToken) { bridge.showToast('Select output token first'); return }
                   bridge.toggleToken(token)
                 }}
@@ -89,12 +99,12 @@ export default function App() {
             <ChainSelector
               sourceChain={bridge.sourceChain}
               destChain={bridge.destChain}
-              onSourceChange={(id) => {
+              onSourceChange={(id: number) => {
                 bridge.setSourceChain(id)
                 bridge.setSelectedTokens(new Map())
                 bridge.setQuote(null)
               }}
-              onDestChange={(id) => {
+              onDestChange={(id: number) => {
                 bridge.setDestChain(id)
                 bridge.setOutputToken(null)
                 bridge.setCustomTokens([])
@@ -171,10 +181,10 @@ export default function App() {
 
       <footer className="footer">
         <div className="footer-content">
-          <div className="footer-text">© 2025 BatchBridge.xyz — {t('footer')}</div>
+          <div className="footer-text">© 2025 BatchBridge.xyz —{mode === 'swap' ? ' Swap ' : ' Bridge '}· Non-custodial</div>
           <div className="footer-links">
-            Built with <a href="https://relay.link" target="_blank" rel="noopener noreferrer">Relay</a>
-            {' · '}Data by <a href="https://routescan.io" target="_blank" rel="noopener noreferrer">Routescan</a>
+            Powered by <a href="https://1inch.io" target="_blank" rel="noopener noreferrer">1inch</a>
+            {' · '}<a href="https://relay.link" target="_blank" rel="noopener noreferrer">Relay</a>
           </div>
         </div>
       </footer>
