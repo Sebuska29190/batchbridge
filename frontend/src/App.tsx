@@ -16,6 +16,7 @@ import { getChainById } from './wagmi'
 import { SLIPPAGE_PRESETS, formatUsd } from './bridgeService'
 import { t, setLocale, getLocale, initLocale } from './i18n'
 import CookieBanner from './components/CookieBanner'
+import NexusSwap from './components/NexusSwap'
 
 initLocale()
 
@@ -60,7 +61,9 @@ export default function App() {
 
   const switchLocale = (l: string) => { setLocale(l); setLocaleState(l) }
 
-  return (
+  return mode === 'swap' ? (
+    <NexusSwap />
+  ) : (
     <div className={`app-container ${wallet.isConnected ? 'connected' : ''} hero-gradient`}>
       <Navbar
         isConnected={wallet.isConnected}
@@ -81,7 +84,7 @@ export default function App() {
           <HeroSection onConnect={wallet.openWallet} />
         ) : mode === 'swap' ? (
           <div className="bridge-container" style={{ maxWidth: '480px' }}>
-            <SwapForm />
+            <NexusSwap />
           </div>
         ) : (
           <div className="bridge-container glass-panel" style={{ padding: '20px', borderRadius: 'var(--radius)' }}>
