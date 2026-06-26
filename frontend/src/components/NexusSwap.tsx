@@ -81,13 +81,31 @@ export default function NexusSwap() {
       setQuoteLoading(true); setQuoteError('')
       try {
         const srcAmt = parseUnits(amountFrom, tokenFrom.decimals).toString()
-        const paraUrl = '/api/paraswap/prices?' + new URLSearchParams({ srcToken: toPara(tokenFrom.address), destToken: toPara(tokenTo.address), srcDecimals: String(tokenFrom.decimals), destDecimals: String(tokenTo.decimals), amount: srcAmt, side: 'SELL', network: '8453' }).toString()
-        const resp = await fetch(paraUrl)
-        if (!resp.ok) throw new Error('Quote failed')
-        const data = await resp.json()
-        if (!data.priceRoute?.destAmount) throw new Error('No route found')
-        setQuote(data.priceRoute)
-        setAmountTo(formatUnits(BigInt(data.priceRoute.destAmount), tokenTo.decimals))
+
+        // Fetch from ParaSwap + OKX in parallel
+        const [paraR, okxR] = await Promise.allSettled([
+          fetch('/api/paraswap/prices?' + new URLSearchParams({ srcToken: toPara(tokenFrom.address), destToken: toPara(tokenTo.address), srcDecimals: String(tokenFrom.decimals), destDecimals: String(tokenTo.decimals), amount: srcAmt, side: 'SELL', network: '8453' }).toString()),
+          fetch('/api/okx?action=quote&' + new URLSearchParams({ chainIndex: '8453', amount: srcAmt, fromToken: toPara(tokenFrom.address), toToken: toPara(tokenTo.address) }).toString()),
+        ])
+
+        let best: any = null; let bestAmt = BigInt(0); let bestProv = ''
+
+        // Parse ParaSwap
+        if (paraR.status === 'fulfilled' && paraR.value.ok) {
+          const d = await paraR.value.json()
+          if (d.priceRoute?.destAmount) { const a = BigInt(d.priceRoute.destAmount); if (a > bestAmt) { bestAmt = a; best = d.priceRoute; bestProv = 'ParaSwap' } }
+        }
+
+        // Parse OKX (may fail locally without HMAC — that's fine)
+        if (okxR.status === 'fulfilled' && okxR.value.ok) {
+          const d = await okxR.value.json()
+          if (d.data?.[0]?.toTokenAmount) { const a = BigInt(d.data[0].toTokenAmount); if (a > bestAmt) { bestAmt = a; best = d.data[0]; bestProv = 'OKX' } }
+        }
+
+        if (!best) throw new Error('No route found')
+        best._provider = bestProv
+        setQuote(best)
+        setAmountTo(formatUnits(bestAmt, tokenTo.decimals))
       } catch (e: any) { setQuoteError(e.message || 'Quote failed'); setQuote(null) }
       finally { setQuoteLoading(false) }
     }, 600)
@@ -98,15 +116,32 @@ export default function NexusSwap() {
     if (!isConnected || !quote) return
     setIsSwapping(true)
     try {
-      const srcAmt = parseUnits(amountFrom, tokenFrom.decimals).toString()
-      const resp = await fetch('/api/paraswap/transactions/8453?ignoreChecks=true', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ srcToken: toPara(tokenFrom.address), destToken: toPara(tokenTo.address), srcDecimals: tokenFrom.decimals, destDecimals: tokenTo.decimals, srcAmount: srcAmt, userWalletAddress: address, slippage: Math.floor(parseFloat(slippage) * 100) })
-      })
-      const data = await resp.json()
-      if (!resp.ok || !data.to || !data.data) throw new Error(data.error || 'Swap failed')
+      const provider = quote._provider || 'ParaSwap'
+      let txData: any
+
+      if (provider === 'OKX') {
+        const srcAmt = parseUnits(amountFrom, tokenFrom.decimals).toString()
+        const resp = await fetch('/api/okx', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chainIndex: '8453', amount: srcAmt, fromTokenAddress: toPara(tokenFrom.address), toTokenAddress: toPara(tokenTo.address), slippagePercent: slippage, userWalletAddress: address, swapMode: 'exactIn' })
+        })
+        const d = await resp.json()
+        if (!resp.ok || !d.data?.[0]) throw new Error(d.msg || 'OKX swap failed')
+        txData = d.data[0]
+      } else {
+        const srcAmt = parseUnits(amountFrom, tokenFrom.decimals).toString()
+        const resp = await fetch('/api/paraswap/transactions/8453?ignoreChecks=true', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ srcToken: toPara(tokenFrom.address), destToken: toPara(tokenTo.address), srcDecimals: tokenFrom.decimals, destDecimals: tokenTo.decimals, srcAmount: srcAmt, userWalletAddress: address, slippage: Math.floor(parseFloat(slippage) * 100) })
+        })
+        const d = await resp.json()
+        if (!resp.ok || !d.to || !d.data) throw new Error(d.error || 'Swap failed')
+        txData = d
+      }
+
       const w = window as any
-      const txHash = await w.ethereum.request({ method: 'eth_sendTransaction', params: [{ from: address, to: data.to, data: data.data, value: '0x' + BigInt(data.value || '0').toString(16) }] })
+      const txParams = txData.tx ? { from: address, to: txData.tx.to, data: txData.tx.data, value: '0x' + BigInt(txData.tx.value || '0').toString(16) } : { from: address, to: txData.to, data: txData.data, value: '0x' + BigInt(txData.value || '0').toString(16) }
+      const txHash = await w.ethereum.request({ method: 'eth_sendTransaction', params: [txParams] })
       setTxHistory(prev => [{ id: Date.now(), from: `${amountFrom} ${tokenFrom.symbol}`, to: `${amountTo} ${tokenTo.symbol}`, status: 'Completed', time: 'Just now', txHash: txHash.slice(0,10) + '...' + txHash.slice(-4), hash: txHash }, ...prev])
       showAlert('success', `Swapped ${amountFrom} ${tokenFrom.symbol} → ${amountTo} ${tokenTo.symbol}`)
       setAmountFrom(''); setAmountTo(''); setQuote(null); loadBalances()
@@ -261,7 +296,7 @@ export default function NexusSwap() {
 
               {quote && quote.protocols && (
                 <div className="mt-4 p-4 bg-[#080b11]/50 rounded-2xl border border-white/5">
-                  <span className="text-[10px] font-black tracking-widest text-blue-400 uppercase flex items-center gap-1 mb-2.5"><Sparkles className="w-3.5 h-3.5" /> Smart Routing (ParaSwap)</span>
+                  <span className="text-[10px] font-black tracking-widest text-blue-400 uppercase flex items-center gap-1 mb-2.5"><Sparkles className="w-3.5 h-3.5" /> Smart Routing ({quote._provider || 'ParaSwap'})</span>
                   <div className="flex items-center justify-between gap-2 px-1 py-2">
                     <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center border border-blue-500/20 text-[10px] font-black">{tokenFrom.symbol}</div>
                     <div className="flex-1 flex flex-col gap-2.5">
