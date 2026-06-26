@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react'
 
+type PriceAttributes = {
+  price_change_percentage: Record<'5m' | '1h' | '6h' | '24h', number>
+}
+
 // Mini price chart using GeckoTerminal simple API
-export default function PriceChart({ token, chainId }) {
-  const [prices, setPrices] = useState(null)
+export default function PriceChart({ token, chainId }: { token?: { address?: string }; chainId?: number }) {
+  const [prices, setPrices] = useState<PriceAttributes | null>(null)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -12,7 +16,7 @@ export default function PriceChart({ token, chainId }) {
     let cancelled = false
     setLoading(true)
 
-    const networkMap = {
+    const networkMap: Record<number, string> = {
       1: 'eth', 8453: 'base', 42161: 'arbitrum',
       10: 'oeth', 137: 'polygon'
     }

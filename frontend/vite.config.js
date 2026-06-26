@@ -45,6 +45,11 @@ export default defineConfig({
                 changeOrigin: true,
                 rewrite: (path) => path.replace('/api/paraswap', ''),
             },
+            '/api/okx': {
+                target: 'https://web3.okx.com',
+                changeOrigin: true,
+                rewrite: (path) => path.replace('/api/okx', '/api/v6/dex/aggregator'),
+            },
         },
     },
     resolve: {
