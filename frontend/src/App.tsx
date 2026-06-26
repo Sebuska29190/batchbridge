@@ -26,7 +26,13 @@ export default function App() {
   const [showTxHistory, setShowTxHistory] = useState(false)
   const [txHistoryRefresh, setTxHistoryRefresh] = useState(0)
   const [locale, setLocaleState] = useState(getLocale())
-  const [mode, setMode] = useState<AppMode>('swap')
+  const [mode, setMode] = useState<AppMode>(() => {
+    if (typeof window !== 'undefined') {
+      const p = new URLSearchParams(window.location.search).get('mode')
+      if (p === 'bridge') return 'bridge'
+    }
+    return 'swap'
+  })
 
   const wallet = useWallet()
   const bridge = useBridge({

@@ -196,6 +196,7 @@ export default function NexusSwap() {
                 {tab === 'charts' ? 'Base Markets' : tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
             ))}
+            <button onClick={() => { window.location.href = '/?mode=bridge' }} className="px-3 py-2 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-300 transition-all border border-transparent hover:border-white/5">&larr; Bridge</button>
           </nav>
 
           <div className="flex items-center gap-2.5">
