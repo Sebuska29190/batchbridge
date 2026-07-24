@@ -450,112 +450,8 @@ export const fetchTokenHoldings = async (address, chainId) => {
         throw new Error(`Unsupported chain: ${chainId}`);
     }
 
-    let allItems = [];
-    let nextToken = null;
-    const LIMIT = 100;
-    const MAX_PAGES = 10;
-    let routescanFailed = false;
-
-    // Step 1: Try Routescan (works for Ethereum mainnet)
-    for (let page = 0; page < MAX_PAGES; page++) {
-        let url = `/api/routescan?chainId=${chainId}&address=${address}&limit=${LIMIT}`;
-        if (nextToken) {
-            url += `&next=${encodeURIComponent(nextToken)}`;
-        }
-
-        try {
-            const response = await fetch(url, {
-                headers: { 'accept': 'application/json' },
-            });
-
-            if (!response.ok) {
-                console.warn(`[bridgeService] Routescan HTTP ${response.status} for chain ${chainId}`);
-                routescanFailed = true;
-                break;
-            }
-
-            const data = await response.json();
-            allItems = allItems.concat(data.items || []);
-
-            if (data.link?.nextToken) {
-                nextToken = data.link.nextToken;
-            } else {
-                break;
-            }
-        } catch (e) {
-            console.warn('[bridgeService] Routescan fetch error:', e);
-            routescanFailed = true;
-            break;
-        }
-    }
-
-    // Step 2: Fallback — use COMMON_TOKENS + on-chain balance check for non-ETH chains
-    if (routescanFailed || allItems.length === 0) {
-        const commonTokens = COMMON_TOKENS[Number(chainId)] || [];
-        if (commonTokens.length > 0) {
-            try {
-                const publicClient = getPublicClient(chainId);
-                const balanceCalls = commonTokens.map(t => ({
-                    address: t.address,
-                    abi: erc20Abi,
-                    functionName: 'balanceOf',
-                    args: [address],
-                }));
-
-                const onChainBalances = await publicClient.multicall({
-                    contracts: balanceCalls,
-                    allowFailure: true,
-                });
-
-                for (let i = 0; i < commonTokens.length; i++) {
-                    const token = commonTokens[i];
-                    const result = onChainBalances[i];
-                    
-                    // For native token (ETH/MATIC), check native balance
-                    if (token.address === '0x0000000000000000000000000000000000000000') {
-                        try {
-                            const nativeBalance = await publicClient.getBalance({ address });
-                            if (nativeBalance > 0n) {
-                                allItems.push({
-                                    tokenAddress: token.address,
-                                    tokenSymbol: token.symbol,
-                                    tokenName: token.name,
-                                    tokenDecimals: token.decimals,
-                                    tokenQuantity: nativeBalance.toString(),
-                                    tokenValueInUsd: '0',
-                                    tokenPrice: '0',
-                                });
-                            }
-                        } catch {}
-                        continue;
-                    }
-
-                    if (result.status === 'success' && result.result > 0n) {
-                        allItems.push({
-                            tokenAddress: token.address,
-                            tokenSymbol: token.symbol,
-                            tokenName: token.name,
-                            tokenDecimals: token.decimals,
-                            tokenQuantity: result.result.toString(),
-                            tokenValueInUsd: '0',
-                            tokenPrice: '0',
-                        });
-                    }
-                }
-            } catch (e) {
-                console.warn('[bridgeService] COMMON_TOKENS fallback failed:', e);
-            }
-        }
-    }
-
-    const filteredItems = allItems.filter(item => {
-        if (!item.tokenSymbol || !item.tokenAddress) return false;
-        if (item.tokenQuantity === '0') return false;
-        if (/[^\\w\\s.-]/.test(item.tokenSymbol)) return false;
-        return true;
-    });
-
-    if (filteredItems.length === 0) {
+    const commonTokens = COMMON_TOKENS[Number(chainId)] || [];
+    if (commonTokens.length === 0) {
         return [];
     }
 
@@ -563,73 +459,99 @@ export const fetchTokenHoldings = async (address, chainId) => {
     try {
         publicClient = getPublicClient(chainId);
     } catch (e) {
-        console.warn('[bridgeService] getPublicClient failed for verification, using Routescan balances:', e);
-        return filteredItems.map(item => ({
+        console.error('[bridgeService] getPublicClient failed:', e);
+        return [];
+    }
+
+    const allItems = [];
+
+    try {
+        // Build multicall for ERC20 tokens (skip native)
+        const erc20Tokens = commonTokens.filter(t => t.address !== '0x0000000000000000000000000000000000000000');
+        const nativeToken = commonTokens.find(t => t.address === '0x0000000000000000000000000000000000000000');
+
+        // Fetch native balance
+        if (nativeToken) {
+            try {
+                const nativeBalance = await publicClient.getBalance({ address });
+                if (nativeBalance > 0n) {
+                    allItems.push({
+                        tokenAddress: nativeToken.address,
+                        tokenSymbol: nativeToken.symbol,
+                        tokenName: nativeToken.name,
+                        tokenDecimals: nativeToken.decimals,
+                        tokenQuantity: nativeBalance.toString(),
+                        tokenValueInUsd: '0',
+                        tokenPrice: '0',
+                    });
+                }
+            } catch (e) {
+                console.warn('[bridgeService] Native balance fetch failed:', e);
+            }
+        }
+
+        // Fetch ERC20 balances via multicall
+        if (erc20Tokens.length > 0) {
+            const balanceCalls = erc20Tokens.map(t => ({
+                address: t.address,
+                abi: erc20Abi,
+                functionName: 'balanceOf',
+                args: [address],
+            }));
+
+            const onChainBalances = await publicClient.multicall({
+                contracts: balanceCalls,
+                allowFailure: true,
+            });
+
+            for (let i = 0; i < erc20Tokens.length; i++) {
+                const token = erc20Tokens[i];
+                const result = onChainBalances[i];
+                if (result.status === 'success' && result.result !== undefined && result.result !== null) {
+                    const bal = BigInt(result.result);
+                    if (bal > 0n) {
+                        allItems.push({
+                            tokenAddress: token.address,
+                            tokenSymbol: token.symbol,
+                            tokenName: token.name,
+                            tokenDecimals: token.decimals,
+                            tokenQuantity: bal.toString(),
+                            tokenValueInUsd: '0',
+                            tokenPrice: '0',
+                        });
+                    }
+                }
+            }
+        }
+    } catch (e) {
+        console.error('[bridgeService] Token balance fetch failed:', e);
+        return [];
+    }
+
+    if (allItems.length === 0) {
+        return [];
+    }
+
+    // Build holdings directly from on-chain balances (no verification step needed)
+    const holdings = allItems.map(item => {
+        const decimals = Number.isFinite(Number(item.tokenDecimals)) ? Number(item.tokenDecimals) : 18;
+        return {
             address: item.tokenAddress,
             symbol: item.tokenSymbol,
             name: item.tokenName || item.tokenSymbol,
-            decimals: Number.isFinite(Number(item.tokenDecimals)) ? Number(item.tokenDecimals) : 18,
+            decimals,
             balance: item.tokenQuantity,
-            balanceFormatted: formatBalance(item.tokenQuantity, Number(item.tokenDecimals) || 18),
-            price: item.tokenPrice ? parseFloat(item.tokenPrice) : 0,
-            valueUsd: item.tokenValueInUsd ? parseFloat(item.tokenValueInUsd) : 0,
+            balanceFormatted: formatBalance(item.tokenQuantity, decimals),
+            price: 0,
+            valueUsd: 0,
             chainId: Number(chainId),
-            logo: `https://api.sim.dune.com/beta/token/logo/${chainId}/${item.tokenAddress.toLowerCase()}`,
+            logo: getTokenLogoUrl(chainId, item.tokenAddress),
             verified: true,
             routeAvailable: null,
-        }));
-    }
+        };
+    });
 
-    const balanceCalls = filteredItems.map(item => ({
-        address: item.tokenAddress,
-        abi: erc20Abi,
-        functionName: 'balanceOf',
-        args: [address],
-    }));
-
-    let onChainBalances = [];
-    try {
-        onChainBalances = await publicClient.multicall({
-            contracts: balanceCalls,
-            allowFailure: true,
-        });
-    } catch (error) {
-        // Fallback: use Routescan-provided balances when on-chain verification fails
-        onChainBalances = filteredItems.map(() => ({ status: 'failure' }));
-    }
-
-    const verifiedHoldings = filteredItems
-        .map((item, index) => {
-            const onChainResult = onChainBalances[index];
-            let balance = item.tokenQuantity;
-            const decimals = Number.isFinite(Number(item.tokenDecimals)) ? Number(item.tokenDecimals) : 18;
-
-            if (onChainResult?.status === 'success' && onChainResult.result !== undefined) {
-                balance = onChainResult.result.toString();
-            }
-            // If verification failed but Routescan has a balance, use it
-            
-            if (balance === '0') return null;
-
-            return {
-                address: item.tokenAddress,
-                symbol: item.tokenSymbol,
-                name: item.tokenName || item.tokenSymbol,
-                decimals,
-                balance: balance,
-                balanceFormatted: formatBalance(balance, decimals),
-                price: item.tokenPrice ? parseFloat(item.tokenPrice) : 0,
-                valueUsd: item.tokenValueInUsd ? parseFloat(item.tokenValueInUsd) : 0,
-                chainId: Number(chainId),
-                logo: getTokenLogoUrl(chainId, item.tokenAddress),
-                verified: true,
-                routeAvailable: null,
-            };
-        })
-        .filter(Boolean)
-        .sort((a, b) => b.valueUsd - a.valueUsd);
-
-    const repricedHoldings = await applyRelayPrices(verifiedHoldings, chainId);
+    const repricedHoldings = await applyRelayPrices(holdings, chainId);
     return repricedHoldings;
 };
 
