@@ -1,0 +1,259 @@
+'use client';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
+import type {
+  AppBarProps,
+  ListItemProps,
+  MenuListProps as MuiMenuListProps,
+  PaperProps,
+  PopperProps,
+} from '@mui/material';
+import {
+  AppBar,
+  Drawer,
+  Link,
+  ListItem,
+  MenuList as MuiMenuList,
+  Paper,
+  Popper,
+  Typography,
+} from '@mui/material';
+
+import type { Breakpoint } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
+
+const MENU_LABEL_HEIGHT = 64;
+
+export const MenuPopper = styled(Popper)<PopperProps>(({ theme }) => ({
+  zIndex: 1600,
+  top: '16px !important',
+  position: 'fixed',
+}));
+
+export interface MenuListProps extends Omit<MuiMenuListProps, 'component'> {
+  component?: string;
+  isOpenSubMenu?: boolean;
+  cardsLayout?: boolean;
+  hasLabel?: boolean;
+}
+
+export const MenuList = styled(MuiMenuList, {
+  shouldForwardProp: (prop) =>
+    prop !== 'isOpenSubMenu' && prop !== 'hasLabel' && prop !== 'cardsLayout',
+})<MenuListProps>(({ theme, isOpenSubMenu, hasLabel, cardsLayout }) => {
+  const shouldShowMarginTop = isOpenSubMenu || hasLabel || cardsLayout;
+  return {
+    marginTop: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'unset',
+    flexWrap: 'inherit',
+    padding: 0,
+    outline: 'unset',
+    gap: 'inherit',
+    height: '100%',
+    [theme.breakpoints.up('lg' as Breakpoint)]: {
+      height: 'auto',
+    },
+    '& > :first-of-type': {
+      marginTop: shouldShowMarginTop ? 'inherit' : theme.spacing(1),
+
+      [theme.breakpoints.up('sm' as Breakpoint)]: {
+        marginTop: shouldShowMarginTop ? 'inherit' : theme.spacing(1.5),
+      },
+
+      [theme.breakpoints.up('md' as Breakpoint)]: {
+        marginTop: shouldShowMarginTop ? 'inherit' : theme.spacing(2),
+      },
+      [theme.breakpoints.up('lg' as Breakpoint)]: {
+        marginTop: shouldShowMarginTop ? 'inherit' : theme.spacing(1.5),
+      },
+    },
+    '& > li:last-of-type': {
+      marginBottom: theme.spacing(3),
+      paddingBottom: 'inherit',
+      paddingTop: 'inherit',
+    },
+    variants: [
+      {
+        props: ({ cardsLayout }) => cardsLayout,
+        style: {
+          display: 'flex',
+        },
+      },
+      {
+        props: ({ cardsLayout }) => cardsLayout,
+        style: {
+          flexDirection: 'column',
+        },
+      },
+      {
+        props: ({ cardsLayout }) => cardsLayout,
+        style: {
+          justifyContent: 'center',
+        },
+      },
+      {
+        props: ({ cardsLayout }) => cardsLayout,
+        style: {
+          flexWrap: 'wrap',
+        },
+      },
+      {
+        props: ({ cardsLayout }) => cardsLayout,
+        style: {
+          padding: theme.spacing(0, 3),
+        },
+      },
+      {
+        props: ({ cardsLayout }) => cardsLayout,
+        style: {
+          gap: '12px',
+        },
+      },
+      {
+        props: ({ isOpenSubMenu }) => isOpenSubMenu,
+        style: {
+          '& > li:last-of-type': {
+            marginBottom: 'inherit',
+          },
+        },
+      },
+      {
+        props: ({ isOpenSubMenu }) => isOpenSubMenu,
+        style: {
+          '& > li:last-of-type': {
+            paddingBottom: theme.spacing(1.5),
+          },
+        },
+      },
+      {
+        props: ({ hasLabel }) => hasLabel,
+        style: {
+          '& > li:last-of-type': {
+            paddingTop: 0,
+          },
+        },
+      },
+    ],
+  };
+});
+
+export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
+  ...theme.typography.bodyMediumStrong,
+  width: '100%',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  justifyContent: 'center',
+  display: 'flex',
+  marginRight: theme.spacing(4.75),
+  flexWrap: 'nowrap',
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    maxWidth: 174,
+    marginRight: 0,
+    marginLeft: theme.spacing(0.75),
+  },
+}));
+
+export interface MenuPaperProps extends PaperProps {
+  isMobile?: boolean;
+  show: boolean;
+  width?: string;
+}
+
+export const MenuPaper = styled(Paper, {
+  shouldForwardProp: (prop) =>
+    prop !== 'isMobile' && prop !== 'width' && prop !== 'show',
+})<MenuPaperProps>(({ theme, isMobile, show, width }) => ({
+  display: !show ? 'none' : 'block',
+  background: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
+  padding: 0,
+  marginTop: 0,
+  borderRadius: 0,
+  marginBottom: 0,
+  boxShadow: 'none',
+  overflowY: 'auto',
+  overflowX: 'hidden',
+  width: '100%',
+  transformOrigin: 'bottom',
+  height: '100vh',
+  transition:
+    'opacity 307ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 204ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+  '.submenu .wallet-select-avatar': {
+    width: 32,
+    height: 32,
+  },
+  '.submenu': {
+    paddingBottom: theme.spacing(1.5),
+  },
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    transformOrigin: 'inherit',
+    maxHeight: 'calc( 100vh - 80px - 12px )',
+    height: 'auto',
+    borderRadius: theme.shape.borderRadius,
+    width: width ?? 288,
+    marginTop: -2,
+    boxShadow: theme.shadows[1],
+  },
+  variants: [
+    {
+      props: ({ show }) => !show,
+      style: {
+        display: 'none',
+      },
+    },
+  ],
+}));
+
+export const MobileDrawer = styled(Drawer)(({ open }) => ({
+  zIndex: open ? 1500 : -10,
+}));
+
+export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
+  ({ theme }) => ({
+    position: 'sticky',
+    top: 0,
+    alignItems: 'center',
+    backgroundColor: 'inherit',
+    backdropFilter: 'blur(12px)',
+    zIndex: 1400,
+    overflow: 'hidden',
+    margin: theme.spacing(0),
+    marginBottom: 'inherit',
+    marginTop: 0,
+    height: MENU_LABEL_HEIGHT,
+    padding: 0,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      paddingLeft: 0,
+    },
+  }),
+);
+
+export interface MenuHeaderAppBarProps extends Omit<AppBarProps, 'component'> {
+  component?: string;
+}
+
+export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
+  ({ theme }) => ({
+    background: 'transparent!important',
+    zIndex: 1500,
+    position: 'fixed',
+    top: 'initial',
+    left: 'initial',
+    right: 'initial',
+    padding: theme.spacing(0, 1.5, 0, 1.5),
+    color: (theme.vars || theme).palette.text.primary,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    minHeight: 48,
+
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      padding: theme.spacing(0, 1.5),
+      position: 'relative',
+      justifyContent: 'flex-start',
+    },
+  }),
+);

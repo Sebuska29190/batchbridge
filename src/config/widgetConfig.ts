@@ -1,0 +1,196 @@
+import type { Appearance, WidgetConfig } from '@jumperexchange/widget';
+import type {
+  ColorSystem,
+  CssVarsTheme,
+  Palette,
+  PaletteMode,
+} from '@mui/material';
+import { type Breakpoint, type Theme } from '@mui/material';
+import { themeCustomized } from 'src/theme/theme';
+
+export const WIDGET_WIDTH = 416;
+export const WIDGET_HEIGHT = 720;
+
+// INFO: Do NOT use theme.vars here, it will break the widget
+export const getDefaultWidgetTheme = (
+  theme: Theme,
+): { config: Partial<WidgetConfig> } => {
+  return {
+    config: {
+      appearance: theme.palette.mode,
+      theme: {
+        // @ts-ignore
+        typography: {
+          fontFamily: theme.typography.fontFamily,
+        },
+        header: {
+          overflow: 'visible',
+        },
+        container: {
+          borderRadius: '12px',
+          maxWidth: '100%',
+          height: '100%',
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            borderRadius: '12px',
+            maxWidth: WIDGET_WIDTH,
+            minWidth: WIDGET_WIDTH,
+            maxHeight: WIDGET_HEIGHT,
+            height: 'auto',
+            boxShadow: theme.shadows[1],
+          },
+        },
+        chainSidebarContainer: {
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            borderRadius: '12px',
+            maxWidth: 256,
+            minWidth: 256,
+            boxShadow: theme.shadows[1],
+          },
+        },
+        routesContainer: {
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            borderRadius: '12px',
+            maxWidth: 436,
+            minWidth: 436,
+            boxShadow: theme.shadows[1],
+          },
+        },
+        shape: {
+          borderRadius: 12,
+          // @ts-ignore borderRadiusSecondary is a Jumper theme extension the widget accepts at runtime
+          borderRadiusSecondary: 24,
+        },
+        palette: {
+          background: {
+            paper: theme.palette.surface2.main,
+            default: theme.palette.surface1.main,
+          },
+          primary: {
+            main: theme.palette.accent1.main,
+          },
+          secondary: {
+            main: theme.palette.accent2.main,
+          },
+          grey: theme.palette.grey,
+        },
+      },
+    },
+  };
+};
+
+// INFO: Do NOT use theme.vars here, it will break the widget
+export const getDefaultWidgetThemeV2 = (
+  mode: PaletteMode,
+): { config: Partial<WidgetConfig> } => {
+  if (!themeCustomized.colorSchemes[mode]) {
+    throw new Error(`Theme mode "${mode}" is not defined in the theme.`);
+  }
+
+  const copiedTheme: Omit<Theme, 'applyStyles'> & CssVarsTheme = {
+    ...themeCustomized,
+  };
+
+  if (!copiedTheme.colorSchemes.dark) {
+    copiedTheme.colorSchemes.dark = {} as NonNullable<
+      typeof copiedTheme.colorSchemes.dark
+    >;
+  }
+  if (!copiedTheme.colorSchemes.dark.palette) {
+    copiedTheme.colorSchemes.dark.palette = {} as NonNullable<
+      typeof copiedTheme.colorSchemes.dark.palette
+    >;
+  }
+  if (!copiedTheme.colorSchemes.dark.palette.grey) {
+    copiedTheme.colorSchemes.dark.palette.grey = {} as NonNullable<
+      typeof copiedTheme.colorSchemes.dark.palette.grey
+    >;
+  }
+  copiedTheme.colorSchemes.dark.palette.grey[800] = '#302b52';
+
+  const config = {
+    config: {
+      theme: {
+        typography: {
+          fontFamily: copiedTheme.typography.fontFamily,
+        },
+        header: {
+          overflow: 'visible',
+        },
+        container: {
+          borderRadius: '24px',
+          maxWidth: '100%',
+          height: 'fit-content',
+          [copiedTheme.breakpoints.up('sm' as Breakpoint)]: {
+            borderRadius: '24px',
+            maxWidth: WIDGET_WIDTH,
+            minWidth: WIDGET_WIDTH,
+            height: 'fit-content',
+            boxShadow: copiedTheme.shadows[1],
+          },
+        },
+        chainSidebarContainer: {
+          [copiedTheme.breakpoints.up('sm' as Breakpoint)]: {
+            borderRadius: '24px',
+            maxWidth: 256,
+            minWidth: 256,
+            boxShadow: copiedTheme.shadows[1],
+          },
+        },
+        routesContainer: {
+          [copiedTheme.breakpoints.up('sm' as Breakpoint)]: {
+            borderRadius: '24px',
+            maxWidth: 436,
+            minWidth: 436,
+            boxShadow: copiedTheme.shadows[1],
+          },
+        },
+        shape: {
+          borderRadius: 12,
+          borderRadiusSecondary: 24,
+        },
+        colorSchemes: {
+          light: {
+            ...copiedTheme.colorSchemes.light,
+            palette: formatWidgetPalette(copiedTheme.colorSchemes.light),
+          },
+          dark: {
+            ...copiedTheme.colorSchemes.dark,
+            palette: formatWidgetPalette(copiedTheme.colorSchemes.dark, 'dark'),
+          },
+        },
+        components: {
+          MuiCard: {
+            defaultProps: { variant: 'elevation' },
+          },
+        },
+      },
+    },
+  };
+
+  // @ts-ignore
+  return config;
+};
+
+function formatWidgetPalette(
+  colorScheme?: ColorSystem,
+  mode?: string,
+): Partial<Palette> {
+  if (!colorScheme) {
+    return {};
+  }
+
+  return {
+    background: {
+      paper: colorScheme.palette.surface1.main,
+      default: colorScheme.palette.surface2.main,
+    },
+    primary: colorScheme.palette.accent1,
+    secondary: colorScheme.palette.accent2,
+    grey: colorScheme.palette.grey,
+    text: {
+      primary: colorScheme.palette.text.primary,
+      secondary: colorScheme.palette.text.secondary,
+      disabled: colorScheme.palette.text.disabled,
+    },
+  };
+}

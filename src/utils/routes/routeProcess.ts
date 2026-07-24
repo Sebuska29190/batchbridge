@@ -1,0 +1,107 @@
+import {
+  LiFiErrorCode,
+  type ExecutionAction,
+  type LiFiStep,
+  type LiFiStepExtended,
+  type RouteExtended,
+} from '@lifi/sdk';
+import { TrackingEventParameter } from 'src/const/trackingKeys';
+import { getDetailInformation } from './routeUtils';
+import { findKey } from 'lodash';
+
+interface GetProcessInformationType {
+  [TrackingEventParameter.TransactionHash]?: string;
+  [TrackingEventParameter.TransactionLink]?: string;
+  [TrackingEventParameter.TransactionStatus]?: string;
+  [TrackingEventParameter.ErrorCode]?: string;
+  [TrackingEventParameter.ErrorCodeKey]?: string;
+  [TrackingEventParameter.ErrorMessage]?: string;
+}
+
+const findErrorKeyFromErrorCode = (code?: string) => {
+  if (!code) {
+    return null;
+  }
+
+  return findKey(LiFiErrorCode, (value) => value.toString() === code) ?? null;
+};
+
+export const getProcessInformation = (
+  route: RouteExtended,
+): GetProcessInformationType => {
+  const processData: GetProcessInformationType = {};
+  const errors: Pick<
+    GetProcessInformationType,
+    | TrackingEventParameter.ErrorCode
+    | TrackingEventParameter.ErrorCodeKey
+    | TrackingEventParameter.ErrorMessage
+  > = {};
+  const txHashes: string[] = [];
+  const txLinks: string[] = [];
+  const txStatuses: string[] = [];
+
+  route.steps?.forEach((step: LiFiStep | LiFiStepExtended) => {
+    const detailInformation = getDetailInformation(step);
+
+    if ('actions' in detailInformation) {
+      detailInformation.actions.forEach((action: ExecutionAction) => {
+        // Truncate error message at the data field to keep only useful info
+        let errorMessage = action.error?.message;
+        if (errorMessage && errorMessage.includes('data:')) {
+          errorMessage = errorMessage.substring(
+            0,
+            errorMessage.indexOf('data:'),
+          );
+        }
+        const errorCode = action.error?.code?.toString();
+        const errorCodeKey = findErrorKeyFromErrorCode(errorCode);
+
+        if (errorCode) {
+          errors[TrackingEventParameter.ErrorCode] = errorCode;
+        }
+        if (errorCodeKey) {
+          errors[TrackingEventParameter.ErrorCodeKey] = errorCodeKey;
+        }
+        if (errorMessage) {
+          errors[TrackingEventParameter.ErrorMessage] = errorMessage.trim();
+        }
+
+        // Collect transaction data in arrays
+        if (action.txHash) {
+          txHashes.push(action.txHash);
+        }
+        if (action.txLink) {
+          txLinks.push(action.txLink);
+        }
+        if (action.status) {
+          txStatuses.push(action.status);
+        }
+      });
+    }
+  });
+
+  if (errors[TrackingEventParameter.ErrorCode]) {
+    processData[TrackingEventParameter.ErrorCode] =
+      errors[TrackingEventParameter.ErrorCode];
+  }
+  if (errors[TrackingEventParameter.ErrorCodeKey]) {
+    processData[TrackingEventParameter.ErrorCodeKey] =
+      errors[TrackingEventParameter.ErrorCodeKey];
+  }
+  if (errors[TrackingEventParameter.ErrorMessage]) {
+    processData[TrackingEventParameter.ErrorMessage] =
+      errors[TrackingEventParameter.ErrorMessage];
+  }
+  if (txHashes.length > 0) {
+    processData[TrackingEventParameter.TransactionHash] = txHashes.join(',');
+  }
+  if (txLinks.length > 0) {
+    processData[TrackingEventParameter.TransactionLink] = txLinks.join(',');
+  }
+  if (txStatuses.length > 0) {
+    processData[TrackingEventParameter.TransactionStatus] =
+      txStatuses.join(',');
+  }
+
+  return processData;
+};

@@ -1,56 +1,31 @@
 {
-    "buildCommand": "cd frontend && npm run build",
-    "outputDirectory": "frontend/dist",
-    "framework": "vite",
-    "installCommand": "cd frontend && npm install",
-    
-    "github": {
-        "enabled": true,
-        "autoAlias": true,
-        "silent": false,
-        "productionBranch": "main",
-        "autoJobCancelation": true
-    },
-    
-    "env": {
-        "NODE_VERSION": "20"
-    },
-    
-    "redirects": [
-        {
-            "source": "/:path*",
-            "has": [
-                {
-                    "type": "host",
-                    "value": "batchbridge.xyz"
-                }
-            ],
-            "destination": "https://www.batchbridge.xyz/:path*",
-            "permanent": true
-        }
-    ],
-    
-    "headers": [
-        {
-            "source": "/.well-known/(.*)",
-            "headers": [
-                {
-                    "key": "Access-Control-Allow-Origin",
-                    "value": "*"
-                },
-                {
-                    "key": "Access-Control-Allow-Methods",
-                    "value": "GET, OPTIONS"
-                },
-                {
-                    "key": "Access-Control-Allow-Headers",
-                    "value": "Content-Type"
-                },
-                {
-                    "key": "Cache-Control",
-                    "value": "public, max-age=3600"
-                }
-            ]
-        }
-    ]
+  "framework": "nextjs",
+  "buildCommand": "pnpm build",
+  "installCommand": "pnpm install",
+  "env": {
+    "NODE_VERSION": "22"
+  },
+  "github": {
+    "enabled": true,
+    "autoAlias": true,
+    "silent": false,
+    "productionBranch": "main"
+  },
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "batchbridge.xyz" }],
+      "destination": "https://www.batchbridge.xyz/:path*",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/.well-known/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Content-Type", "value": "application/json" }
+      ]
+    }
+  ]
 }

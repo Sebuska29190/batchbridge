@@ -1,0 +1,132 @@
+'use client';
+
+import type { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {
+  ZapDetailsColumnContainer,
+  ZapDetailsCardContainer,
+  ZapDetailsInfoContainer,
+} from './ZapDetails.style';
+import type { FC } from 'react';
+import { useMemo } from 'react';
+import Box from '@mui/material/Box';
+import { Badge } from '../Badge/Badge';
+import { AppPaths } from 'src/const/urls';
+import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
+import { useMissionTimeStatus } from 'src/hooks/useMissionTimeStatus';
+import { EntityCard } from '../Cards/EntityCard/EntityCard';
+import { BaseAlert } from '../Alerts/BaseAlert/BaseAlert';
+import { useFormatDisplayQuestData } from 'src/hooks/quests/useFormatDisplayQuestData';
+import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
+import { BaseAlertVariant } from '../Alerts/BaseAlert/BaseAlert.styles';
+import { useAccount } from '@jumperexchange/wallet-management';
+import { useEnhancedTasks } from 'src/hooks/tasksVerification/useEnhancedTasks';
+import { SectionCardContainer } from '../Cards/SectionCard/SectionCard.style';
+import { MissionTask } from 'src/app/ui/mission/MissionTask';
+import { useResetCurrentActiveTask } from 'src/hooks/tasksVerification/useResetCurrentActiveTask';
+import { useSyncMissionDefaultsFromChains } from 'src/hooks/quests/useSyncMissionDefaultsFromChains';
+
+interface ZapDetailsProps {
+  market: Quest;
+}
+
+export const ZapDetails: FC<ZapDetailsProps> = ({ market }) => {
+  const missionId = market.documentId;
+  const hasEnded = market.hasEnded ?? false;
+  const { status } = useMissionTimeStatus(
+    market?.StartDate ?? '',
+    market?.EndDate ?? '',
+    hasEnded,
+  );
+
+  const tasks = useMemo(() => {
+    return market.tasks_verification;
+  }, [market]);
+
+  const zapDisplayData = useFormatDisplayQuestData(market, {
+    baseNavPath: AppPaths.Zap,
+  });
+  const participants = useMemo(
+    () => zapDisplayData.participants,
+    [zapDisplayData.participants],
+  );
+  useResetCurrentActiveTask();
+  useSyncMissionDefaultsFromChains(participants, missionId, hasEnded);
+  const { t } = useTranslation();
+  const router = useRouter();
+
+  const { account } = useAccount();
+  const { enhancedTasks, setActiveTask } = useEnhancedTasks(
+    tasks ?? [],
+    missionId,
+    account?.address,
+  );
+
+  const badge = useMemo(() => {
+    if (!status) {
+      return null;
+    }
+    return (
+      <Badge
+        label={status}
+        variant={BadgeVariant.Secondary}
+        size={BadgeSize.LG}
+      />
+    );
+  }, [status]);
+
+  const handleGoBack = () => {
+    router.push(AppPaths.Profile);
+  };
+
+  return (
+    <ZapDetailsColumnContainer>
+      <SectionCardContainer>
+        <ZapDetailsCardContainer>
+          <Box sx={{ width: '100%' }}>
+            <Badge
+              label={t('navbar.navbarMenu.profile')}
+              onClick={handleGoBack}
+              startIcon={<ArrowBackIcon />}
+              size={BadgeSize.LG}
+              variant={BadgeVariant.Alpha}
+            />
+          </Box>
+
+          <EntityCard
+            variant="wide"
+            badge={badge}
+            id={zapDisplayData.id}
+            slug={zapDisplayData.slug}
+            title={zapDisplayData.title}
+            description={zapDisplayData.description}
+            descriptionRichText={zapDisplayData.descriptionRichText}
+            participants={zapDisplayData.participants}
+            imageUrl={zapDisplayData.imageUrl}
+            rewardGroups={zapDisplayData.rewardGroups}
+            partnerLink={zapDisplayData.partnerLink}
+            fullWidth
+          />
+          {enhancedTasks.map((task) => (
+            <MissionTask
+              key={task.uuid}
+              task={task}
+              missionId={missionId}
+              missionSlug={zapDisplayData.slug}
+              onClick={() => setActiveTask(task)}
+            />
+          ))}
+        </ZapDetailsCardContainer>
+      </SectionCardContainer>
+      {zapDisplayData.info && (
+        <ZapDetailsInfoContainer>
+          <BaseAlert
+            variant={BaseAlertVariant.Info}
+            description={zapDisplayData.info}
+          />
+        </ZapDetailsInfoContainer>
+      )}
+    </ZapDetailsColumnContainer>
+  );
+};

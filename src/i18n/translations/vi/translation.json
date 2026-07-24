@@ -1,0 +1,662 @@
+{
+  "navbar": {
+    "welcome": {
+      "title": "Tìm tuyến đường tốt nhất",
+      "subtitle": "<0>4x audited</0> Nguồn tổng hợp thanh khoản đa chuỗi được cung cấp bởi <1>LI.FI</1>",
+      "cta": "Bắt đầu"
+    },
+    "links": {
+      "exchange": "Hoán đổi",
+      "portfolio": "",
+      "missions": "",
+      "earn": "",
+      "dashboard": "Tổng quan",
+      "refuel": "",
+      "buy": "Mua",
+      "back": ""
+    },
+    "statsCards": {
+      "dexs": "Các Dex",
+      "bridges": "Các cầu nối",
+      "chains": "Các chuỗi"
+    },
+    "connect": "Kết nối",
+    "walletSelectMenu": {
+      "connectWallet": "Kết nối ví",
+      "wallets": "Ví",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "Chọn hệ sinh thái ví",
+        "noEcosystemAdapter": "Không tìm thấy bộ chuyển đổi hệ sinh thái thích hợp"
+      }
+    },
+    "pass": "",
+    "wallets": "",
+    "seeAllWallets": "Xem tất cả ví",
+    "navbarMenu": {
+      "learn": "",
+      "scan": "",
+      "brandAssets": "Tài sản thương hiệu",
+      "theme": "Giao diện",
+      "developers": "Lập trình viên",
+      "support": "Hỗ trợ",
+      "resources": "",
+      "profile": "Hồ sơ Jumper",
+      "privacyPolicy": "",
+      "termsConditions": "",
+      "newsletter": ""
+    },
+    "walletMenu": {
+      "disconnect": "Ngắt kết nối",
+      "chains": "Chuỗi",
+      "switchChain": "Thay đổi Chain",
+      "copy": "Sao Chép",
+      "explore": "Trình khám phá",
+      "copiedMsg": "Địa chỉ ví đã được sao chép",
+      "walletNotInstalled": "{{wallet}} chưa được cài đặt",
+      "connectAnotherWallet": "Kết nối ví khác",
+      "refreshBalances": "",
+      "totalBalance": "",
+      "walletBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
+    },
+    "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
+      "switchToLight": "Đổi sang Chế độ nền sáng",
+      "switchToDark": "Chuyển sang Chế độ nền tối",
+      "switchToSystem": "Chuyển sang hệ thống",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
+    },
+    "developers": {
+      "github": "",
+      "documentation": "Tài liệu"
+    }
+  },
+  "discordBanner": {
+    "ctaHeadline": "Tham gia Discord để xem thêm",
+    "ctaButton": "Tham gia Discord của chúng tôi"
+  },
+  "badge": {
+    "updated": ""
+  },
+  "blog": {
+    "title": "Lời khuyên và hướng dẫn",
+    "categories": "Danh mục",
+    "allCategories": "Tất cả",
+    "subtitle": "Hướng dẫn từng bước về DeFi và tiền điện tử cho mọi cấp độ",
+    "minRead": "{{minRead}} thời gian đọc tối thiểu",
+    "seeAllPosts": "Xem tất cả các bài viết",
+    "recentPosts": "Bài viết gần đây",
+    "similarPosts": "Những bài viết tương tự",
+    "goToArticle": "Đi tới bài viết",
+    "openApp": "Mở ứng dụng",
+    "faq": "Hỏi/đáp",
+    "jumperCta": "Trải nghiệm Jumper.xyz",
+    "copiedLink": "Sao chép liên kết",
+    "shareLinkedIn": "Chia sẻ bài viết trên LinkedIn",
+    "shareFb": "Chia sẻ bài viết trên Facebook",
+    "shareX": "Chia sẻ bài viết trên X",
+    "shareLink": "Chia sẻ liên kết"
+  },
+  "solanaAlert": {
+    "title": "Giới hạn mã thông báo trên Solana",
+    "subtitle": "Hiện tại chỉ có USDC và USDT có thể được chuyển đến và đi từ Solana."
+  },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "featureCard": {
+    "learnMore": "Xem thêm"
+  },
+  "button": {
+    "okay": "",
+    "manageYourPosition": "",
+    "goBack": "",
+    "connectAnotherWallet": ""
+  },
+  "error": {
+    "message": "Đã xảy ra lỗi. Vui lòng thử tải lại trang. Nếu sự cố vẫn tiếp diễn, hãy liên hệ với bộ phận hỗ trợ của chúng tôi."
+  },
+  "multisig": {
+    "connected": {
+      "title": "Đã kết nối ví Multisig",
+      "description": "Vui lòng thông báo cho những người tham gia ví khác để sẵn sàng ký."
+    },
+    "transactionInitiated": {
+      "title": "Cần nhiều chữ ký",
+      "description": "Vui lòng thông báo cho những người tham gia ví multisig khác để ký trước khi giao dịch hết hạn."
+    }
+  },
+  "questCard": {
+    "completed": "Đã hoàn thành",
+    "join": "Tham gia",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
+  },
+  "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
+    "available": "Nhiệm vụ có sẵn",
+    "completed": "Nhiệm vụ đã hoàn thành",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      },
+      "ended": {
+        "title": "",
+        "description": "",
+        "cta": ""
+      }
+    },
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": "",
+      "ended": ""
+    },
+    "tasks": {
+      "type": "",
+      "typeFallback": "",
+      "typeOptional": "",
+      "status": {
+        "verify": "",
+        "verified": ""
+      },
+      "action": {
+        "verify": "",
+        "go": ""
+      },
+      "completed": {
+        "title": "",
+        "description": ""
+      },
+      "verifyWallet": {
+        "title": "",
+        "description": {
+          "notConnected": "",
+          "notVerified": "",
+          "verified": ""
+        },
+        "action": {
+          "connectAndVerify": "",
+          "verifyWallet": ""
+        },
+        "status": {
+          "signatureFailed": {
+            "title": "",
+            "description": "",
+            "tryAgain": ""
+          },
+          "unsupportedWallet": {
+            "title": "",
+            "description": "",
+            "switchWallet": ""
+          },
+          "unknown": {
+            "title": "",
+            "description": "",
+            "tryAgain": ""
+          }
+        }
+      }
+    }
+  },
+  "profile_page": {
+    "campaigns": "",
+    "mobileTitle": "Chỉ khả dụng trên Máy tính",
+    "mobileDescription": "Trang Hồ sơ Jumper chưa có sẵn trên màn hình nhỏ. Chúng tôi đang phát triển.",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": "",
+    "availableRewards": "",
+    "perks": "",
+    "achievements": "",
+    "unlocked": "",
+    "levelWithValue": "",
+    "tooltips": {
+      "unlockAtLevel": ""
+    },
+    "noData": {
+      "description": "",
+      "caption": "",
+      "cta": ""
+    }
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    },
+    "stats": {
+      "missions": "",
+      "rewards": "",
+      "totalRewards": ""
+    }
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "currencyCompact": "",
+    "decimal": "",
+    "decimalCompact": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
+  },
+  "contribution": {
+    "title": "",
+    "custom": "",
+    "confirm": "",
+    "thankYou": "",
+    "description": "",
+    "error": {
+      "amountTooSmall": "",
+      "errorSending": "",
+      "invalidTokenPrice": "",
+      "noFeeAddress": ""
+    }
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "rewardsApy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": "",
+    "lockupPeriod": "",
+    "manageYourPosition": "",
+    "assets_one": "",
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "noPositionsToManage": "",
+    "capInDollar": ""
+  },
+  "labels": {
+    "apy": "",
+    "rewardsApy": "",
+    "lockupPeriod": "",
+    "tvl": "",
+    "assets_one": "",
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "overview": "",
+    "capInDollar": ""
+  },
+  "earn": {
+    "top": {
+      "useYourSpare": "",
+      "maximizeYourRevenue": "",
+      "makeTheJump": "",
+      "earnUpTo": ""
+    },
+    "copy": {
+      "forYouBasedOnActivity": "",
+      "forYouDefault": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "sort": "",
+      "apy": "",
+      "tvl": ""
+    },
+    "filter": {
+      "clear": "",
+      "selected": "",
+      "search": "",
+      "filterAndSort": "",
+      "clearAll": "",
+      "chain": "",
+      "protocol": "",
+      "tag": "",
+      "asset": "",
+      "apy": "",
+      "tvl": "",
+      "rewards": {
+        "label": "",
+        "withRewards": ""
+      }
+    },
+    "views": {
+      "viewBy": "",
+      "forYou": "",
+      "allMarkets": "",
+      "all": "",
+      "yourPositions": ""
+    },
+    "relatedMarkets": {
+      "title": ""
+    },
+    "riskDescriptions": {
+      "risk": "",
+      "riskTag": {
+        "Basis Trading": "",
+        "Bridge": "",
+        "CDP": "",
+        "Credit": "",
+        "Farming": "",
+        "Lending": "",
+        "Liquid Staking": "",
+        "Liquidity": "",
+        "RWA": "",
+        "Staking": "",
+        "Structured": "",
+        "Synthetic": "",
+        "Yield Aggregator": ""
+      },
+      "website": ""
+    },
+    "overview": {
+      "updated": ""
+    },
+    "actions": {
+      "viewAllMarkets": "",
+      "seeMore": "",
+      "goToPortfolio": ""
+    },
+    "position": {
+      "label": ""
+    },
+    "missingPosition": {
+      "title": "",
+      "description": ""
+    },
+    "emptyList": {
+      "yourPositions": {
+        "title": "",
+        "description": "",
+        "viewAllMarkets": ""
+      },
+      "noResults": {
+        "title": "",
+        "description": "",
+        "clearFilters": ""
+      }
+    }
+  },
+  "portfolio": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "getStarted": ""
+    },
+    "overviewCard": {
+      "title": "",
+      "refreshTooltip": ""
+    },
+    "emptyList": {
+      "title": "",
+      "description": "",
+      "clearFilters": ""
+    },
+    "assetOverviewCard": {
+      "navigation": {
+        "overview": "",
+        "tokens": "",
+        "defiPositions": ""
+      },
+      "overview": {
+        "tokens": "",
+        "defiPositions": ""
+      },
+      "noContent": {
+        "title": "",
+        "description": "",
+        "cta": {
+          "startEarning": "",
+          "startSwapping": ""
+        }
+      }
+    },
+    "defiPositionCard": {
+      "overview": {
+        "opened": "",
+        "lockup": "",
+        "lockupPeriod": {
+          "lessThanOneMinute": "",
+          "minutes_one": "",
+          "minutes_other": "",
+          "hours_one": "",
+          "hours_other": "",
+          "days_one": "",
+          "days_other": "",
+          "months_one": "",
+          "months_other": "",
+          "years_one": "",
+          "years_other": ""
+        },
+        "tooltip": {
+          "address": "",
+          "info": ""
+        }
+      },
+      "actions": {
+        "withdraw": "",
+        "deposit": "",
+        "claim": "",
+        "compound": "",
+        "repay": "",
+        "borrow": ""
+      },
+      "header": {
+        "supplied": "",
+        "value": "",
+        "apy": "",
+        "rewards": "",
+        "borrowed": ""
+      }
+    },
+    "filter": {
+      "wallet": "",
+      "chain": "",
+      "protocol": "",
+      "type": "",
+      "asset": "",
+      "value": "",
+      "clearAll": "",
+      "filterAndSort": "",
+      "search": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "sort": "",
+      "totalValue": "",
+      "chain": "",
+      "asset": ""
+    },
+    "views": {
+      "viewBy": "",
+      "tokens": "",
+      "defiProtocols": ""
+    }
+  },
+  "newsletter": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "hint": "",
+      "subscribe": "",
+      "emailPlaceholder": "",
+      "error": {
+        "email": "",
+        "emailLength": "",
+        "required": "",
+        "unknown": ""
+      },
+      "pending": "",
+      "success": ""
+    }
+  },
+  "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": "",
+      "depositSuccess": "",
+      "tabs": {
+        "deposit": "",
+        "withdraw": ""
+      },
+      "placeholder": {
+        "comingSoon": "",
+        "embedded-multisig": {
+          "title": "",
+          "description": ""
+        },
+        "non-evm": {
+          "title": "",
+          "description": ""
+        }
+      }
+    },
+    "earn": {
+      "depositSuccess": ""
+    },
+    "withdraw": {
+      "title": ""
+    }
+  },
+  "links": {
+    "discover": ""
+  },
+  "buttons": {
+    "depositButtonLabel": "",
+    "withdrawButtonLabel": "",
+    "managePositionsButtonLabel": "",
+    "deposit": "",
+    "depositNow": ""
+  },
+  "modal": {
+    "perks": {
+      "unclaimedPerk": {
+        "title": ""
+      },
+      "claimedPerk": {
+        "title": "",
+        "description": "",
+        "nextSteps": "",
+        "howToUsePerk": "",
+        "howToUsePerkDescription": ""
+      },
+      "signatureFailed": {
+        "title": "",
+        "description": "",
+        "tryAgain": ""
+      },
+      "validationFailed": {
+        "title": "",
+        "description": "",
+        "close": ""
+      },
+      "unsupportedWallet": {
+        "title": "",
+        "description": "",
+        "switchWallet": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": "",
+        "tryAgain": ""
+      },
+      "stepper": {
+        "steps": {
+          "username": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "email": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "wallet": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "position": {
+            "first": "",
+            "next": "",
+            "finally": ""
+          }
+        },
+        "continue": "",
+        "submit": "",
+        "submitting": ""
+      }
+    }
+  },
+  "gatekeeper": {
+    "title": "",
+    "subtitle": {
+      "intro": {
+        "earn": "",
+        "portfolio": ""
+      },
+      "notConnected": "",
+      "noAccess": ""
+    },
+    "requestAccess": "",
+    "connecting": "",
+    "error": ""
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "short_name": "Jumper",
+  "name": "Jumper",
+  "description": "Multi-Chain Bridging & Swapping",
+  "icons": [
+    {
+      "src": "logo-24x24.svg",
+      "sizes": "24x24",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "logo-32x32.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "logo-64x64.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "logo-144x144.svg",
+      "sizes": "144x144",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/logo-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Swap/Bridge",
+      "short_name": "swap/bridge",
+      "description": "Swap/bridge via Jumper",
+      "url": "/?source=pwa",
+      "icons": [
+        {
+          "src": "/shortcut-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Gas",
+      "short_name": "Gas",
+      "description": "Gas via Jumper",
+      "url": "/gas?source=pwa",
+      "icons": [
+        {
+          "src": "/shortcut-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Buy",
+      "short_name": "Buy",
+      "description": "Buy on Jumper",
+      "url": "/buy?source=pwa",
+      "icons": [
+        {
+          "src": "/shortcut-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#653BA3",
+  "background_color": "#ffffff"
+}

@@ -1,0 +1,662 @@
+{
+  "navbar": {
+    "welcome": {
+      "title": "Знайдіть найкращий маршрут",
+      "subtitle": "<0>4x аудитований</0> мульти-чейн агрегатор ліквідності на основі <1>LI.FI</1>",
+      "cta": "Почати"
+    },
+    "links": {
+      "exchange": "Обмін",
+      "portfolio": "",
+      "missions": "",
+      "earn": "",
+      "dashboard": "Дешборд",
+      "refuel": "Газ",
+      "buy": "Купівля",
+      "back": ""
+    },
+    "statsCards": {
+      "dexs": "DEXs",
+      "bridges": "Бриджей",
+      "chains": "Чейнів"
+    },
+    "connect": "Під’єднатися",
+    "walletSelectMenu": {
+      "connectWallet": "Під'єднати гаманець",
+      "wallets": "Гаманці",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "Виберіть екосистему гаманця",
+        "noEcosystemAdapter": "Відповідного адаптера для екосистеми не знайдено"
+      }
+    },
+    "pass": "",
+    "wallets": "",
+    "seeAllWallets": "Переглянути всі гаманці",
+    "navbarMenu": {
+      "learn": "",
+      "scan": "",
+      "brandAssets": "Бренд ресурси",
+      "theme": "Тема",
+      "developers": "Розробникам",
+      "support": "Підтримка",
+      "resources": "",
+      "profile": "Профіль Jumper",
+      "privacyPolicy": "",
+      "termsConditions": "",
+      "newsletter": ""
+    },
+    "walletMenu": {
+      "disconnect": "Від'єднатись",
+      "chains": "Чейни",
+      "switchChain": "Перемикнути чейн",
+      "copy": "Скопіювати",
+      "explore": "Переглянути",
+      "copiedMsg": "Адреса гаманця скопійована",
+      "walletNotInstalled": "{{wallet}} не встановлено",
+      "connectAnotherWallet": "Під'єднати інший гаманець",
+      "refreshBalances": "Оновити баланс",
+      "totalBalance": "Загальний баланс",
+      "walletBalance": "",
+      "totalBalanceTooltip": "Ваш загальний баланс не завжди може бути точним через потенційні проблеми з індексацією. Ми працюємо над цим!",
+      "totalBalanceRefresh": "Натисніть тут, щоб перезавантажити індексацію своїх токенів.",
+      "numberOfChains": "{{numberOfChains}} чейнів"
+    },
+    "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
+      "switchToLight": "Увімкнути світлу тему",
+      "switchToDark": "Увімкнути темну тему",
+      "switchToSystem": "Увімкнути системну тему",
+      "lightModeDisabled": "Світлий режим вимкнений для цієї теми",
+      "darkModeDisabled": "Темний режим вимкнений для цієї теми",
+      "systemModeDisabled": "Системний режим вимкнений для цієї теми",
+      "default": "Стандартна"
+    },
+    "developers": {
+      "github": "GitHub",
+      "documentation": "Документація"
+    }
+  },
+  "discordBanner": {
+    "ctaHeadline": "Приєднуйтесь до нашого Discord, щоб дізнатися більше",
+    "ctaButton": "Доєднуйся до нас у Discord"
+  },
+  "badge": {
+    "updated": ""
+  },
+  "blog": {
+    "title": "Поради та навчальні матеріали",
+    "categories": "Категорії",
+    "allCategories": "Всі",
+    "subtitle": "TL;DR покрокові інструкції до DeFi і крипто для всіх рівнів",
+    "minRead": "{{minRead}} хв читання",
+    "seeAllPosts": "Переглянути всі записи",
+    "recentPosts": "Останні дописи",
+    "similarPosts": "Схожі дописи",
+    "goToArticle": "Перейти до статті",
+    "openApp": "Відкрити додаток",
+    "faq": "FAQ",
+    "jumperCta": "Спробуйте jumper.xyz",
+    "copiedLink": "Посилання скопійовано",
+    "shareLinkedIn": "Поділитися статтею на LinkedIn",
+    "shareFb": "Поділитися статтею в Facebook",
+    "shareX": "Поділитися статтею на X",
+    "shareLink": "Поділитись посиланням"
+  },
+  "solanaAlert": {
+    "title": "Обмежена підтримка токенів Solana",
+    "subtitle": "Наразі можна перевести тільки USDT і USDT до та з Solana."
+  },
+  "seiAlert": {
+    "title": "Необхідно зв'язати гаманець SEI EVM",
+    "subtitle": "Щоб використовувати SEI EVM, вам потрібно зв'язати адресу свого гаманця з екосистемою SEI.",
+    "buttonText": "Прив'язати гаманець"
+  },
+  "abstractAlert": {
+    "title": "Цей гаманець працює тільки на Abstract!",
+    "subtitle": "Гаманець Abstract існує лише на Abstract чейні. Не використовуйте цю адресу на будь-якому іншому блокчейні, або ви можете втратити ваші кошти.",
+    "buttonText": "Перевірте документацію"
+  },
+  "featureCard": {
+    "learnMore": "Дізнатися більше"
+  },
+  "button": {
+    "okay": "Добре",
+    "manageYourPosition": "Керуйте вашою позицією",
+    "goBack": "Назад",
+    "connectAnotherWallet": "Під'єднати інший гаманець"
+  },
+  "error": {
+    "message": "Щось пішло не так. Будь ласка, спробуйте перезавантажити сторінку. Якщо проблема залишиться, зверніться до нашої служби підтримки."
+  },
+  "multisig": {
+    "connected": {
+      "title": "Multisig гаманець під'єднано",
+      "description": "Будь ласка, повідомте інших учасників гаманця, щоб вони були готові до підпису."
+    },
+    "transactionInitiated": {
+      "title": "Потрібні кілька підписів",
+      "description": "Будь ласка, повідомте інших учасників multisig гаманця підписати до закінчення терміну транзакції."
+    }
+  },
+  "questCard": {
+    "completed": "Завершено",
+    "join": "Приєднатися",
+    "xpToEarnDescription": "Завершіть {{action}} щоб заробити +{{xpToEarn}} addtional XP в цьому місяці.",
+    "earnedXPDescription": "Ви розблокували {{earnedXP}}XP від {{action}} цього місяця, і це було додано до вашого загального XP-балансу.",
+    "action": {
+      "chain_oor": "дослідження чейнів",
+      "transact_oor": "торгівля",
+      "swap_oor": "обмін",
+      "bridge_oor": "мости"
+    }
+  },
+  "promo": {
+    "new": "Нове"
+  },
+  "missions": {
+    "wrapperCard": {
+      "title": "Місії",
+      "explore_one": "Дослідити {{count}} завдання",
+      "explore_other": "Дослідити {{count}} завдання"
+    },
+    "available": "Доступні місії",
+    "completed": "Виконані місії",
+    "mission": {
+      "completed": {
+        "title": "Місію завершено",
+        "description": "Усі завдання цієї місії були перевірені та виконані."
+      },
+      "ended": {
+        "title": "",
+        "description": "",
+        "cta": ""
+      }
+    },
+    "status": {
+      "new": "Нове",
+      "upcoming": "Майбутні",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": "",
+      "ended": ""
+    },
+    "tasks": {
+      "type": "",
+      "typeFallback": "Завдання",
+      "typeOptional": "",
+      "status": {
+        "verify": "Перевірити",
+        "verified": "Перевірено"
+      },
+      "action": {
+        "verify": "Перевірити",
+        "go": "Вперед"
+      },
+      "completed": {
+        "title": "Завдання виконано",
+        "description": "Це завдання було перевірено та виконано."
+      },
+      "verifyWallet": {
+        "title": "",
+        "description": {
+          "notConnected": "",
+          "notVerified": "",
+          "verified": ""
+        },
+        "action": {
+          "connectAndVerify": "",
+          "verifyWallet": ""
+        },
+        "status": {
+          "signatureFailed": {
+            "title": "",
+            "description": "",
+            "tryAgain": ""
+          },
+          "unsupportedWallet": {
+            "title": "",
+            "description": "",
+            "switchWallet": ""
+          },
+          "unknown": {
+            "title": "",
+            "description": "",
+            "tryAgain": ""
+          }
+        }
+      }
+    }
+  },
+  "profile_page": {
+    "campaigns": "",
+    "mobileTitle": "Доступно лише на комп'ютері",
+    "mobileDescription": "Сторінка профілю Jumper наразі недоступна на маленьких екранах. Ми працюємо над цим.",
+    "level": "Рівень",
+    "rank": "Ранг",
+    "rankInfo": "Ранг - це ваша позиція в таблиці. Отримайте XP і рухайтеся вгору в таблиці лідерів.",
+    "pointsInfo": "Досвід ваш результат від взаємодії з Jumper. Коли ви отримуєте XP, ваш рівень піднімається. XP отримані з Jumper транзакцій оновлюються щодня.",
+    "levelInfo": "Вищий рівень збільшує шанси виграти нагороди у розіграшах, отримати привілеї, бонуси від партнерів, винагороди та інше.",
+    "copyAddress": "Копіювати адресу гаманця",
+    "shareProfile": "Поділитися профілем",
+    "open": "Відкрити {{tool}}",
+    "rewards": "Отримані винагороди",
+    "availableRewards": "Доступні винагороди",
+    "perks": "Перки",
+    "achievements": "Досягнення",
+    "unlocked": "Розблоковано",
+    "levelWithValue": "Рівень {{level}}",
+    "tooltips": {
+      "unlockAtLevel": "Розблоковано на рівні {{level}}"
+    },
+    "noData": {
+      "description": "Ще не {{entity}}? Давайте змінимо!",
+      "caption": "Почніть свою подорож шляхом виконання місій та обміну токенів на різних чейнах, щоб розблокувати унікальні досягнення та заробити досвід.",
+      "cta": "Почати обмін"
+    }
+  },
+  "campaign": {
+    "missions": {
+      "title": "Місії"
+    },
+    "stats": {
+      "missions": "Місії",
+      "rewards": "Нагороди",
+      "totalRewards": "Загальна винагорода"
+    }
+  },
+  "leaderboard": {
+    "title": "Таблиця лідерів",
+    "description": "Таблиця лідерів оновлюється щоденно.",
+    "rankCtaConnect": "Який у вас ранг?",
+    "updatedLabel": "Оновлено: {{date}}",
+    "connectWallet": "Під'єднати гаманець"
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": "Оскільки Jumper організовує разові кампанії, місії оновлюються щомісяця для створення відповідної графіки. Майте на увазі: досвід (XP), отриманий з конкретних кампаній, також оновлюватиметься щомісяця."
+  },
+  "format": {
+    "currency": "{{value, currencyExt(currency: USD)}}",
+    "currencyCompact": "",
+    "decimal": "{{value, decimalExt(maximumFractionDigits: 3)}}",
+    "decimalCompact": "",
+    "percent": "{{value, percentExt()}}",
+    "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
+    "date": "{{value, dateExt(month: long)}}",
+    "shortDate": "{{value, dateExt(month: short)}}"
+  },
+  "contribution": {
+    "title": "Підтримати",
+    "custom": "Власне",
+    "confirm": "Підтвердити",
+    "thankYou": "Дякую!",
+    "description": "Продемонструйте свою вдячність, додавши внесок. 100% від цього піде на підтримку Jumper.",
+    "error": {
+      "amountTooSmall": "Сума внеску занадто мала для цього токену. Будь ласка, спробуйте більшу суму.",
+      "errorSending": "Помилка під час надсилання внеску:",
+      "invalidTokenPrice": "Невірна ціна токена",
+      "noFeeAddress": ""
+    }
+  },
+  "tooltips": {
+    "tvl": "Загальна вартість криптовалютних активів на цьому ринку.",
+    "apy": "Очікувана річна ставка токенів що вкладені.",
+    "rewardsApy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": "",
+    "lockupPeriod": "",
+    "manageYourPosition": "",
+    "assets_one": "",
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "noPositionsToManage": "",
+    "capInDollar": ""
+  },
+  "labels": {
+    "apy": "",
+    "rewardsApy": "",
+    "lockupPeriod": "",
+    "tvl": "",
+    "assets_one": "",
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "overview": "",
+    "capInDollar": ""
+  },
+  "earn": {
+    "top": {
+      "useYourSpare": "",
+      "maximizeYourRevenue": "",
+      "makeTheJump": "",
+      "earnUpTo": ""
+    },
+    "copy": {
+      "forYouBasedOnActivity": "",
+      "forYouDefault": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "sort": "",
+      "apy": "",
+      "tvl": ""
+    },
+    "filter": {
+      "clear": "",
+      "selected": "",
+      "search": "",
+      "filterAndSort": "",
+      "clearAll": "",
+      "chain": "",
+      "protocol": "",
+      "tag": "",
+      "asset": "",
+      "apy": "",
+      "tvl": "",
+      "rewards": {
+        "label": "",
+        "withRewards": ""
+      }
+    },
+    "views": {
+      "viewBy": "",
+      "forYou": "",
+      "allMarkets": "",
+      "all": "",
+      "yourPositions": ""
+    },
+    "relatedMarkets": {
+      "title": ""
+    },
+    "riskDescriptions": {
+      "risk": "",
+      "riskTag": {
+        "Basis Trading": "",
+        "Bridge": "",
+        "CDP": "",
+        "Credit": "",
+        "Farming": "",
+        "Lending": "",
+        "Liquid Staking": "",
+        "Liquidity": "",
+        "RWA": "",
+        "Staking": "",
+        "Structured": "",
+        "Synthetic": "",
+        "Yield Aggregator": ""
+      },
+      "website": ""
+    },
+    "overview": {
+      "updated": ""
+    },
+    "actions": {
+      "viewAllMarkets": "",
+      "seeMore": "",
+      "goToPortfolio": ""
+    },
+    "position": {
+      "label": ""
+    },
+    "missingPosition": {
+      "title": "",
+      "description": ""
+    },
+    "emptyList": {
+      "yourPositions": {
+        "title": "",
+        "description": "",
+        "viewAllMarkets": ""
+      },
+      "noResults": {
+        "title": "",
+        "description": "",
+        "clearFilters": ""
+      }
+    }
+  },
+  "portfolio": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "getStarted": ""
+    },
+    "overviewCard": {
+      "title": "",
+      "refreshTooltip": ""
+    },
+    "emptyList": {
+      "title": "",
+      "description": "",
+      "clearFilters": ""
+    },
+    "assetOverviewCard": {
+      "navigation": {
+        "overview": "",
+        "tokens": "",
+        "defiPositions": ""
+      },
+      "overview": {
+        "tokens": "",
+        "defiPositions": ""
+      },
+      "noContent": {
+        "title": "",
+        "description": "",
+        "cta": {
+          "startEarning": "",
+          "startSwapping": ""
+        }
+      }
+    },
+    "defiPositionCard": {
+      "overview": {
+        "opened": "",
+        "lockup": "",
+        "lockupPeriod": {
+          "lessThanOneMinute": "",
+          "minutes_one": "",
+          "minutes_other": "",
+          "hours_one": "",
+          "hours_other": "",
+          "days_one": "",
+          "days_other": "",
+          "months_one": "",
+          "months_other": "",
+          "years_one": "",
+          "years_other": ""
+        },
+        "tooltip": {
+          "address": "",
+          "info": ""
+        }
+      },
+      "actions": {
+        "withdraw": "",
+        "deposit": "",
+        "claim": "",
+        "compound": "",
+        "repay": "",
+        "borrow": ""
+      },
+      "header": {
+        "supplied": "",
+        "value": "",
+        "apy": "",
+        "rewards": "",
+        "borrowed": ""
+      }
+    },
+    "filter": {
+      "wallet": "",
+      "chain": "",
+      "protocol": "",
+      "type": "",
+      "asset": "",
+      "value": "",
+      "clearAll": "",
+      "filterAndSort": "",
+      "search": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "sort": "",
+      "totalValue": "",
+      "chain": "",
+      "asset": ""
+    },
+    "views": {
+      "viewBy": "",
+      "tokens": "",
+      "defiProtocols": ""
+    }
+  },
+  "newsletter": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "hint": "",
+      "subscribe": "",
+      "emailPlaceholder": "",
+      "error": {
+        "email": "",
+        "emailLength": "",
+        "required": "",
+        "unknown": ""
+      },
+      "pending": "",
+      "success": ""
+    }
+  },
+  "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": "",
+      "depositSuccess": "",
+      "tabs": {
+        "deposit": "",
+        "withdraw": ""
+      },
+      "placeholder": {
+        "comingSoon": "",
+        "embedded-multisig": {
+          "title": "",
+          "description": ""
+        },
+        "non-evm": {
+          "title": "",
+          "description": ""
+        }
+      }
+    },
+    "earn": {
+      "depositSuccess": ""
+    },
+    "withdraw": {
+      "title": ""
+    }
+  },
+  "links": {
+    "discover": ""
+  },
+  "buttons": {
+    "depositButtonLabel": "",
+    "withdrawButtonLabel": "",
+    "managePositionsButtonLabel": "",
+    "deposit": "",
+    "depositNow": ""
+  },
+  "modal": {
+    "perks": {
+      "unclaimedPerk": {
+        "title": ""
+      },
+      "claimedPerk": {
+        "title": "",
+        "description": "",
+        "nextSteps": "",
+        "howToUsePerk": "",
+        "howToUsePerkDescription": ""
+      },
+      "signatureFailed": {
+        "title": "",
+        "description": "",
+        "tryAgain": ""
+      },
+      "validationFailed": {
+        "title": "",
+        "description": "",
+        "close": ""
+      },
+      "unsupportedWallet": {
+        "title": "",
+        "description": "",
+        "switchWallet": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": "",
+        "tryAgain": ""
+      },
+      "stepper": {
+        "steps": {
+          "username": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "email": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "wallet": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "position": {
+            "first": "",
+            "next": "",
+            "finally": ""
+          }
+        },
+        "continue": "",
+        "submit": "",
+        "submitting": ""
+      }
+    }
+  },
+  "gatekeeper": {
+    "title": "",
+    "subtitle": {
+      "intro": {
+        "earn": "",
+        "portfolio": ""
+      },
+      "notConnected": "",
+      "noAccess": ""
+    },
+    "requestAccess": "",
+    "connecting": "",
+    "error": ""
+  }
+}

@@ -1,0 +1,251 @@
+import Box from '@mui/material/Box';
+import type { StackProps } from '@mui/material/Stack';
+import Stack from '@mui/material/Stack';
+import InfoIcon from '@mui/icons-material/Info';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
+import { BaseSurfaceSkeleton } from 'src/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
+import { ButtonPrimary } from '@/components/Button/Button.style';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
+
+interface EarnCardContainerProps {
+  hasLink?: boolean;
+}
+
+const EarnCardContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'hasLink',
+})<EarnCardContainerProps>(({ theme, hasLink }) => ({
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
+  borderRadius: theme.shape.cardBorderRadius,
+  boxShadow: theme.shadows[2],
+  cursor: hasLink ? 'pointer' : 'default',
+  transition: 'all 0.3s ease-in-out',
+  '&:hover': {
+    boxShadow: hasLink ? `0 4px 24px 0 rgba(0,0,0,.08)` : theme.shadows[2],
+  },
+}));
+
+interface EarnCardBodyProps {
+  hasHintHoverActive?: boolean;
+}
+
+export const EarnCardBody = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'hasHintHoverActive',
+})<EarnCardBodyProps>(({ theme }) => ({
+  padding: theme.spacing(1.5),
+  borderRadius: theme.shape.borderRadius,
+  transition: 'background-color 300ms ease-in-out',
+  variants: [
+    {
+      props: ({ hasHintHoverActive }) => !!hasHintHoverActive,
+      style: {
+        ':not(:has([data-hint-hover-active]))': {
+          '&:hover, &:focus-visible, &:focus': {
+            backgroundColor: (theme.vars || theme).palette.alpha100.main,
+          },
+        },
+      },
+    },
+  ],
+}));
+
+export const CompactEarnCardContainer = styled(EarnCardContainer)(
+  ({ theme }) => ({
+    padding: theme.spacing(1.5),
+    minHeight: 234,
+    height: '100%',
+  }),
+);
+
+export const CompactEarnCardBody = styled(EarnCardBody)(({ theme }) => ({}));
+
+export const CompactEarnCardHeaderContainer = styled(Stack)(({ theme }) => ({
+  justifyContent: 'space-between',
+  alignItems: 'start',
+}));
+
+export const CompactEarnCardTagContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(1),
+}));
+
+export const CompactEarnCardContentContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(2),
+}));
+
+export const CompactEarnCardItemHeaderContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(1),
+  alignItems: 'center',
+}));
+
+export const CompactEarnCardItemContentContainer = styled(Box)(({ theme }) => ({
+  marginTop: theme.spacing(0.5),
+  display: 'flex',
+  gap: theme.spacing(1),
+  alignItems: 'center',
+}));
+
+export const TooltipIcon = styled(InfoIcon)(({ theme }) => ({
+  height: '16px',
+  width: '16px',
+  cursor: 'help',
+  color: (theme.vars || theme).palette.iconHint,
+}));
+
+export const CompactEarnCardItemValuePrepend = styled(Box)(({ theme }) => ({}));
+
+export const CompactEarnCardItemValue = styled(Typography)(({ theme }) => ({
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  display: '-webkit-box',
+  WebkitLineClamp: 1,
+  WebkitBoxOrient: 'vertical',
+}));
+
+export const CompactEarnCardItemValueAppend = styled(Typography)(
+  ({ theme }) => ({
+    mb: theme.spacing(0.25),
+    color: (theme.vars || theme).palette.alphaLight800.main,
+    ...theme.applyStyles('light', {
+      color: (theme.vars || theme).palette.alphaDark800.main,
+    }),
+  }),
+);
+
+export const BaseSkeleton = styled(BaseSurfaceSkeleton)(({ theme }) => ({}));
+
+export const ListItemEarnCardContainer = styled(EarnCardContainer)(
+  ({ theme }) => ({
+    padding: theme.spacing(1.5),
+  }),
+);
+
+export const ListItemEarnCardBody = styled(EarnCardBody)(() => ({}));
+
+export const ListItemEarnContentWrapper = styled(Stack)(({ theme }) => ({
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: theme.spacing(2),
+}));
+
+export const ListItemEarnCardTagContainer = styled(Stack)(({ theme }) => ({
+  rowGap: theme.spacing(2),
+  columnGap: theme.spacing(1),
+  alignItems: 'center',
+}));
+
+export const OverviewEarnCardContainer = styled(EarnCardContainer)(
+  ({ theme }) => ({
+    padding: theme.spacing(3),
+    width: '100%',
+    height: 'fit-content',
+  }),
+);
+
+export const OverviewEarnCardContentContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(3),
+}));
+
+export const OverviewEarnCardHeaderContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: theme.spacing(2),
+}));
+
+export const OverviewEarnCardItemHeaderContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(1),
+  alignItems: 'center',
+}));
+
+export const OverviewEarnCardItemContentContainer = styled(Box)(
+  ({ theme }) => ({
+    marginTop: theme.spacing(0.5),
+    display: 'flex',
+    gap: theme.spacing(1),
+    alignItems: 'center',
+  }),
+);
+
+export const OverviewEarnCardItemValuePrepend = styled(Box)(
+  ({ theme }) => ({}),
+);
+
+export const OverviewEarnCardItemValue = styled(Typography)(({ theme }) => ({
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  display: '-webkit-box',
+  WebkitLineClamp: 1,
+  WebkitBoxOrient: 'vertical',
+  fontWeight: 700,
+}));
+
+export const OverviewEarnCardItemValueAppend = styled(Typography)(
+  ({ theme }) => ({
+    mb: theme.spacing(0.25),
+    color: (theme.vars || theme).palette.alphaLight800.main,
+    ...theme.applyStyles('light', {
+      color: (theme.vars || theme).palette.alphaDark800.main,
+    }),
+  }),
+);
+
+export const EarnCardMissingPositionContent = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(1.5),
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+interface EarnCardMissingPositionStackProps extends StackProps {
+  isCentered?: boolean;
+}
+
+export const EarnCardMissingPositionInteractiveContent = styled(Stack, {
+  shouldForwardProp: (prop) => prop !== 'isCentered',
+})<EarnCardMissingPositionStackProps>(({ theme, isCentered }) => ({
+  gap: theme.spacing(1.5),
+  alignItems: 'center',
+  justifyContent: isCentered ? 'center' : 'space-between',
+  position: 'relative',
+  zIndex: 1,
+  '&:before': {
+    content: '""',
+    display: 'inline-block',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: -1,
+    filter: 'blur(32px)',
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
+  },
+}));
+
+export const EarnCardMissingPositionDescription = styled(Stack, {
+  shouldForwardProp: (prop) => prop !== 'isCentered',
+})<EarnCardMissingPositionStackProps>(({ theme, isCentered }) => ({
+  gap: theme.spacing(1),
+  alignItems: isCentered ? 'center' : 'flex-start',
+  justifyContent: isCentered ? 'center' : 'flex-start',
+}));
+
+export const EarnCardMissingPositionButton = styled(ButtonPrimary)(
+  ({ theme }) => ({
+    ...theme.typography.bodyXSmallStrong,
+    padding: theme.spacing(1),
+    height: 'auto',
+    width: '100%',
+    minWidth: 'fit-content',
+    textAlign: 'center',
+    textDecoration: 'none',
+    [theme.breakpoints.up('sm')]: {
+      width: 'fit-content',
+    },
+  }),
+);

@@ -1,0 +1,184 @@
+'use client';
+import type { MenuKeysEnum } from '@/const/menuKeys';
+import { useMenuStore } from '@/stores/menu';
+import type { MenuListItem } from '@/types/internal';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CheckIcon from '@mui/icons-material/Check';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { alpha, Box, IconButton, useTheme } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import type { KeyboardEvent } from 'react';
+import { useEffect, useRef } from 'react';
+import {
+  MenuHeaderAppBar,
+  MenuHeaderAppWrapper,
+  MenuPaper,
+  MenuHeaderLabel,
+} from './Menu.style';
+import { SubMenuLabel } from './SubMenu.style';
+import {
+  MenuItemContainer,
+  MenuItemLink,
+  MenuLabel,
+} from './MenuItem/MenuItem.style';
+
+interface SubMenuProps {
+  open: boolean;
+  label: string;
+  prevMenu: MenuKeysEnum;
+  subMenuList: MenuListItem[];
+  triggerSubMenu: MenuKeysEnum;
+}
+
+export const SubMenu = ({
+  open,
+  prevMenu,
+  label,
+  triggerSubMenu,
+  subMenuList,
+}: SubMenuProps) => {
+  const theme = useTheme();
+  const menuListRef = useRef(null);
+  const { openSubMenu, setSubMenuState } = useMenuStore((state) => state);
+
+  function handleBackSpace(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key === 'Backspace') {
+      setSubMenuState(prevMenu);
+    }
+  }
+
+  const handleClick = (el: MenuListItem) => {
+    typeof el.onClick === 'function' && el.onClick();
+  };
+
+  const handleBackNavigation = () => {
+    setSubMenuState(prevMenu);
+  };
+
+  useEffect(() => {
+    if (menuListRef.current && open && openSubMenu === triggerSubMenu) {
+      const menuList: HTMLUListElement = menuListRef.current;
+      menuList.scrollTop = 0;
+    }
+  }, [open, openSubMenu, triggerSubMenu]);
+
+  return (
+    <MenuPaper
+      show={openSubMenu === triggerSubMenu}
+      className="submenu"
+      onKeyDown={handleBackSpace}
+      // eslint-disable-next-line jsx-a11y/no-autofocus
+      autoFocus={open}
+      component="ul"
+      ref={menuListRef}
+      sx={{ border: 'none' }}
+    >
+      <MenuHeaderAppWrapper>
+        <MenuHeaderAppBar component={'div'} elevation={0}>
+          <IconButton
+            size="medium"
+            aria-label="settings"
+            edge="start"
+            sx={{
+              marginLeft: 0,
+              color: (theme.vars || theme).palette.text.primary,
+              '&:hover': {
+                backgroundColor: (theme.vars || theme).palette.alphaLight100
+                  .main,
+                ...theme.applyStyles('light', {
+                  backgroundColor: (theme.vars || theme).palette.alphaDark100
+                    .main,
+                }),
+              },
+            }}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleBackNavigation();
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+          <MenuHeaderLabel>{label}</MenuHeaderLabel>
+        </MenuHeaderAppBar>
+      </MenuHeaderAppWrapper>
+      {!!subMenuList.length ? (
+        subMenuList.map((el, index) =>
+          !!el.link?.url ? (
+            <MenuItemContainer
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus={index > 0 ? true : false}
+              onClick={() => handleClick(el)}
+              disabled={el.disabled}
+              key={`${el.label}-${index}`}
+            >
+              <MenuItemLink
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus={index > 0 ? true : false}
+                href={el.link.url}
+                target={el.link.external ? '_blank' : '_self'}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  typeof el.onClick === 'function' && el.onClick();
+                }}
+                key={`${el.label}-${index}`}
+              >
+                {el.prefixIcon}
+                <SubMenuLabel
+                  isPrefixIcon={!!el.prefixIcon}
+                  isSuffixIcon={!!el.suffixIcon}
+                  variant={'bodyMedium'}
+                >
+                  {`${el.label || ' '}`}
+                </SubMenuLabel>
+                {el.suffixIcon}
+              </MenuItemLink>
+            </MenuItemContainer>
+          ) : (
+            <MenuItemContainer
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus={index > 0 ? true : false}
+              onClick={() => handleClick(el)}
+              disabled={el.disabled}
+              key={`${el.label}-${index}`}
+            >
+              <MenuLabel
+                variant={
+                  !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
+                    ? 'lg'
+                    : (el.showMoreIcon || el.checkIcon) && el.suffixIcon
+                      ? 'xs'
+                      : 'md'
+                }
+              >
+                {el.prefixIcon}
+                <SubMenuLabel
+                  variant={'bodyMedium'}
+                  isPrefixIcon={!!el.prefixIcon}
+                  isSuffixIcon={!!el.suffixIcon}
+                  sx={{
+                    ml: !!el.prefixIcon ? theme.spacing(1.5) : 'inherit',
+                  }}
+                >
+                  {`${el.label || ' '}`}
+                </SubMenuLabel>
+              </MenuLabel>
+              {el.checkIcon && <CheckIcon />}
+              {el.showMoreIcon ? (
+                <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
+              ) : null}
+            </MenuItemContainer>
+          ),
+        )
+      ) : (
+        <Box
+          sx={{
+            textAlign: 'center',
+            mt: theme.spacing(1),
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+    </MenuPaper>
+  );
+};

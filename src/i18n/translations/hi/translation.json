@@ -1,0 +1,679 @@
+{
+  "navbar": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "cta": ""
+    },
+    "links": {
+      "exchange": "",
+      "portfolio": "",
+      "missions": "",
+      "earn": "",
+      "dashboard": "डैशबोर्ड",
+      "refuel": "गैस",
+      "buy": "",
+      "back": ""
+    },
+    "statsCards": {
+      "dexs": "",
+      "bridges": "",
+      "chains": ""
+    },
+    "connect": "",
+    "walletSelectMenu": {
+      "connectWallet": "",
+      "wallets": "",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "",
+        "noEcosystemAdapter": ""
+      }
+    },
+    "pass": "",
+    "wallets": "",
+    "seeAllWallets": "",
+    "navbarMenu": {
+      "learn": "",
+      "scan": "",
+      "brandAssets": "",
+      "theme": "विषय",
+      "developers": "डेवलपर",
+      "support": "सहायता",
+      "resources": "",
+      "profile": "",
+      "privacyPolicy": "",
+      "termsConditions": "",
+      "newsletter": ""
+    },
+    "walletMenu": {
+      "disconnect": "डिस्कनेक्ट करें",
+      "chains": "चेन",
+      "switchChain": "चेन बदले",
+      "copy": "",
+      "explore": "",
+      "copiedMsg": "",
+      "walletNotInstalled": "",
+      "connectAnotherWallet": "",
+      "refreshBalances": "",
+      "totalBalance": "",
+      "walletBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
+    },
+    "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
+      "switchToLight": "",
+      "switchToDark": "",
+      "switchToSystem": "",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
+    },
+    "developers": {
+      "github": "गिटहब",
+      "documentation": "प्रलेखन"
+    }
+  },
+  "discordBanner": {
+    "ctaHeadline": "",
+    "ctaButton": ""
+  },
+  "badge": {
+    "updated": ""
+  },
+  "blog": {
+    "title": "",
+    "categories": "",
+    "allCategories": "",
+    "subtitle": "",
+    "minRead": "",
+    "seeAllPosts": "",
+    "recentPosts": "",
+    "similarPosts": "",
+    "goToArticle": "",
+    "openApp": "",
+    "faq": "",
+    "jumperCta": "",
+    "copiedLink": "",
+    "shareLinkedIn": "",
+    "shareFb": "",
+    "shareX": "",
+    "shareLink": ""
+  },
+  "solanaAlert": {
+    "title": "",
+    "subtitle": ""
+  },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "featureCard": {
+    "learnMore": ""
+  },
+  "button": {
+    "okay": "",
+    "manageYourPosition": "",
+    "goBack": "",
+    "connectAnotherWallet": ""
+  },
+  "error": {
+    "message": ""
+  },
+  "multisig": {
+    "connected": {
+      "title": "",
+      "description": ""
+    },
+    "transactionInitiated": {
+      "title": "",
+      "description": ""
+    }
+  },
+  "questCard": {
+    "completed": "",
+    "join": "",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
+  },
+  "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
+    "available": "",
+    "completed": "",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      },
+      "ended": {
+        "title": "",
+        "description": "",
+        "cta": ""
+      }
+    },
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": "",
+      "ended": ""
+    },
+    "tasks": {
+      "type": "",
+      "typeFallback": "",
+      "typeOptional": "",
+      "status": {
+        "verify": "",
+        "verified": ""
+      },
+      "action": {
+        "verify": "",
+        "go": ""
+      },
+      "completed": {
+        "title": "",
+        "description": ""
+      },
+      "verifyWallet": {
+        "title": "",
+        "description": {
+          "notConnected": "",
+          "notVerified": "",
+          "verified": ""
+        },
+        "action": {
+          "connectAndVerify": "",
+          "verifyWallet": ""
+        },
+        "status": {
+          "signatureFailed": {
+            "title": "",
+            "description": "",
+            "tryAgain": ""
+          },
+          "unsupportedWallet": {
+            "title": "",
+            "description": "",
+            "switchWallet": ""
+          },
+          "unknown": {
+            "title": "",
+            "description": "",
+            "tryAgain": ""
+          }
+        }
+      }
+    }
+  },
+  "profile_page": {
+    "campaigns": "",
+    "mobileTitle": "",
+    "mobileDescription": "",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": "",
+    "availableRewards": "",
+    "perks": "",
+    "achievements": "",
+    "unlocked": "",
+    "levelWithValue": "",
+    "tooltips": {
+      "unlockAtLevel": ""
+    },
+    "noData": {
+      "description": "",
+      "caption": "",
+      "cta": ""
+    }
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    },
+    "stats": {
+      "missions": "",
+      "rewards": "",
+      "totalRewards": ""
+    }
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "currencyCompact": "",
+    "decimal": "",
+    "decimalCompact": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
+  },
+  "contribution": {
+    "title": "",
+    "custom": "",
+    "confirm": "",
+    "thankYou": "",
+    "description": "",
+    "error": {
+      "amountTooSmall": "",
+      "errorSending": "",
+      "invalidTokenPrice": "",
+      "noFeeAddress": ""
+    }
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "rewardsApy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": "",
+    "lockupPeriod": "",
+    "manageYourPosition": "",
+    "assets_one": "",
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "noPositionsToManage": "",
+    "capInDollar": ""
+  },
+  "labels": {
+    "apy": "",
+    "rewardsApy": "",
+    "lockupPeriod": "",
+    "tvl": "",
+    "assets_one": "",
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "overview": "",
+    "capInDollar": ""
+  },
+  "earn": {
+    "top": {
+      "useYourSpare": "",
+      "maximizeYourRevenue": "",
+      "makeTheJump": "",
+      "earnUpTo": ""
+    },
+    "copy": {
+      "forYouBasedOnActivity": "",
+      "forYouDefault": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "sort": "",
+      "apy": "",
+      "tvl": ""
+    },
+    "filter": {
+      "clear": "",
+      "selected": "",
+      "search": "",
+      "filterAndSort": "",
+      "clearAll": "",
+      "chain": "",
+      "protocol": "",
+      "tag": "",
+      "asset": "",
+      "apy": "",
+      "tvl": "",
+      "rewards": {
+        "label": "",
+        "withRewards": ""
+      }
+    },
+    "views": {
+      "viewBy": "",
+      "forYou": "",
+      "allMarkets": "",
+      "all": "",
+      "yourPositions": ""
+    },
+    "relatedMarkets": {
+      "title": ""
+    },
+    "riskDescriptions": {
+      "risk": "",
+      "riskTag": {
+        "Basis Trading": "",
+        "Bridge": "",
+        "CDP": "",
+        "Credit": "",
+        "Farming": "",
+        "Lending": "",
+        "Liquid Staking": "",
+        "Liquidity": "",
+        "RWA": "",
+        "Staking": "",
+        "Structured": "",
+        "Synthetic": "",
+        "Yield Aggregator": ""
+      },
+      "website": ""
+    },
+    "overview": {
+      "updated": ""
+    },
+    "actions": {
+      "viewAllMarkets": "",
+      "seeMore": "",
+      "goToPortfolio": ""
+    },
+    "position": {
+      "label": ""
+    },
+    "missingPosition": {
+      "title": "",
+      "description": ""
+    },
+    "emptyList": {
+      "yourPositions": {
+        "title": "",
+        "description": "",
+        "viewAllMarkets": ""
+      },
+      "noResults": {
+        "title": "",
+        "description": "",
+        "clearFilters": ""
+      }
+    }
+  },
+  "portfolio": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "getStarted": ""
+    },
+    "overviewCard": {
+      "title": "",
+      "refreshTooltip": ""
+    },
+    "emptyList": {
+      "title": "",
+      "description": "",
+      "clearFilters": ""
+    },
+    "assetOverviewCard": {
+      "navigation": {
+        "overview": "",
+        "tokens": "",
+        "defiPositions": ""
+      },
+      "overview": {
+        "tokens": "",
+        "defiPositions": ""
+      },
+      "noContent": {
+        "title": "",
+        "description": "",
+        "cta": {
+          "startEarning": "",
+          "startSwapping": ""
+        }
+      }
+    },
+    "defiPositionCard": {
+      "overview": {
+        "opened": "",
+        "lockup": "",
+        "lockupPeriod": {
+          "lessThanOneMinute": "",
+          "minutes_one": "",
+          "minutes_other": "",
+          "hours_one": "",
+          "hours_other": "",
+          "days_one": "",
+          "days_other": "",
+          "months_one": "",
+          "months_other": "",
+          "years_one": "",
+          "years_other": ""
+        },
+        "tooltip": {
+          "address": "",
+          "info": ""
+        }
+      },
+      "actions": {
+        "withdraw": "",
+        "deposit": "",
+        "claim": "",
+        "compound": "",
+        "repay": "",
+        "borrow": ""
+      },
+      "header": {
+        "supplied": "",
+        "value": "",
+        "apy": "",
+        "rewards": "",
+        "borrowed": ""
+      }
+    },
+    "filter": {
+      "wallet": "",
+      "chain": "",
+      "protocol": "",
+      "type": "",
+      "asset": "",
+      "value": "",
+      "clearAll": "",
+      "filterAndSort": "",
+      "search": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "sort": "",
+      "totalValue": "",
+      "chain": "",
+      "asset": ""
+    },
+    "views": {
+      "viewBy": "",
+      "tokens": "",
+      "defiProtocols": ""
+    }
+  },
+  "newsletter": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "hint": "",
+      "subscribe": "",
+      "emailPlaceholder": "",
+      "error": {
+        "email": "",
+        "emailLength": "",
+        "required": "",
+        "unknown": ""
+      },
+      "pending": "",
+      "success": ""
+    }
+  },
+  "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
+    "sweepTokensCard": {
+      "button": {
+        "claim": "",
+        "switchChain": "",
+        "waitingForTransaction": "",
+        "transactionInProgress": "",
+        "viewTransaction": ""
+      },
+      "error": {
+        "title": "",
+        "description": ""
+      },
+      "success": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": "",
+      "depositSuccess": "",
+      "tabs": {
+        "deposit": "",
+        "withdraw": ""
+      },
+      "placeholder": {
+        "comingSoon": "",
+        "embedded-multisig": {
+          "title": "",
+          "description": ""
+        },
+        "non-evm": {
+          "title": "",
+          "description": ""
+        }
+      }
+    },
+    "earn": {
+      "depositSuccess": ""
+    },
+    "withdraw": {
+      "title": ""
+    }
+  },
+  "links": {
+    "discover": ""
+  },
+  "buttons": {
+    "depositButtonLabel": "",
+    "withdrawButtonLabel": "",
+    "managePositionsButtonLabel": "",
+    "deposit": "",
+    "depositNow": ""
+  },
+  "modal": {
+    "perks": {
+      "unclaimedPerk": {
+        "title": ""
+      },
+      "claimedPerk": {
+        "title": "",
+        "description": "",
+        "nextSteps": "",
+        "howToUsePerk": "",
+        "howToUsePerkDescription": ""
+      },
+      "signatureFailed": {
+        "title": "",
+        "description": "",
+        "tryAgain": ""
+      },
+      "validationFailed": {
+        "title": "",
+        "description": "",
+        "close": ""
+      },
+      "unsupportedWallet": {
+        "title": "",
+        "description": "",
+        "switchWallet": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": "",
+        "tryAgain": ""
+      },
+      "stepper": {
+        "steps": {
+          "username": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "email": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "wallet": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "position": {
+            "first": "",
+            "next": "",
+            "finally": ""
+          }
+        },
+        "continue": "",
+        "submit": "",
+        "submitting": ""
+      }
+    }
+  },
+  "gatekeeper": {
+    "title": "",
+    "subtitle": {
+      "intro": {
+        "earn": "",
+        "portfolio": ""
+      },
+      "notConnected": "",
+      "noAccess": ""
+    },
+    "requestAccess": "",
+    "connecting": "",
+    "error": ""
+  }
+}

@@ -1,0 +1,662 @@
+{
+  "navbar": {
+    "welcome": {
+      "title": "En iyi rotayı bul",
+      "subtitle": "<0>4 kez denetlenmiş</0> <1>LI.FI</1> tarafından desteklenen çok zincirli likidite toplayıcı",
+      "cta": "Başlayın"
+    },
+    "links": {
+      "exchange": "Al-Sat",
+      "portfolio": "",
+      "missions": "",
+      "earn": "",
+      "dashboard": "Kontrol Paneli",
+      "refuel": "Gaz",
+      "buy": "Satın al",
+      "back": ""
+    },
+    "statsCards": {
+      "dexs": "DEX'ler",
+      "bridges": "Köprüler",
+      "chains": "Ağlar"
+    },
+    "connect": "Bağlan",
+    "walletSelectMenu": {
+      "connectWallet": "Bir Cüzdan Bağlayın",
+      "wallets": "Cüzdanlar",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "Cüzdan ekosistemi seçin",
+        "noEcosystemAdapter": "Uygun ekosistem bağdaştırıcısı bulunamadı"
+      }
+    },
+    "pass": "",
+    "wallets": "",
+    "seeAllWallets": "Tüm cüzdanları göster",
+    "navbarMenu": {
+      "learn": "",
+      "scan": "",
+      "brandAssets": "Varlıklar",
+      "theme": "Tema",
+      "developers": "Geliştiriciler",
+      "support": "Destek",
+      "resources": "",
+      "profile": "Jumper Profili",
+      "privacyPolicy": "",
+      "termsConditions": "",
+      "newsletter": ""
+    },
+    "walletMenu": {
+      "disconnect": "Bağlantıyı Kes",
+      "chains": "Ağlar",
+      "switchChain": "Ağ değiştir",
+      "copy": "Kopyala",
+      "explore": "Keşfet",
+      "copiedMsg": "Cüzdan Adresi kopyalandı",
+      "walletNotInstalled": "{{wallet}} kurulu değil",
+      "connectAnotherWallet": "Başka bir cüzdana bağlan",
+      "refreshBalances": "",
+      "totalBalance": "",
+      "walletBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
+    },
+    "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
+      "switchToLight": "Açık temaya geç",
+      "switchToDark": "Koyu Temaya geç",
+      "switchToSystem": "Sisteme geçiş yap",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
+    },
+    "developers": {
+      "github": "",
+      "documentation": "Dökümantasyon"
+    }
+  },
+  "discordBanner": {
+    "ctaHeadline": "Daha fazlası için Discord sunucumuza katıl",
+    "ctaButton": "Discord'a katıl"
+  },
+  "badge": {
+    "updated": ""
+  },
+  "blog": {
+    "title": "İpuçları ve öğreticiler",
+    "categories": "Kategoriler",
+    "allCategories": "Tümü",
+    "subtitle": "Kısaca, tüm seviyeler için DeFi ve kriptoya ilişkin adım adım kılavuzlar",
+    "minRead": "Okuma süresi:{{minRead}}",
+    "seeAllPosts": "Tüm gönderileri gör",
+    "recentPosts": "Son Gönderiler",
+    "similarPosts": "Benzer gönderiler",
+    "goToArticle": "Makaleye git",
+    "openApp": "Uygulamayı aç",
+    "faq": "SSS",
+    "jumperCta": "jumper.xyz'i deneyin",
+    "copiedLink": "Bağlantı kopyalandı",
+    "shareLinkedIn": "Makaleyi LinkedIn'de paylaş",
+    "shareFb": "Makaleyi Facebook'ta paylaş",
+    "shareX": "Makaleyi X'te paylaş",
+    "shareLink": "Bağlantıyı paylaş"
+  },
+  "solanaAlert": {
+    "title": "Solana ağında kısıtlı token desteği bulunmaktadır",
+    "subtitle": "Şu anda hem Solana ağına hem Solana ağından sadece USDC ve USDT köprü kurulabiliyor."
+  },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "featureCard": {
+    "learnMore": "Daha fazla bilgi edinin"
+  },
+  "button": {
+    "okay": "Tamam",
+    "manageYourPosition": "",
+    "goBack": "",
+    "connectAnotherWallet": ""
+  },
+  "error": {
+    "message": "Bir şeyler yanlış gitti. Lütfen sayfayı yenilemeyi deneyin. Sorun devam ederse desteğimizle iletişime geçebilirsiniz."
+  },
+  "multisig": {
+    "connected": {
+      "title": "Çoklu cüzdan bağlandı",
+      "description": "Lütfen diğer cüzdan katılımcılarını imzalamaya hazır olmaları için bilgilendirin."
+    },
+    "transactionInitiated": {
+      "title": "Çoklu imza gerekiyor",
+      "description": "Lütfen diğer cüzdan katılımcılarını işlem süresi geçmeden imzalamaları için bilgilendirin."
+    }
+  },
+  "questCard": {
+    "completed": "Tamamlanan",
+    "join": "Katıl",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
+  },
+  "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
+    "available": "Mevcut Görevler",
+    "completed": "Tamamlanan Görevler",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      },
+      "ended": {
+        "title": "",
+        "description": "",
+        "cta": ""
+      }
+    },
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": "",
+      "ended": ""
+    },
+    "tasks": {
+      "type": "",
+      "typeFallback": "",
+      "typeOptional": "",
+      "status": {
+        "verify": "",
+        "verified": ""
+      },
+      "action": {
+        "verify": "",
+        "go": ""
+      },
+      "completed": {
+        "title": "",
+        "description": ""
+      },
+      "verifyWallet": {
+        "title": "",
+        "description": {
+          "notConnected": "",
+          "notVerified": "",
+          "verified": ""
+        },
+        "action": {
+          "connectAndVerify": "",
+          "verifyWallet": ""
+        },
+        "status": {
+          "signatureFailed": {
+            "title": "",
+            "description": "",
+            "tryAgain": ""
+          },
+          "unsupportedWallet": {
+            "title": "",
+            "description": "",
+            "switchWallet": ""
+          },
+          "unknown": {
+            "title": "",
+            "description": "",
+            "tryAgain": ""
+          }
+        }
+      }
+    }
+  },
+  "profile_page": {
+    "campaigns": "",
+    "mobileTitle": "Yalnızca Masaüstünde kullanılabilir",
+    "mobileDescription": "Jumper Profil sayfası henüz küçük ekranlarda kullanılamıyor. Üzerinde çalışıyoruz.",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": "",
+    "availableRewards": "",
+    "perks": "",
+    "achievements": "",
+    "unlocked": "",
+    "levelWithValue": "",
+    "tooltips": {
+      "unlockAtLevel": ""
+    },
+    "noData": {
+      "description": "",
+      "caption": "",
+      "cta": ""
+    }
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    },
+    "stats": {
+      "missions": "",
+      "rewards": "",
+      "totalRewards": ""
+    }
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "currencyCompact": "",
+    "decimal": "",
+    "decimalCompact": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
+  },
+  "contribution": {
+    "title": "",
+    "custom": "",
+    "confirm": "",
+    "thankYou": "",
+    "description": "",
+    "error": {
+      "amountTooSmall": "",
+      "errorSending": "",
+      "invalidTokenPrice": "",
+      "noFeeAddress": ""
+    }
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "rewardsApy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": "",
+    "lockupPeriod": "",
+    "manageYourPosition": "",
+    "assets_one": "",
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "noPositionsToManage": "",
+    "capInDollar": ""
+  },
+  "labels": {
+    "apy": "",
+    "rewardsApy": "",
+    "lockupPeriod": "",
+    "tvl": "",
+    "assets_one": "",
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "overview": "",
+    "capInDollar": ""
+  },
+  "earn": {
+    "top": {
+      "useYourSpare": "",
+      "maximizeYourRevenue": "",
+      "makeTheJump": "",
+      "earnUpTo": ""
+    },
+    "copy": {
+      "forYouBasedOnActivity": "",
+      "forYouDefault": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "sort": "",
+      "apy": "",
+      "tvl": ""
+    },
+    "filter": {
+      "clear": "",
+      "selected": "",
+      "search": "",
+      "filterAndSort": "",
+      "clearAll": "",
+      "chain": "",
+      "protocol": "",
+      "tag": "",
+      "asset": "",
+      "apy": "",
+      "tvl": "",
+      "rewards": {
+        "label": "",
+        "withRewards": ""
+      }
+    },
+    "views": {
+      "viewBy": "",
+      "forYou": "",
+      "allMarkets": "",
+      "all": "",
+      "yourPositions": ""
+    },
+    "relatedMarkets": {
+      "title": ""
+    },
+    "riskDescriptions": {
+      "risk": "",
+      "riskTag": {
+        "Basis Trading": "",
+        "Bridge": "",
+        "CDP": "",
+        "Credit": "",
+        "Farming": "",
+        "Lending": "",
+        "Liquid Staking": "",
+        "Liquidity": "",
+        "RWA": "",
+        "Staking": "",
+        "Structured": "",
+        "Synthetic": "",
+        "Yield Aggregator": ""
+      },
+      "website": ""
+    },
+    "overview": {
+      "updated": ""
+    },
+    "actions": {
+      "viewAllMarkets": "",
+      "seeMore": "",
+      "goToPortfolio": ""
+    },
+    "position": {
+      "label": ""
+    },
+    "missingPosition": {
+      "title": "",
+      "description": ""
+    },
+    "emptyList": {
+      "yourPositions": {
+        "title": "",
+        "description": "",
+        "viewAllMarkets": ""
+      },
+      "noResults": {
+        "title": "",
+        "description": "",
+        "clearFilters": ""
+      }
+    }
+  },
+  "portfolio": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "getStarted": ""
+    },
+    "overviewCard": {
+      "title": "",
+      "refreshTooltip": ""
+    },
+    "emptyList": {
+      "title": "",
+      "description": "",
+      "clearFilters": ""
+    },
+    "assetOverviewCard": {
+      "navigation": {
+        "overview": "",
+        "tokens": "",
+        "defiPositions": ""
+      },
+      "overview": {
+        "tokens": "",
+        "defiPositions": ""
+      },
+      "noContent": {
+        "title": "",
+        "description": "",
+        "cta": {
+          "startEarning": "",
+          "startSwapping": ""
+        }
+      }
+    },
+    "defiPositionCard": {
+      "overview": {
+        "opened": "",
+        "lockup": "",
+        "lockupPeriod": {
+          "lessThanOneMinute": "",
+          "minutes_one": "",
+          "minutes_other": "",
+          "hours_one": "",
+          "hours_other": "",
+          "days_one": "",
+          "days_other": "",
+          "months_one": "",
+          "months_other": "",
+          "years_one": "",
+          "years_other": ""
+        },
+        "tooltip": {
+          "address": "",
+          "info": ""
+        }
+      },
+      "actions": {
+        "withdraw": "",
+        "deposit": "",
+        "claim": "",
+        "compound": "",
+        "repay": "",
+        "borrow": ""
+      },
+      "header": {
+        "supplied": "",
+        "value": "",
+        "apy": "",
+        "rewards": "",
+        "borrowed": ""
+      }
+    },
+    "filter": {
+      "wallet": "",
+      "chain": "",
+      "protocol": "",
+      "type": "",
+      "asset": "",
+      "value": "",
+      "clearAll": "",
+      "filterAndSort": "",
+      "search": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "sort": "",
+      "totalValue": "",
+      "chain": "",
+      "asset": ""
+    },
+    "views": {
+      "viewBy": "",
+      "tokens": "",
+      "defiProtocols": ""
+    }
+  },
+  "newsletter": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "hint": "",
+      "subscribe": "",
+      "emailPlaceholder": "",
+      "error": {
+        "email": "",
+        "emailLength": "",
+        "required": "",
+        "unknown": ""
+      },
+      "pending": "",
+      "success": ""
+    }
+  },
+  "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": "",
+      "depositSuccess": "",
+      "tabs": {
+        "deposit": "",
+        "withdraw": ""
+      },
+      "placeholder": {
+        "comingSoon": "",
+        "embedded-multisig": {
+          "title": "",
+          "description": ""
+        },
+        "non-evm": {
+          "title": "",
+          "description": ""
+        }
+      }
+    },
+    "earn": {
+      "depositSuccess": ""
+    },
+    "withdraw": {
+      "title": ""
+    }
+  },
+  "links": {
+    "discover": ""
+  },
+  "buttons": {
+    "depositButtonLabel": "",
+    "withdrawButtonLabel": "",
+    "managePositionsButtonLabel": "",
+    "deposit": "",
+    "depositNow": ""
+  },
+  "modal": {
+    "perks": {
+      "unclaimedPerk": {
+        "title": ""
+      },
+      "claimedPerk": {
+        "title": "",
+        "description": "",
+        "nextSteps": "",
+        "howToUsePerk": "",
+        "howToUsePerkDescription": ""
+      },
+      "signatureFailed": {
+        "title": "",
+        "description": "",
+        "tryAgain": ""
+      },
+      "validationFailed": {
+        "title": "",
+        "description": "",
+        "close": ""
+      },
+      "unsupportedWallet": {
+        "title": "",
+        "description": "",
+        "switchWallet": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": "",
+        "tryAgain": ""
+      },
+      "stepper": {
+        "steps": {
+          "username": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "email": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "wallet": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "position": {
+            "first": "",
+            "next": "",
+            "finally": ""
+          }
+        },
+        "continue": "",
+        "submit": "",
+        "submitting": ""
+      }
+    }
+  },
+  "gatekeeper": {
+    "title": "",
+    "subtitle": {
+      "intro": {
+        "earn": "",
+        "portfolio": ""
+      },
+      "notConnected": "",
+      "noAccess": ""
+    },
+    "requestAccess": "",
+    "connecting": "",
+    "error": ""
+  }
+}

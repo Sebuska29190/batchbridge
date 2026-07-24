@@ -1,0 +1,84 @@
+import type { PartnerThemesData } from '@/types/strapi';
+import { formatTheme, getAvailableThemeModes } from '@/utils/formatTheme';
+import type { PaletteMode, Theme } from '@mui/material';
+import { deepmerge } from '@mui/utils';
+import {
+  getDefaultWidgetTheme,
+  getDefaultWidgetThemeV2,
+} from 'src/config/widgetConfig';
+import { themeCustomized } from 'src/theme/theme';
+import type { Appearance } from '@jumperexchange/widget';
+
+export function getPartnerTheme(
+  themes?: PartnerThemesData[],
+  activeTheme?: string,
+) {
+  return themes?.find((d) => d?.uid === activeTheme);
+}
+
+/** @deprecated Use createJumperTheme with jumperTheme options instead */
+export function getMuiTheme(
+  themeMode: Appearance,
+  themes?: PartnerThemesData[],
+  activeTheme?: string,
+) {
+  const partnerTheme = getPartnerTheme(themes, activeTheme);
+
+  if (!partnerTheme) {
+    if (['light', 'system'].includes(themeMode!)) {
+      return deepmerge(themeCustomized, themeCustomized.colorSchemes['light']);
+    } else {
+      return deepmerge(themeCustomized, themeCustomized.colorSchemes['dark']);
+    }
+  }
+
+  const formattedTheme = formatTheme(partnerTheme);
+  const baseTheme = getAvailableThemeModes(partnerTheme).includes('light')
+    ? themeCustomized.colorSchemes['light']
+    : themeCustomized.colorSchemes['dark'];
+
+  return deepmerge(baseTheme, formattedTheme.jumperTheme);
+}
+
+// @deprecated
+export function getWidgetTheme(
+  currentTheme: Theme,
+  activeTheme?: string,
+  themes?: PartnerThemesData[],
+) {
+  const defaultWidgetTheme = getDefaultWidgetTheme(currentTheme);
+  const partnerThemeAttributes = getPartnerTheme(themes, activeTheme);
+
+  const widgetTheme = partnerThemeAttributes
+    ? {
+        config: deepmerge(
+          defaultWidgetTheme.config,
+          formatTheme(partnerThemeAttributes).activeWidgetTheme,
+        ),
+      }
+    : defaultWidgetTheme;
+
+  return widgetTheme;
+}
+
+/**
+ * @deprecated Widget themes are now pre-computed in DefaultThemeProvider.
+ * Use useWidgetTheme hook to access the appropriate theme variant.
+ */
+export function getWidgetThemeV2(
+  mode: PaletteMode,
+  partnerThemeAttributes?: PartnerThemesData,
+) {
+  const defaultWidgetTheme = getDefaultWidgetThemeV2(mode);
+
+  const widgetTheme = partnerThemeAttributes
+    ? {
+        config: deepmerge(
+          defaultWidgetTheme.config,
+          formatTheme(partnerThemeAttributes).activeWidgetTheme,
+        ),
+      }
+    : defaultWidgetTheme;
+
+  return widgetTheme;
+}

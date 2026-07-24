@@ -1,0 +1,679 @@
+{
+  "navbar": {
+    "welcome": {
+      "title": "Encontre a melhor rota",
+      "subtitle": "Agregador de liquidez multi-cadeias <0>4x auditado</0> fornecido pela <1>LI.FI</1>",
+      "cta": "Comece Agora"
+    },
+    "links": {
+      "exchange": "Conversão",
+      "portfolio": "Portfólio",
+      "missions": "Missões",
+      "earn": "Ganhe",
+      "dashboard": "Painel de controle",
+      "refuel": "Gás",
+      "buy": "Comprar",
+      "back": "Voltar"
+    },
+    "statsCards": {
+      "dexs": "DEXs",
+      "bridges": "Pontes",
+      "chains": "Cadeias"
+    },
+    "connect": "Conectar",
+    "walletSelectMenu": {
+      "connectWallet": "Conectar uma carteira",
+      "wallets": "Carteiras",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "Selecione o ecossistema da carteira",
+        "noEcosystemAdapter": "Não foi encontrado nenhum adaptador de ecossistema adequado"
+      }
+    },
+    "pass": "Passar",
+    "wallets": "Carteiras",
+    "seeAllWallets": "Ver todas as carteiras",
+    "navbarMenu": {
+      "learn": "Aprenda",
+      "scan": "Escanear",
+      "brandAssets": "Ativos da marca",
+      "theme": "Tema",
+      "developers": "Desenvolvedores",
+      "support": "Suporte",
+      "resources": "Recursos",
+      "profile": "Perfil Jumper",
+      "privacyPolicy": "Política de Privacidade",
+      "termsConditions": "Termos e Condições",
+      "newsletter": "Boletim informativo"
+    },
+    "walletMenu": {
+      "disconnect": "Desconectar",
+      "chains": "Cadeias",
+      "switchChain": "Trocar Cadeia",
+      "copy": "Copiar",
+      "explore": "Explorar",
+      "copiedMsg": "Endereço da carteira copiado",
+      "walletNotInstalled": "{{wallet}} não está instalada",
+      "connectAnotherWallet": "Conectar outra carteira",
+      "refreshBalances": "Atualizar saldos",
+      "totalBalance": "Saldo total",
+      "walletBalance": "Saldo da carteira",
+      "totalBalanceTooltip": "Seu saldo total pode nem sempre estar exato devido a possíveis problemas de indexação. Estamos resolvendo!",
+      "totalBalanceRefresh": "Clique aqui para reiniciar a indexação de seus tokens agora.",
+      "numberOfChains": "{{numberOfChains}} cadeias"
+    },
+    "themes": {
+      "dark": "Escuro",
+      "light": "Claro",
+      "system": "Sistema",
+      "switchToLight": "Mudar para o Modo Claro",
+      "switchToDark": "Mudar para o Modo Escuro",
+      "switchToSystem": "Alternar para sistema",
+      "lightModeDisabled": "Modo claro está desativado para este tema",
+      "darkModeDisabled": "Modo escuro está desativado para este tema",
+      "systemModeDisabled": "Modo sistema está desativado para este tema",
+      "default": "Padrão"
+    },
+    "developers": {
+      "github": "GitHub",
+      "documentation": "Documentação"
+    }
+  },
+  "discordBanner": {
+    "ctaHeadline": "Entre no nosso Discord para saber mais",
+    "ctaButton": "Entre no nosso Discord"
+  },
+  "badge": {
+    "updated": "Atualizado há {{time}} atrás"
+  },
+  "blog": {
+    "title": "Dicas e tutoriais",
+    "categories": "Categorias",
+    "allCategories": "Tudo",
+    "subtitle": "Resumo: guias com passo-a-passo para DeFi e cripto para todos os níveis",
+    "minRead": "{{minRead}} leitura mínima",
+    "seeAllPosts": "Ver todas as publicações",
+    "recentPosts": "Publicações recentes",
+    "similarPosts": "Publicações semelhantes",
+    "goToArticle": "Ir para o artigo",
+    "openApp": "Abrir aplicativo",
+    "faq": "FAQ (Perguntas Mais Frequentes)",
+    "jumperCta": "Tente jumper.xyz",
+    "copiedLink": "Link copiado",
+    "shareLinkedIn": "Compartilhar artigo no LinkedIn",
+    "shareFb": "Compartilhar artigo no Facebook",
+    "shareX": "Compartilhar artigo no X",
+    "shareLink": "Compartilhar o link"
+  },
+  "solanaAlert": {
+    "title": "Suporte limitado ao token Solana",
+    "subtitle": "No momento, apenas USDC e USDT podem ser enviados para e a partir da rede Solana."
+  },
+  "seiAlert": {
+    "title": "Necessário vincular a carteira SEI EVM",
+    "subtitle": "Para usar a SEI EVM, você precisa vincular seu endereço de carteira ao ecossistema SEI.",
+    "buttonText": "Vincular Carteira"
+  },
+  "abstractAlert": {
+    "title": "Esta carteira só funciona na Abstract!",
+    "subtitle": "A Carteira Abstract só existe na Abstract. Não use este endereço em qualquer outra blockchain, você perderá seus fundos.",
+    "buttonText": "Verifique a documentação"
+  },
+  "featureCard": {
+    "learnMore": "Saiba mais"
+  },
+  "button": {
+    "okay": "Ok",
+    "manageYourPosition": "Gerencie sua posição",
+    "goBack": "Retroceder",
+    "connectAnotherWallet": "Conectar outra carteira"
+  },
+  "error": {
+    "message": "Algo deu errado. Por favor, tente recarregar a página. Se o problema persistir, entre em contato com nosso suporte."
+  },
+  "multisig": {
+    "connected": {
+      "title": "Carteira Multisig conectada",
+      "description": "Por favor, notifique os outros participantes da carteira para estarem prontos para assinarem."
+    },
+    "transactionInitiated": {
+      "title": "São necessárias múltiplas assinaturas",
+      "description": "Por favor, notifique os outros participantes da carteira multisig para assinarem antes que a transação expire."
+    }
+  },
+  "questCard": {
+    "completed": "Concluído",
+    "join": "Entrar",
+    "xpToEarnDescription": "Complete a barra de progresso por {{action}} para ganhar +{{xpToEarn}} XP adicional este mês.",
+    "earnedXPDescription": "Você desbloqueou {{earnedXP}}XP por {{action}} até agora este mês e foi adicionado ao seu total saldo de XP.",
+    "action": {
+      "chain_oor": "explorando cadeias",
+      "transact_oor": "negociando",
+      "swap_oor": "convertendo",
+      "bridge_oor": "ponte"
+    }
+  },
+  "promo": {
+    "new": "Novo"
+  },
+  "missions": {
+    "wrapperCard": {
+      "title": "Missões",
+      "explore_one": "Explorar missão {{count}}",
+      "explore_other": "Explorar missões {{count}}"
+    },
+    "available": "Missões Disponíveis",
+    "completed": "Missões Concluídas",
+    "mission": {
+      "completed": {
+        "title": "Missão concluída",
+        "description": "Todas as tarefas desta missão foram verificadas e concluídas."
+      },
+      "ended": {
+        "title": "A missão terminou",
+        "description": "Missão terminou, volte para a página principal de missões para explorar outras missões!",
+        "cta": "Voltar para missões"
+      }
+    },
+    "status": {
+      "new": "Novo",
+      "upcoming": "Próximas",
+      "minutesLeft_one": "{{count}} minuto restante",
+      "minutesLeft_other": "{{count}} minutos restante",
+      "hoursLeft_one": "{{count}} hora restante",
+      "hoursLeft_other": "{{count}} horas restante",
+      "daysLeft_one": "{{count}} dia restante",
+      "daysLeft_other": "{{count}} dias restante",
+      "ended": "Encerrado"
+    },
+    "tasks": {
+      "type": "Tarefa {{type}}",
+      "typeFallback": "Tarefa",
+      "typeOptional": "Tarefa opcional",
+      "status": {
+        "verify": "Verificar",
+        "verified": "Verificada"
+      },
+      "action": {
+        "verify": "Verificar",
+        "go": "Ir"
+      },
+      "completed": {
+        "title": "Tarefa concluída",
+        "description": "Esta tarefa foi verificada e concluída."
+      },
+      "verifyWallet": {
+        "title": "Verificar propriedade",
+        "description": {
+          "notConnected": "Conecte e assine uma mensagem para verificar a propriedade de seu endereço de carteira. Se você não quiser fazer isso, entre em contato no <0>Discord</0>.",
+          "notVerified": "Conecte e assine uma mensagem para verificar a propriedade de seu endereço de carteira abaixo. Se você não quiser fazer isso, entre em contato no <0>Discord</0>.",
+          "verified": "Você verificou com sucesso a propriedade do endereço da sua carteira."
+        },
+        "action": {
+          "connectAndVerify": "Conecte e verifique a propriedade",
+          "verifyWallet": "Verificar propriedade"
+        },
+        "status": {
+          "signatureFailed": {
+            "title": "Necessário assinatura",
+            "description": "Você precisa assinar a transação para confirmar a propriedade do endereço da carteira.",
+            "tryAgain": "Tente novamente"
+          },
+          "unsupportedWallet": {
+            "title": "Carteira não suportada",
+            "description": "Nós não atendemos este tipo de carteira. Por favor, use uma carteira diferente para completar esta missão.",
+            "switchWallet": "Mudar de carteira"
+          },
+          "unknown": {
+            "title": "Erro desconhecido",
+            "description": "Ocorreu um erro desconhecido. Por favor, tente novamente.",
+            "tryAgain": "Tente novamente"
+          }
+        }
+      }
+    }
+  },
+  "profile_page": {
+    "campaigns": "Campanhas",
+    "mobileTitle": "Disponível apenas no Computador",
+    "mobileDescription": "A página do Perfil Jumper ainda não está disponível em telas pequenas. Estamos trabalhando nisso.",
+    "level": "Nível",
+    "rank": "Classificação",
+    "rankInfo": "Rank é sua posição na tabela de classificação. Ganhe XP e suba na tabela de classificação.",
+    "pointsInfo": "XP é sua pontuação por interagir com a Jumper. Enquanto você ganha pontos de XP, seu nível aumenta. XP provenientes das transações Jumper é atualizado diariamente.",
+    "levelInfo": "Um nível mais alto aumenta suas chances de ganhar recompensas de sorteios, vantagens, parceiros, recompensas e mais.",
+    "copyAddress": "Copiar o endereço da carteira",
+    "shareProfile": "Partilhar perfil",
+    "open": "Abre {{tool}}",
+    "rewards": "Recompensas ganhas",
+    "availableRewards": "Prêmios Disponíveis",
+    "perks": "Vantagens",
+    "achievements": "Conquistas",
+    "unlocked": "Desbloqueado",
+    "levelWithValue": "Nível {{level}}",
+    "tooltips": {
+      "unlockAtLevel": "Desbloqueado no nível {{level}}"
+    },
+    "noData": {
+      "description": "Ainda não {{entity}}? Vamos mudar isso!",
+      "caption": "Comece sua jornada completando missões, convertendo tokens e fazendo pontes entre cadeias para desbloquear conquistas únicas e ganhar XP.",
+      "cta": "Iniciar conversão"
+    }
+  },
+  "campaign": {
+    "missions": {
+      "title": "Missões"
+    },
+    "stats": {
+      "missions": "Missões",
+      "rewards": "Recompensas",
+      "totalRewards": "Total em recompensas"
+    }
+  },
+  "leaderboard": {
+    "title": "Tabela de Classificação",
+    "description": "A tabela de classificação é atualizada diariamente.",
+    "rankCtaConnect": "Onde você está classificado?",
+    "updatedLabel": "Atualizado: {{date}}",
+    "connectWallet": "Conectar carteira"
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": "Como a Jumper organiza campanhas ad-hoc, as missões são atualizadas mensalmente para criar os gráficos associados. Tenha em mente: XP proveniente de campanhas específicas também será atualizado mensalmente."
+  },
+  "format": {
+    "currency": "{{value, currencyExt(currency: USD)}}",
+    "currencyCompact": "{{value, currencyExt(currency: USD; notation: compact; compactDisplay: short)}}",
+    "decimal": "{{value, decimalExt(maximumFractionDigits: 3)}}",
+    "decimalCompact": "{{value, decimalExt(maximumFractionDigits: 3; notation: compact; compactDisplay: short)}}",
+    "percent": "{{value, percentExt()}}",
+    "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
+    "date": "{{value, dateExt(month: long)}}",
+    "shortDate": "{{value, dateExt(month: short)}}"
+  },
+  "contribution": {
+    "title": "Contribuir",
+    "custom": "Personalizado",
+    "confirm": "Confirmar",
+    "thankYou": "Obrigado!",
+    "description": "Mostre sua apreciação adicionando uma contribuição. 100% dela vai para melhorar a Jumper.",
+    "error": {
+      "amountTooSmall": "O valor da contribuição é muito pequeno para esse token. Por favor, tente um valor maior.",
+      "errorSending": "Erro ao enviar contribuição:",
+      "invalidTokenPrice": "Preço do token inválido",
+      "noFeeAddress": "Nenhum endereço de taxa de contribuição configurado para essa cadeia."
+    }
+  },
+  "tooltips": {
+    "tvl": "Valor total de ativos cripto depositados neste mercado.",
+    "apy": "Taxa de retorno anual esperada dos tokens investidos.",
+    "rewardsApy": "Taxa de retorno anual esperada dos tokens de recompensas investidos.",
+    "deposit": "O token em que o mercado está definido e o rendimento se acumula.",
+    "deposited": "O token que você depositou neste mercado.",
+    "boostedApy": "{{baseApy}}% é a taxa de retorno anual esperada dos tokens subjacentes investidos. O {{boostedApy}}% extra em recompensas - distribuído em outro token - são pagos exclusivamente para o participante desta campanha zap.",
+    "lockupPeriod": "Uma vez depositada, sua posição estará sujeita a um período de bloqueio {{formattedLockupPeriod}} antes que você possa sacar os fundos.",
+    "manageYourPosition": "Você também pode gerenciar seus fundos (retirada, verificar PNL) na interface do usuário {{partnerName}} clicando neste botão",
+    "assets_one": "O ativo do qual você ganhará",
+    "assets_other_one": "O ativo do qual você ganhará",
+    "assets_other": "O ativo do qual você ganhará",
+    "chains_one": "A cadeia da qual você ganhará",
+    "chains_other": "As cadeias das quais você ganhará",
+    "protocol": "O protocolo do qual você ganhará",
+    "noPositionsToManage": "Você não tem nenhuma posição para gerenciar",
+    "capInDollar": "Capacidade de liquidez disponível do mercado"
+  },
+  "labels": {
+    "apy": "APY",
+    "rewardsApy": "APY das Recompensas",
+    "lockupPeriod": "Período de bloqueio",
+    "tvl": "TVL",
+    "assets_one": "Ativo",
+    "assets_other_one": "Ativo",
+    "assets_other": "Ativos",
+    "chains_one": "Rede",
+    "chains_other": "Redes",
+    "protocol": "Protocolo",
+    "overview": "Visão geral",
+    "capInDollar": "Capacidade"
+  },
+  "earn": {
+    "top": {
+      "useYourSpare": "",
+      "maximizeYourRevenue": "Maximize sua receita de <tag/> depositando em <protocol/> <token/> Pool",
+      "makeTheJump": "Seu <asset/> ocioso em <chain/> pode ganhar até <apy/> em <protocol/>, pule dentro!",
+      "earnUpTo": "Seu <asset/> ocioso em <chain/> pode ganhar até <apy/> por ano se for colocado em <protocol/>"
+    },
+    "copy": {
+      "forYouBasedOnActivity": "Escolhido a dedo de mais de {{totalMarkets}}+ mercados com base na atividade da sua conta",
+      "forYouDefault": "Explore formas precisas e abrangentes de colocar seus ativos para trabalhar em {{totalMarkets}}+ mercados"
+    },
+    "sorting": {
+      "sortBy": "Ordenar por",
+      "sort": "Ordenar",
+      "apy": "APY",
+      "tvl": "TVL"
+    },
+    "filter": {
+      "clear": "Limpar",
+      "selected": "{{count}} selecionado",
+      "search": "Buscar {{filterBy}}...",
+      "filterAndSort": "Filtrar e ordenar",
+      "clearAll": "Limpar tudo",
+      "chain": "Rede",
+      "protocol": "Protocolo",
+      "tag": "Tipo",
+      "asset": "Ativo",
+      "apy": "APY",
+      "tvl": "TVL — Valor Total Bloqueado",
+      "rewards": {
+        "label": "Recompensas",
+        "withRewards": "Incluir apenas pools com recompensas"
+      }
+    },
+    "views": {
+      "viewBy": "Visualizar por",
+      "forYou": "Para você",
+      "allMarkets": "Todos os mercados",
+      "all": "Tudo",
+      "yourPositions": "Suas posições"
+    },
+    "relatedMarkets": {
+      "title": "Mercados relacionados"
+    },
+    "riskDescriptions": {
+      "risk": "Risco",
+      "riskTag": {
+        "Basis Trading": "Basis Trading pode encontrar vários vetores de risco que poderiam influenciar a performance do cofre: inversão da taxa de financiamento, compressão do spread, falhas de execução, risco de liquidação, risco de solvência na conversão, risco de contrato inteligente, volatilidade do mercado que atrapalha hedges, risco de contrapartida.",
+        "Bridge": "O provisionamento de liquidez na ponte pode enfrentar riscos como falha de mensagens entre cadeias, vulnerabilidade de contratos, comportamento de validadores, reorganizações de cadeia, escassez de liquidez, descolamento de ativos lastreados e insolvência de contrapartida.",
+        "CDP": "Estratégias de CDP podem enfrentar riscos, incluindo falhas de preços em colaterais, manipulação de oráculo, liquidações falhadas, volatilidade da taxa, concentração de colateral, mudanças no protocolo e descolamento de moedas lastreadas.",
+        "Credit": "Crédito pode encontrar vários vetores de risco que poderiam influenciar a performance do cofre: tomador de crédito padrão, insolvência de contraparte, desvalorização colateral, falha de liquidação, risco de liquidez, volatilidade da taxa de juros, brechas do contrato inteligente",
+        "Farming": "Estratégias de investimento podem enfrentar riscos como: volatilidade de um token de recompensa, perda impermanente, diluição de emissões, migração de liquidez, spread de execução e brechas de contrato inteligente.",
+        "Lending": "Empréstimos podem encontrar vários vetores de risco que poderiam influenciar a performance do cofre: manipulação de oráculo, falhas de preço dos colaterais levando a eventos de liquidação de tomadores de emprestimos, restrições de retirada de liquidez, descolamentos, instabilidade de juros, brechas de contrato inteligente",
+        "Liquid Staking": "Liquid Staking pode encontrar vários vetores de risco que poderiam influenciar o desempenho do cofre: eventos de penalização, tempo de inatividade de validador, instabilidade no pareamento de token de stake líquido, escassez de liquidez, brechas de contrato inteligente",
+        "Liquidity": "O provisionamento de liquidez pode enfrentar riscos, incluindo perda impermanente, desequilíbrio no pool, drenagem de liquidez, volatilidade perturbando intervalos, falhas do oráculo e brechas de contrato inteligente.",
+        "RWA": "Estratégias RWA podem enfrentar riscos como inadimplência do emissor, problemas legais ou jurisdicionais, falha da custódia, atrasos no resgate, restrições de liquidez e diferenças de valoração entre mercados on-chain e off-chain.",
+        "Staking": "Estratégias de Staking podem enfrentar riscos, incluindo inatividade do validador, penalização, instabilidade no pareamento de LST, atrasos na retirada de LST, mudanças na governação, e exploração de contratos inteligentes.",
+        "Structured": "Produtos estruturados podem enfrentar riscos como erros de modelo, mudanças de volatilidade, violações de barreiras, rebalanceamento do slippage, lacunas de liquidez, inadimplência da contraparte e falhas no oráculo.",
+        "Synthetic": "Synthetic pode encontrar vários vetores de risco que poderiam influenciar a performance do cofre: manipulação de oráculo, sub-colateralização, deslocamentos de mercado afetando pareamento, lacunas de liquidez, risco de contraparte, exploits de contrato inteligentes",
+        "Yield Aggregator": "Agregador de Rendimento pode encontrar vários vetores de risco que podem influenciar a performance do cofre: falhas na lógica de auto-composto, erros de reequilíbrio, desconfiguração de estratégia, risco de dependência de protocolos integrados, multisig ou governança corrompida, risco de stake de contrato inteligente entre protocolos subjacentes"
+      },
+      "website": "página web"
+    },
+    "overview": {
+      "updated": "Atualizado há {{time}} atrás"
+    },
+    "actions": {
+      "viewAllMarkets": "Visualizar todos os mercados",
+      "seeMore": "veja mais",
+      "goToPortfolio": "Ir para Portfólio"
+    },
+    "position": {
+      "label": "Sua posição"
+    },
+    "missingPosition": {
+      "title": "Faltando uma posição?",
+      "description": "Verifique seus tokens no portfólio antes de entrar em contato com o suporte."
+    },
+    "emptyList": {
+      "yourPositions": {
+        "title": "Sem posições",
+        "description": "Parece que você ainda não tem nenhuma posição ativa em nenhum mercado.\nSe você acha que esta faltando uma posição, tente visitar seu portfólio.",
+        "viewAllMarkets": "Visualizar todos os mercados"
+      },
+      "noResults": {
+        "title": "Sem resultados",
+        "description": "Infelizmente, não há resultados para sua pesquisa, tente limpar seus filtros.",
+        "clearFilters": "Limpar filtros"
+      }
+    }
+  },
+  "portfolio": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "getStarted": "Comece Agora"
+    },
+    "overviewCard": {
+      "title": "Portfólio",
+      "refreshTooltip": "Clique aqui para reiniciar a indexação de seus tokens agora."
+    },
+    "emptyList": {
+      "title": "Sem resultados",
+      "description": "Infelizmente, não há resultados para sua pesquisa, tente limpar seus filtros.",
+      "clearFilters": "Limpar filtros"
+    },
+    "assetOverviewCard": {
+      "navigation": {
+        "overview": "Visão geral",
+        "tokens": "Tokens",
+        "defiPositions": "Protocolos DeFi"
+      },
+      "overview": {
+        "tokens": "Tokens",
+        "defiPositions": "Protocolos DeFi"
+      },
+      "noContent": {
+        "title": "Isso parece um pouco vazio!",
+        "description": "Use Ganhe ou Converta e comece sua jornada DeFi!",
+        "cta": {
+          "startEarning": "Comece a Ganhar",
+          "startSwapping": "Comece a Conversão"
+        }
+      }
+    },
+    "defiPositionCard": {
+      "overview": {
+        "opened": "Aberto",
+        "lockup": "Bloqueio",
+        "lockupPeriod": {
+          "lessThanOneMinute": "<1 minuto atrás",
+          "minutes_one": "{{count}} minuto atrás",
+          "minutes_other": "{{count}} minutos atrás",
+          "hours_one": "{{count}} hora atrás",
+          "hours_other": "{{count}} horas atrás",
+          "days_one": "{{count}} dia atrás",
+          "days_other": "{{count}} dias atrás",
+          "months_one": "{{count}} mês atrás",
+          "months_other": "{{count}} meses atrás",
+          "years_one": "{{count}} ano atrás",
+          "years_other": "{{count}} anos atrás"
+        },
+        "tooltip": {
+          "address": "Mostrar contrato",
+          "info": "Visualizar detalhes do ganho"
+        }
+      },
+      "actions": {
+        "withdraw": "Retirar",
+        "deposit": "Depositar",
+        "claim": "Reivindicar",
+        "compound": "Composto",
+        "repay": "Reembolsar",
+        "borrow": "Pedir emprestado"
+      },
+      "header": {
+        "supplied": "Fornecido",
+        "value": "Valor",
+        "apy": "APY",
+        "rewards": "Recompensas",
+        "borrowed": "Emprestado"
+      }
+    },
+    "filter": {
+      "wallet": "Carteira",
+      "chain": "Rede",
+      "protocol": "Protocolo",
+      "type": "Tipo",
+      "asset": "Ativo",
+      "value": "Valor",
+      "clearAll": "Limpar tudo",
+      "filterAndSort": "Filtrar e ordenar",
+      "search": "Buscar {{filterBy}}..."
+    },
+    "sorting": {
+      "sortBy": "Ordenar por",
+      "sort": "Ordenar",
+      "totalValue": "Valor Total",
+      "chain": "Rede",
+      "asset": "Ativo"
+    },
+    "views": {
+      "viewBy": "Visualizar por",
+      "tokens": "Tokens",
+      "defiProtocols": "Protocolos DeFi"
+    }
+  },
+  "newsletter": {
+    "welcome": {
+      "title": "Faça. O. Salto.",
+      "subtitle": "Receba as últimas notícias e atualizações diretamente de <strong>Jumper.</strong>",
+      "hint": "Ao se inscrever em nosso boletim informativo, você está concordando implicitamente com os <0>termos de serviço</0> e a <1>política de privacidade</1> da Jumper. Você pode cancelar a inscrição a qualquer momento do link no rodapé do e-mail.",
+      "subscribe": "Inscrever-se",
+      "emailPlaceholder": "Digite seu e-mail",
+      "error": {
+        "email": "Este não é um endereço de e-mail válido",
+        "emailLength": "O e-mail não deve exceder 80 caracteres",
+        "required": "Este campo é obrigatório",
+        "unknown": "Ocorreu um erro desconhecido. Por favor, tente novamente."
+      },
+      "pending": "Confirmação de inscrição pendente...",
+      "success": "Boletim Informativo assinado com sucesso!"
+    }
+  },
+  "widget": {
+    "depositCard": {
+      "apy": "APR Base",
+      "boostedApy": "APR otimizado",
+      "tvl": "TVL — Valor Total Bloqueado",
+      "lockupPeriod": "Período de bloqueio",
+      "token": "Ativo"
+    },
+    "sweepTokensCard": {
+      "button": {
+        "claim": "Reivindicar fundos devolvidos",
+        "switchChain": "Trocando de cadeia...",
+        "waitingForTransaction": "Aguardando pela transação...",
+        "transactionInProgress": "Transação em andamento...",
+        "viewTransaction": "Ver transação"
+      },
+      "error": {
+        "title": "Reivindicar fundos devolvidos",
+        "description": "Uma transação anterior falhou e seus fundos agora estão disponíveis para serem devolvidos para você."
+      },
+      "success": {
+        "title": "Fundos devolvidos com sucesso",
+        "description": "Seus fundos foram devolvidos e agora estão disponíveis para serem usados na sua carteira."
+      }
+    },
+    "zap": {
+      "sendToAddressName": "Depositar em {{name}}",
+      "sentToAddressName": "Depositado em {{name}}",
+      "depositSuccess": "Você será capaz de ver sua posição em alguns segundos ou alternativamente clicando em <bold>Gerenciar sua posição</bold> que redireciona para a interface do usuário {{partnerName}}",
+      "tabs": {
+        "deposit": "Depositar",
+        "withdraw": "Retirar"
+      },
+      "placeholder": {
+        "comingSoon": "Em breve",
+        "embedded-multisig": {
+          "title": "Sua carteira não é suportada atualmente",
+          "description": "Estamos trabalhando para adicionar suporte em carteiras incorporadas e de contrato inteligente (incluindo SAFE). Por enquanto, por favor use uma carteira EOA para completar esta missão."
+        },
+        "non-evm": {
+          "title": "Sua carteira não é suportada atualmente",
+          "description": "Estamos trabalhando para adicionar suporte em carteiras não-EVM. Por enquanto, por favor use uma carteira EVM (Ethereum) para completar esta missão."
+        }
+      }
+    },
+    "earn": {
+      "depositSuccess": "Você poderá ver e gerenciar sua posição em poucos segundos clicando em <bold>Gerencie suas posições</bold>"
+    },
+    "withdraw": {
+      "title": "Retirar"
+    }
+  },
+  "links": {
+    "discover": "Descobrir {{name}}"
+  },
+  "buttons": {
+    "depositButtonLabel": "Depósito rápido",
+    "withdrawButtonLabel": "Retirar",
+    "managePositionsButtonLabel": "Gerenciar Posições",
+    "deposit": "Depositar",
+    "depositNow": "Deposite agora"
+  },
+  "modal": {
+    "perks": {
+      "unclaimedPerk": {
+        "title": "Reivindicar vantagem"
+      },
+      "claimedPerk": {
+        "title": "Vantagem reivindicada!",
+        "description": "Você verificou esta vantagem com o seguinte endereço",
+        "nextSteps": "Próximos passos",
+        "howToUsePerk": "Como usar sua vantagem ?",
+        "howToUsePerkDescription": "Basta adicionar o código que fornecemos na finalização de compra do site Nansen."
+      },
+      "signatureFailed": {
+        "title": "Necessário assinatura",
+        "description": "Você precisa assinar a transação para confirmar a propriedade do endereço da carteira.",
+        "tryAgain": "Tente novamente"
+      },
+      "validationFailed": {
+        "title": "Falha na validação",
+        "description": "Por favor, verifique os campos e tente novamente.",
+        "close": "Fechar"
+      },
+      "unsupportedWallet": {
+        "title": "Carteira incompatível",
+        "description": "Nós não atendemos este tipo de carteira. Por favor, use uma carteira diferente para completar esta missão.",
+        "switchWallet": "Mudar de carteira"
+      },
+      "unknown": {
+        "title": "Erro desconhecido",
+        "description": "Ocorreu um erro desconhecido. Por favor, tente novamente.",
+        "tryAgain": "Tente novamente"
+      },
+      "stepper": {
+        "steps": {
+          "username": {
+            "title": "Insira o nome de usuário",
+            "description_one": "{{position}} primeiro você deve compartilhar seu nome de usuário do {{usernameType}}.",
+            "description_other": "{{position}} você deve compartilhar seu nome de usuário do {{usernameType}}."
+          },
+          "email": {
+            "title": "Insira o e-mail",
+            "description_one": "{{position}} você deve primeiro compartilhar seu endereço de e-mail.",
+            "description_other": "{{position}} você deve compartilhar seu endereço de e-mail."
+          },
+          "wallet": {
+            "title": "Verificar carteira",
+            "description_one": "{{position}} você deve assinar uma mensagem para verificar a propriedade do endereço de carteira conectado abaixo.",
+            "description_other": "{{position}} você deve assinar uma mensagem para verificar a propriedade do endereço de carteira conectado abaixo."
+          },
+          "position": {
+            "first": "Para reivindicar sua vantagem",
+            "next": "Próximo",
+            "finally": "Finalmente"
+          }
+        },
+        "continue": "Continuar",
+        "submit": "Verificar carteira e reivindicar vantagem",
+        "submitting": "Aguardando verificação"
+      }
+    }
+  },
+  "gatekeeper": {
+    "title": "Bem-vindo a {{pageTitle}}!",
+    "subtitle": {
+      "intro": {
+        "earn": "<strong>Ganho inteligente, complexidade zero.</strong>",
+        "portfolio": "<strong>portfólio interativo DeFi.</strong>"
+      },
+      "notConnected": "Estamos atualmente em um Beta fechado <strong></strong>.\nConecte-se para descobrir se você tem acesso.",
+      "noAccess": "Estamos atualmente em um beta fechado <strong>.</strong> Você não tem acesso."
+    },
+    "requestAccess": "Solicitar acesso",
+    "connecting": "Conectando...",
+    "error": "Ocorreu um erro desconhecido. Por favor tente novamente ou solicite acesso."
+  }
+}

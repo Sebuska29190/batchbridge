@@ -1,0 +1,89 @@
+'use client';
+
+import type { FC } from 'react';
+import { useMemo } from 'react';
+import { Badge } from 'src/components/Badge/Badge';
+import { EntityCard } from 'src/components/Cards/EntityCard/EntityCard';
+import {
+  TrackingCategory,
+  TrackingAction,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
+import { useMissionTimeStatus } from 'src/hooks/useMissionTimeStatus';
+import { useUserTracking } from 'src/hooks/userTracking';
+import type { QuestData, StrapiResponseData } from 'src/types/strapi';
+import { Link } from 'src/components/Link/Link';
+import { BadgeVariant } from 'src/components/Badge/Badge.styles';
+import { useFormatDisplayQuestData } from 'src/hooks/quests/useFormatDisplayQuestData';
+
+interface MissionCardProps {
+  mission: StrapiResponseData<QuestData>[number];
+}
+
+export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
+  const missionDisplayData = useFormatDisplayQuestData(mission, {
+    useBannerImage: false,
+  });
+  const { status, isDisabled } = useMissionTimeStatus(
+    mission.StartDate,
+    mission.EndDate,
+    mission.hasEnded,
+  );
+
+  const isMissionDisabled = isDisabled || !missionDisplayData.href;
+
+  const badge = useMemo(() => {
+    if (!status) {
+      return null;
+    }
+    return <Badge label={status} variant={BadgeVariant.Secondary} />;
+  }, [status]);
+
+  const { trackEvent } = useUserTracking();
+
+  const handleClick = () => {
+    trackEvent({
+      category: TrackingCategory.Quests,
+      action: TrackingAction.ClickQuestCard,
+      label: 'click-quest-card',
+      data: {
+        [TrackingEventParameter.QuestCardTitle]: missionDisplayData.title || '',
+        [TrackingEventParameter.QuestCardId]: missionDisplayData.id || '',
+      },
+    });
+  };
+  const dataTestId =
+    missionDisplayData.slug || missionDisplayData.id
+      ? `mission-card-${missionDisplayData.slug || missionDisplayData.id}`
+      : undefined;
+
+  const missionCard = (
+    <EntityCard
+      variant="compact"
+      badge={badge}
+      id={missionDisplayData.id}
+      slug={missionDisplayData.slug}
+      title={missionDisplayData.title}
+      participants={missionDisplayData.participants}
+      imageUrl={missionDisplayData.imageUrl}
+      rewardGroups={missionDisplayData.rewardGroups}
+      onClick={!isMissionDisabled ? handleClick : undefined}
+      fullWidth
+      dataTestId={dataTestId}
+    />
+  );
+
+  return !isMissionDisabled ? (
+    <Link
+      href={missionDisplayData.href}
+      sx={{
+        textDecoration: 'none',
+        width: '100%',
+      }}
+    >
+      {missionCard}
+    </Link>
+  ) : (
+    missionCard
+  );
+};

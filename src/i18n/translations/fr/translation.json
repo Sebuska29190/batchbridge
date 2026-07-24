@@ -1,0 +1,679 @@
+{
+  "navbar": {
+    "welcome": {
+      "title": "Trouvez la meilleure route",
+      "subtitle": "<0>4x audit</0> agrégateur de liquidité multi-chaînes alimenté par <1>LI.FI</1>",
+      "cta": "Commencer"
+    },
+    "links": {
+      "exchange": "Échanger",
+      "portfolio": "",
+      "missions": "",
+      "earn": "",
+      "dashboard": "Tableau de bord",
+      "refuel": "Gaz",
+      "buy": "Acheter",
+      "back": ""
+    },
+    "statsCards": {
+      "dexs": "",
+      "bridges": "Ponts",
+      "chains": "Chaines"
+    },
+    "connect": "Connecter",
+    "walletSelectMenu": {
+      "connectWallet": "Connecter un portefeuille",
+      "wallets": "Portefeuilles",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "Sélectionnez l'écosystème du portefeuille",
+        "noEcosystemAdapter": "Aucun adaptateur écosystème approprié trouvé"
+      }
+    },
+    "pass": "",
+    "wallets": "",
+    "seeAllWallets": "Afficher tous les portefeuilles",
+    "navbarMenu": {
+      "learn": "",
+      "scan": "",
+      "brandAssets": "Actifs de marque",
+      "theme": "Thème",
+      "developers": "Développeurs",
+      "support": "Support",
+      "resources": "",
+      "profile": "Profil Jumper",
+      "privacyPolicy": "",
+      "termsConditions": "",
+      "newsletter": ""
+    },
+    "walletMenu": {
+      "disconnect": "Se déconnecter",
+      "chains": "Chaînes",
+      "switchChain": "Changer de chaîne",
+      "copy": "Copier",
+      "explore": "Explorer",
+      "copiedMsg": "Adresse du portefeuille copiée",
+      "walletNotInstalled": "{{wallet}} n'est pas installé",
+      "connectAnotherWallet": "Connecter un autre portefeuille",
+      "refreshBalances": "Rafraichir les valeurs",
+      "totalBalance": "Valeur total",
+      "walletBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": "{{numberOfChains}} chaînes"
+    },
+    "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
+      "switchToLight": "Basculer en mode clair",
+      "switchToDark": "Basculer en mode sombre",
+      "switchToSystem": "Basculer vers Système",
+      "lightModeDisabled": "Le mode clair est désactivé pour ce thème",
+      "darkModeDisabled": "Le mode sombre est désactivé pour ce thème",
+      "systemModeDisabled": "Le mode système est désactivé pour ce thème",
+      "default": "Par défaut"
+    },
+    "developers": {
+      "github": "GitHub",
+      "documentation": "Documentation"
+    }
+  },
+  "discordBanner": {
+    "ctaHeadline": "Rejoignez notre Discord pour en savoir plus",
+    "ctaButton": "Rejoignez notre Discord"
+  },
+  "badge": {
+    "updated": ""
+  },
+  "blog": {
+    "title": "Conseils et tutoriels",
+    "categories": "Catégories",
+    "allCategories": "Tout",
+    "subtitle": "TL;DR guide pas à pas vers la DeFi et la crypto pour tous les niveaux",
+    "minRead": "{{minRead}} minute(s) de lecture",
+    "seeAllPosts": "Voir tous les posts",
+    "recentPosts": "Posts récents",
+    "similarPosts": "Posts similaires",
+    "goToArticle": "Aller à l'article",
+    "openApp": "Ouvrir l’application",
+    "faq": "FAQ",
+    "jumperCta": "Essayez jumper.xyz",
+    "copiedLink": "Lien copié",
+    "shareLinkedIn": "Partager l'article sur LinkedIn",
+    "shareFb": "Partager l'article sur Facebook",
+    "shareX": "Partager l'article sur X",
+    "shareLink": "Partager le lien"
+  },
+  "solanaAlert": {
+    "title": "Prise en charge de jeton Solana limité",
+    "subtitle": "Actuellement, seuls les USDC et USDT peuvent être transférés vers et depuis Solana."
+  },
+  "seiAlert": {
+    "title": "Liaison du portefeuille SEI EVM requise",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "Ce portefeuille ne fonctionne que sur Abstract !",
+    "subtitle": "",
+    "buttonText": "Consulter la documentation"
+  },
+  "featureCard": {
+    "learnMore": "Plus d'info"
+  },
+  "button": {
+    "okay": "Ok",
+    "manageYourPosition": "",
+    "goBack": "",
+    "connectAnotherWallet": ""
+  },
+  "error": {
+    "message": "Une erreur s'est produite. Essayez de recharger la page. Si le problème persiste, contactez notre support."
+  },
+  "multisig": {
+    "connected": {
+      "title": "Portefeuille multisignature connecté",
+      "description": "Merci d'informer les autres participants du portefeuille que la transaction est prête à être signée."
+    },
+    "transactionInitiated": {
+      "title": "Signatures multiples requises",
+      "description": "Merci de demander autres participants disposant d'un portefeuille multisignature, de signer avant que la transaction n'expire."
+    }
+  },
+  "questCard": {
+    "completed": "Complété",
+    "join": "Rejoindre",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": "Nouveau"
+  },
+  "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
+    "available": "Missions Disponibles",
+    "completed": "Missions Complétées",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      },
+      "ended": {
+        "title": "",
+        "description": "",
+        "cta": ""
+      }
+    },
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": "",
+      "ended": ""
+    },
+    "tasks": {
+      "type": "",
+      "typeFallback": "",
+      "typeOptional": "",
+      "status": {
+        "verify": "",
+        "verified": ""
+      },
+      "action": {
+        "verify": "",
+        "go": ""
+      },
+      "completed": {
+        "title": "",
+        "description": ""
+      },
+      "verifyWallet": {
+        "title": "",
+        "description": {
+          "notConnected": "",
+          "notVerified": "",
+          "verified": ""
+        },
+        "action": {
+          "connectAndVerify": "",
+          "verifyWallet": ""
+        },
+        "status": {
+          "signatureFailed": {
+            "title": "",
+            "description": "",
+            "tryAgain": ""
+          },
+          "unsupportedWallet": {
+            "title": "",
+            "description": "",
+            "switchWallet": ""
+          },
+          "unknown": {
+            "title": "",
+            "description": "",
+            "tryAgain": ""
+          }
+        }
+      }
+    }
+  },
+  "profile_page": {
+    "campaigns": "",
+    "mobileTitle": "Disponible uniquement sur le bureau",
+    "mobileDescription": "La page du profil de Jumper n'est pas encore disponible sur les petits écrans. Nous y travaillons.",
+    "level": "Niveau",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "L'XP est le score que vous obtenez en interagissant avec Jumper. Au fur et à mesure que vous gagnez des points d'XP, votre niveau augmente. L'XP provenant des transactions avec Jumper est mis à jour quotidiennement.",
+    "levelInfo": "",
+    "copyAddress": "Copier l'adresse du portefeuille",
+    "shareProfile": "Partager le profil",
+    "open": "Ouvrir {{tool}}",
+    "rewards": "Récompenses gagnées",
+    "availableRewards": "",
+    "perks": "",
+    "achievements": "",
+    "unlocked": "",
+    "levelWithValue": "",
+    "tooltips": {
+      "unlockAtLevel": ""
+    },
+    "noData": {
+      "description": "",
+      "caption": "",
+      "cta": ""
+    }
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    },
+    "stats": {
+      "missions": "",
+      "rewards": "",
+      "totalRewards": ""
+    }
+  },
+  "leaderboard": {
+    "title": "Classement",
+    "description": "Le classement est mis à jour quotidiennement.",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": "Connecter un portefeuille"
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "currencyCompact": "",
+    "decimal": "",
+    "decimalCompact": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
+  },
+  "contribution": {
+    "title": "",
+    "custom": "",
+    "confirm": "",
+    "thankYou": "",
+    "description": "",
+    "error": {
+      "amountTooSmall": "",
+      "errorSending": "",
+      "invalidTokenPrice": "",
+      "noFeeAddress": ""
+    }
+  },
+  "tooltips": {
+    "tvl": "Valeur totale des actifs crypto déposés sur ce marché.",
+    "apy": "Taux de rendement annuel attendu des jetons investis.",
+    "rewardsApy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": "",
+    "lockupPeriod": "",
+    "manageYourPosition": "",
+    "assets_one": "",
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "noPositionsToManage": "",
+    "capInDollar": ""
+  },
+  "labels": {
+    "apy": "",
+    "rewardsApy": "",
+    "lockupPeriod": "",
+    "tvl": "",
+    "assets_one": "",
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "overview": "",
+    "capInDollar": ""
+  },
+  "earn": {
+    "top": {
+      "useYourSpare": "",
+      "maximizeYourRevenue": "",
+      "makeTheJump": "",
+      "earnUpTo": ""
+    },
+    "copy": {
+      "forYouBasedOnActivity": "",
+      "forYouDefault": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "sort": "",
+      "apy": "",
+      "tvl": ""
+    },
+    "filter": {
+      "clear": "",
+      "selected": "",
+      "search": "",
+      "filterAndSort": "",
+      "clearAll": "",
+      "chain": "",
+      "protocol": "",
+      "tag": "",
+      "asset": "",
+      "apy": "",
+      "tvl": "",
+      "rewards": {
+        "label": "",
+        "withRewards": ""
+      }
+    },
+    "views": {
+      "viewBy": "",
+      "forYou": "",
+      "allMarkets": "",
+      "all": "",
+      "yourPositions": ""
+    },
+    "relatedMarkets": {
+      "title": ""
+    },
+    "riskDescriptions": {
+      "risk": "",
+      "riskTag": {
+        "Basis Trading": "",
+        "Bridge": "",
+        "CDP": "",
+        "Credit": "",
+        "Farming": "",
+        "Lending": "",
+        "Liquid Staking": "",
+        "Liquidity": "",
+        "RWA": "",
+        "Staking": "",
+        "Structured": "",
+        "Synthetic": "",
+        "Yield Aggregator": ""
+      },
+      "website": ""
+    },
+    "overview": {
+      "updated": ""
+    },
+    "actions": {
+      "viewAllMarkets": "",
+      "seeMore": "",
+      "goToPortfolio": ""
+    },
+    "position": {
+      "label": ""
+    },
+    "missingPosition": {
+      "title": "",
+      "description": ""
+    },
+    "emptyList": {
+      "yourPositions": {
+        "title": "",
+        "description": "",
+        "viewAllMarkets": ""
+      },
+      "noResults": {
+        "title": "",
+        "description": "",
+        "clearFilters": ""
+      }
+    }
+  },
+  "portfolio": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "getStarted": ""
+    },
+    "overviewCard": {
+      "title": "",
+      "refreshTooltip": ""
+    },
+    "emptyList": {
+      "title": "",
+      "description": "",
+      "clearFilters": ""
+    },
+    "assetOverviewCard": {
+      "navigation": {
+        "overview": "",
+        "tokens": "",
+        "defiPositions": ""
+      },
+      "overview": {
+        "tokens": "",
+        "defiPositions": ""
+      },
+      "noContent": {
+        "title": "",
+        "description": "",
+        "cta": {
+          "startEarning": "",
+          "startSwapping": ""
+        }
+      }
+    },
+    "defiPositionCard": {
+      "overview": {
+        "opened": "",
+        "lockup": "",
+        "lockupPeriod": {
+          "lessThanOneMinute": "",
+          "minutes_one": "",
+          "minutes_other": "",
+          "hours_one": "",
+          "hours_other": "",
+          "days_one": "",
+          "days_other": "",
+          "months_one": "",
+          "months_other": "",
+          "years_one": "",
+          "years_other": ""
+        },
+        "tooltip": {
+          "address": "",
+          "info": ""
+        }
+      },
+      "actions": {
+        "withdraw": "",
+        "deposit": "",
+        "claim": "",
+        "compound": "",
+        "repay": "",
+        "borrow": ""
+      },
+      "header": {
+        "supplied": "",
+        "value": "",
+        "apy": "",
+        "rewards": "",
+        "borrowed": ""
+      }
+    },
+    "filter": {
+      "wallet": "",
+      "chain": "",
+      "protocol": "",
+      "type": "",
+      "asset": "",
+      "value": "",
+      "clearAll": "",
+      "filterAndSort": "",
+      "search": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "sort": "",
+      "totalValue": "",
+      "chain": "",
+      "asset": ""
+    },
+    "views": {
+      "viewBy": "",
+      "tokens": "",
+      "defiProtocols": ""
+    }
+  },
+  "newsletter": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "hint": "",
+      "subscribe": "",
+      "emailPlaceholder": "",
+      "error": {
+        "email": "",
+        "emailLength": "",
+        "required": "",
+        "unknown": ""
+      },
+      "pending": "",
+      "success": ""
+    }
+  },
+  "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
+    "sweepTokensCard": {
+      "button": {
+        "claim": "",
+        "switchChain": "",
+        "waitingForTransaction": "",
+        "transactionInProgress": "",
+        "viewTransaction": ""
+      },
+      "error": {
+        "title": "",
+        "description": ""
+      },
+      "success": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": "",
+      "depositSuccess": "",
+      "tabs": {
+        "deposit": "",
+        "withdraw": ""
+      },
+      "placeholder": {
+        "comingSoon": "",
+        "embedded-multisig": {
+          "title": "",
+          "description": ""
+        },
+        "non-evm": {
+          "title": "",
+          "description": ""
+        }
+      }
+    },
+    "earn": {
+      "depositSuccess": ""
+    },
+    "withdraw": {
+      "title": ""
+    }
+  },
+  "links": {
+    "discover": ""
+  },
+  "buttons": {
+    "depositButtonLabel": "",
+    "withdrawButtonLabel": "",
+    "managePositionsButtonLabel": "",
+    "deposit": "",
+    "depositNow": ""
+  },
+  "modal": {
+    "perks": {
+      "unclaimedPerk": {
+        "title": ""
+      },
+      "claimedPerk": {
+        "title": "",
+        "description": "",
+        "nextSteps": "",
+        "howToUsePerk": "",
+        "howToUsePerkDescription": ""
+      },
+      "signatureFailed": {
+        "title": "",
+        "description": "",
+        "tryAgain": ""
+      },
+      "validationFailed": {
+        "title": "",
+        "description": "",
+        "close": ""
+      },
+      "unsupportedWallet": {
+        "title": "",
+        "description": "",
+        "switchWallet": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": "",
+        "tryAgain": ""
+      },
+      "stepper": {
+        "steps": {
+          "username": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "email": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "wallet": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "position": {
+            "first": "",
+            "next": "",
+            "finally": ""
+          }
+        },
+        "continue": "",
+        "submit": "",
+        "submitting": ""
+      }
+    }
+  },
+  "gatekeeper": {
+    "title": "",
+    "subtitle": {
+      "intro": {
+        "earn": "",
+        "portfolio": ""
+      },
+      "notConnected": "",
+      "noAccess": ""
+    },
+    "requestAccess": "",
+    "connecting": "",
+    "error": ""
+  }
+}
