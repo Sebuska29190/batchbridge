@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     const passphrase = process.env.OKX_PASSPHRASE
 
     if (!apiKey || !secret || !passphrase) {
-        return res.status(500).json({ error: 'OKX API not configured' })
+        return res.status(200).json({ error: 'OKX API not configured', configured: false, data: [] })
     }
 
     const ts = new Date().toISOString()
