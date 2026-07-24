@@ -13,14 +13,6 @@ export function WidgetPage() {
       <LiFiWidget
         config={{
           appearance: 'dark',
-          theme: {
-            palette: {
-              primary: { main: '#3898ff' },
-              background: { default: '#06080b', paper: '#0d111a' },
-            },
-            shape: { borderRadius: 12 },
-            typography: { fontFamily: 'Inter, -apple-system, sans-serif' },
-          },
           containerStyle: {
             width: '100%',
             maxWidth: 420,
