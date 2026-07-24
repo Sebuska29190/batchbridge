@@ -1,27 +1,28 @@
 'use client'
 
-import dynamic from 'next/dynamic'
+import type { WidgetConfig } from '@lifi/widget'
+import { LiFiWidget, WidgetSkeleton } from '@lifi/widget'
+import { useState, useEffect } from 'react'
 
-const LiFiWidget = dynamic(
-  () => import('@lifi/widget').then(mod => mod.LiFiWidget),
-  { ssr: false }
-)
+function ClientOnly({ children, fallback }: { children: React.ReactNode; fallback?: React.ReactNode }) {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
+  return mounted ? children : (fallback || null)
+}
+
+const config = {
+  appearance: 'dark',
+  walletConfig: {
+    forceInternalWalletManagement: true,
+  },
+} as Partial<WidgetConfig>
 
 export function WidgetPage() {
   return (
     <div style={{ width: '100%', maxWidth: 420 }}>
-      <LiFiWidget
-        config={{
-          appearance: 'dark',
-          containerStyle: {
-            border: '1px solid rgba(255,255,255,0.06)',
-            borderRadius: '16px',
-            width: '100%',
-            maxWidth: '420px',
-          },
-        }}
-        integrator="batchbridge.xyz"
-      />
+      <ClientOnly fallback={<WidgetSkeleton config={config} />}>
+        <LiFiWidget config={config} integrator="batchbridge.xyz" />
+      </ClientOnly>
     </div>
   )
 }

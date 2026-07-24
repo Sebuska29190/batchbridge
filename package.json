@@ -8,7 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
-    "@lifi/widget": "^3.14.1",
+    "@lifi/widget": "^4.4.0",
+    "@lifi/wallet-management": "^4.1.2",
+    "@lifi/widget-provider": "^4.3.0",
     "@tanstack/react-query": "^5.90.0",
     "next": "^15.3.0",
     "react": "^19.0.0",
@@ -19,9 +21,5 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "typescript": "^5.7.0"
-  },
-  "overrides": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
   }
 }
