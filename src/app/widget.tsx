@@ -9,16 +9,10 @@ const LiFiWidget = dynamic(
 
 export function WidgetPage() {
   return (
-    <div style={{ width: '100%', maxWidth: 420 }}>
+    <div style={{ width: '100%', maxWidth: 420, border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, overflow: 'hidden' }}>
       <LiFiWidget
         config={{
           appearance: 'dark',
-          containerStyle: {
-            width: '100%',
-            maxWidth: 420,
-            border: '1px solid rgba(255,255,255,0.06)',
-            borderRadius: 16,
-          },
         }}
         integrator="batchbridge.xyz"
       />
