@@ -11,6 +11,7 @@ export default function Home() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        background: '#06080b',
       }}>
         <header style={{
           width: '100%',
@@ -35,14 +36,10 @@ export default function Home() {
                 <path d="M21 13v2a4 4 0 0 1-4 4H3" />
               </svg>
             </div>
-            <span style={{ fontSize: 18, fontWeight: 700 }}>
+            <span style={{ fontSize: 18, fontWeight: 700, color: '#f1f4f9' }}>
               Batch<span style={{ color: '#3898ff' }}>Bridge</span>
             </span>
           </div>
-          <nav style={{ display: 'flex', gap: 24, fontSize: 14, fontWeight: 500 }}>
-            <a href="https://batchbridge.xyz" style={{ color: '#3898ff', textDecoration: 'none' }}>Swap</a>
-            <a href="https://github.com/Sebuska29190/batchbridge" style={{ color: '#8b93a4', textDecoration: 'none' }} target="_blank" rel="noopener">GitHub</a>
-          </nav>
         </header>
 
         <main style={{
@@ -52,7 +49,6 @@ export default function Home() {
           justifyContent: 'center',
           padding: '40px 16px',
           width: '100%',
-          maxWidth: 480,
         }}>
           <WidgetPage />
         </main>

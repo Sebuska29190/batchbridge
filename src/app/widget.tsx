@@ -1,19 +1,27 @@
 'use client'
 
-import type { WidgetConfig } from '@lifi/widget'
-import { LiFiWidget, WidgetSkeleton } from '@lifi/widget'
-import { ClientOnly } from './client-only'
+import dynamic from 'next/dynamic'
 
-const config = {
-  appearance: 'dark',
-} as Partial<WidgetConfig>
+const LiFiWidget = dynamic(
+  () => import('@lifi/widget').then(mod => mod.LiFiWidget),
+  { ssr: false }
+)
 
 export function WidgetPage() {
   return (
     <div style={{ width: '100%', maxWidth: 420 }}>
-      <ClientOnly fallback={<WidgetSkeleton config={config} />}>
-        <LiFiWidget config={config} integrator="batchbridge.xyz" />
-      </ClientOnly>
+      <LiFiWidget
+        config={{
+          appearance: 'dark',
+          containerStyle: {
+            border: '1px solid rgba(255,255,255,0.06)',
+            borderRadius: '16px',
+            width: '100%',
+            maxWidth: '420px',
+          },
+        }}
+        integrator="batchbridge.xyz"
+      />
     </div>
   )
 }
