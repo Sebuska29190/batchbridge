@@ -214,6 +214,28 @@ export default function App() {
         )}
       </main>
 
+      <nav className="mobile-nav">
+        <div className="mobile-nav-items">
+          {[
+            { id: 'swap' as AppRoute, label: 'Swap', icon: <><line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" /></> },
+            { id: 'bridge' as AppRoute, label: 'Bridge', icon: <><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /></> },
+            { id: 'portfolio' as AppRoute, label: 'Portfolio', icon: <><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></> },
+            { id: 'analytics' as AppRoute, label: 'Analytics', icon: <><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></> },
+          ].map(item => (
+            <button
+              key={item.id}
+              className={`mobile-nav-btn ${route === item.id ? 'active' : ''}`}
+              onClick={() => navigateTo(item.id)}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {item.icon}
+              </svg>
+              {item.label}
+            </button>
+          ))}
+        </div>
+      </nav>
+
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-text">© 2025 BatchBridge.xyz — Swap · Bridge · Portfolio · Non-custodial</div>
