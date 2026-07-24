@@ -1,18 +1,34 @@
+import type { AppRoute } from '../types'
+
+interface Props {
+  route: AppRoute
+  onRouteChange: (route: AppRoute) => void
+  isConnected: boolean
+  address?: string
+  connectedChainId?: number
+  openWallet: () => void
+  openNetworks: () => void
+  disconnectWallet: () => void
+  locale: string
+  onLocaleChange: (l: string) => void
+}
+
+const NAV_ITEMS: { id: AppRoute; label: string }[] = [
+  { id: 'swap', label: 'Swap' },
+  { id: 'bridge', label: 'Bridge' },
+  { id: 'portfolio', label: 'Portfolio' },
+  { id: 'analytics', label: 'Analytics' },
+]
+
 export default function Navbar({
-  isConnected, address, connectedChainId,
+  route, onRouteChange, isConnected, address,
   openWallet, openNetworks, disconnectWallet,
-  locale, onLocaleChange, onShowHistory,
-  mode, onModeChange,
-}: {
-  isConnected: boolean; address?: string; connectedChainId?: number;
-  openWallet: () => void; openNetworks: () => void; disconnectWallet: () => void;
-  locale: string; onLocaleChange: (l: string) => void; onShowHistory: () => void;
-  mode?: string; onModeChange?: (m: string) => void;
-}) {
+  locale, onLocaleChange,
+}: Props) {
   return (
     <nav className="navbar">
-      <div className="logo" onClick={onShowHistory} style={{ cursor: 'pointer' }}>
-        <div className="logo-icon">
+      <div className="navbar-brand" onClick={() => onRouteChange('swap')} style={{ cursor: 'pointer' }}>
+        <div className="navbar-logo">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="17 1 21 5 17 9" />
             <path d="M3 11V9a4 4 0 0 1 4-4h14" />
@@ -20,64 +36,45 @@ export default function Navbar({
             <path d="M21 13v2a4 4 0 0 1-4 4H3" />
           </svg>
         </div>
-        <span className="logo-text">Batch<span className="logo-accent">{mode === 'swap' ? 'Swap' : 'Bridge'}</span></span>
+        <span className="navbar-title">Batch<span className="navbar-accent">Bridge</span></span>
       </div>
 
-      {/* Mode Tabs */}
-      {onModeChange && (
-        <div className="mode-tabs" style={{ display: 'flex', gap: '2px', background: 'var(--bg-card)', borderRadius: 'var(--radius-full)', padding: '3px' }}>
+      <div className="navbar-tabs">
+        {NAV_ITEMS.map(item => (
           <button
-            onClick={() => onModeChange('swap')}
-            className={`mode-tab ${mode === 'swap' ? 'active' : ''}`}
-            style={{
-              padding: '6px 16px', borderRadius: 'var(--radius-full)', border: 'none',
-              background: mode === 'swap' ? 'var(--accent)' : 'transparent',
-              color: mode === 'swap' ? '#fff' : 'var(--text-secondary)', cursor: 'pointer',
-              fontWeight: 600, fontSize: '13px', transition: 'all 0.15s',
-            }}
-          >Swap</button>
-          <button
-            onClick={() => onModeChange('bridge')}
-            className={`mode-tab ${mode === 'bridge' ? 'active' : ''}`}
-            style={{
-              padding: '6px 16px', borderRadius: 'var(--radius-full)', border: 'none',
-              background: mode === 'bridge' ? 'var(--accent)' : 'transparent',
-              color: mode === 'bridge' ? '#fff' : 'var(--text-secondary)', cursor: 'pointer',
-              fontWeight: 600, fontSize: '13px', transition: 'all 0.15s',
-            }}
-          >Bridge</button>
-        </div>
-      )}
+            key={item.id}
+            className={`navbar-tab ${route === item.id ? 'active' : ''}`}
+            onClick={() => onRouteChange(item.id)}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
 
-      <div className="nav-actions">
+      <div className="navbar-actions">
         {isConnected && (
-          <button className="btn-icon" onClick={onShowHistory} title="Transaction History">
+          <button className="navbar-btn navbar-btn-icon" onClick={openNetworks} title="Switch Network">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
+              <circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" />
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
             </svg>
           </button>
         )}
-        <button className="btn-locale" onClick={() => onLocaleChange(locale === 'en' ? 'pl' : 'en')}>
+        <button className="navbar-btn navbar-locale" onClick={() => onLocaleChange(locale === 'en' ? 'pl' : 'en')}>
           {locale.toUpperCase()}
         </button>
         {!isConnected ? (
-          <button className="btn-connect" onClick={openWallet}>
+          <button className="navbar-btn navbar-connect" onClick={openWallet}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <rect x="1" y="4" width="22" height="16" rx="2" /><path d="M1 10h22" />
             </svg>
             Connect
           </button>
         ) : (
-          <div className="connected-group">
-            <button className="btn-chain" onClick={openNetworks}>
-              Chain {connectedChainId}
-            </button>
-            <button className="btn-account" onClick={disconnectWallet}>
-              <span className="account-dot" />
-              {address?.slice(0,6)}...{address?.slice(-4)}
-            </button>
-          </div>
+          <button className="navbar-btn navbar-account" onClick={disconnectWallet}>
+            <span className="navbar-dot" />
+            {address?.slice(0, 6)}...{address?.slice(-4)}
+          </button>
         )}
       </div>
     </nav>

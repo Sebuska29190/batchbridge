@@ -1,4 +1,4 @@
-import { BRIDGE_CHAINS } from '../wagmi'
+import { CHAINS } from '../config/chains'
 
 const SwapIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -15,7 +15,7 @@ export default function ChainSelector({ sourceChain, destChain, onSourceChange, 
       <div className="chain-selector">
         <label className="chain-label">From</label>
         <div className="chain-options">
-          {BRIDGE_CHAINS.map(chain => (
+          {CHAINS.map(chain => (
             <button
               key={chain.id}
               className={`chain-option ${sourceChain === chain.id ? 'active' : ''}`}
@@ -36,7 +36,7 @@ export default function ChainSelector({ sourceChain, destChain, onSourceChange, 
       <div className="chain-selector">
         <label className="chain-label">To</label>
         <div className="chain-options">
-          {BRIDGE_CHAINS.map(chain => (
+          {CHAINS.map(chain => (
             <button
               key={chain.id}
               className={`chain-option ${destChain === chain.id ? 'active' : ''}`}

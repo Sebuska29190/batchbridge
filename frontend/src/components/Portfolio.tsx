@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import { formatUsd } from '../bridgeService'
-import { BRIDGE_CHAINS } from '../wagmi'
+import { CHAINS } from '../config/chains'
 
 export default function Portfolio({ holdings, sourceChain, onSelectToken, selectedTokens, outputToken }) {
   const totalValue = holdings.reduce((sum, t) => sum + (t.valueUsd || 0), 0)
   const topTokens = [...holdings].sort((a, b) => b.valueUsd - a.valueUsd).slice(0, 5)
 
-  const chainInfo = BRIDGE_CHAINS.find(c => c.id === sourceChain)
+  const chainInfo = CHAINS.find(c => c.id === sourceChain)
 
   return (
     <div className="portfolio-card">
