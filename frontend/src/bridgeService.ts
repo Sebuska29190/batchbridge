@@ -469,6 +469,7 @@ export const fetchTokenHoldings = async (address, chainId) => {
             });
 
             if (!response.ok) {
+                console.warn(`[bridgeService] Routescan HTTP ${response.status} for chain ${chainId}`);
                 routescanFailed = true;
                 break;
             }
@@ -481,7 +482,8 @@ export const fetchTokenHoldings = async (address, chainId) => {
             } else {
                 break;
             }
-        } catch {
+        } catch (e) {
+            console.warn('[bridgeService] Routescan fetch error:', e);
             routescanFailed = true;
             break;
         }
@@ -491,15 +493,15 @@ export const fetchTokenHoldings = async (address, chainId) => {
     if (routescanFailed || allItems.length === 0) {
         const commonTokens = COMMON_TOKENS[Number(chainId)] || [];
         if (commonTokens.length > 0) {
-            const publicClient = getPublicClient(chainId);
-            const balanceCalls = commonTokens.map(t => ({
-                address: t.address,
-                abi: erc20Abi,
-                functionName: 'balanceOf',
-                args: [address],
-            }));
-
             try {
+                const publicClient = getPublicClient(chainId);
+                const balanceCalls = commonTokens.map(t => ({
+                    address: t.address,
+                    abi: erc20Abi,
+                    functionName: 'balanceOf',
+                    args: [address],
+                }));
+
                 const onChainBalances = await publicClient.multicall({
                     contracts: balanceCalls,
                     allowFailure: true,
@@ -540,7 +542,9 @@ export const fetchTokenHoldings = async (address, chainId) => {
                         });
                     }
                 }
-            } catch {}
+            } catch (e) {
+                console.warn('[bridgeService] COMMON_TOKENS fallback failed:', e);
+            }
         }
     }
 
@@ -555,7 +559,26 @@ export const fetchTokenHoldings = async (address, chainId) => {
         return [];
     }
 
-    const publicClient = getPublicClient(chainId);
+    let publicClient;
+    try {
+        publicClient = getPublicClient(chainId);
+    } catch (e) {
+        console.warn('[bridgeService] getPublicClient failed for verification, using Routescan balances:', e);
+        return filteredItems.map(item => ({
+            address: item.tokenAddress,
+            symbol: item.tokenSymbol,
+            name: item.tokenName || item.tokenSymbol,
+            decimals: Number.isFinite(Number(item.tokenDecimals)) ? Number(item.tokenDecimals) : 18,
+            balance: item.tokenQuantity,
+            balanceFormatted: formatBalance(item.tokenQuantity, Number(item.tokenDecimals) || 18),
+            price: item.tokenPrice ? parseFloat(item.tokenPrice) : 0,
+            valueUsd: item.tokenValueInUsd ? parseFloat(item.tokenValueInUsd) : 0,
+            chainId: Number(chainId),
+            logo: `https://api.sim.dune.com/beta/token/logo/${chainId}/${item.tokenAddress.toLowerCase()}`,
+            verified: true,
+            routeAvailable: null,
+        }));
+    }
 
     const balanceCalls = filteredItems.map(item => ({
         address: item.tokenAddress,
