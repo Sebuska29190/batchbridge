@@ -119,4 +119,26 @@ body { font-family: var(--font); color: var(--text); background: var(--bg); -web
   .input-box { padding: 12px; }
   .amount-input, .amount-display { font-size: 24px; }
   .header { flex-wrap: wrap; gap: 8px; }
+  .chain-options { flex-wrap: wrap; }
 }
+
+/* Chain Selector */
+.chain-selector { display: flex; flex-direction: column; gap: 6px; }
+.chain-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-tertiary); }
+.chain-options { display: flex; gap: 4px; flex-wrap: nowrap; overflow-x: auto; }
+.chain-btn {
+  display: flex; align-items: center; gap: 4px; padding: 5px 10px;
+  background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  color: var(--text-secondary); font-size: 11px; font-weight: 500; cursor: pointer;
+  font-family: var(--font); transition: all 0.15s; white-space: nowrap;
+}
+.chain-btn:hover { border-color: var(--border-hover); color: var(--text); }
+.chain-btn.active { border-color: var(--chain-color, var(--accent)); background: color-mix(in srgb, var(--chain-color, var(--accent)) 12%, transparent); color: var(--text); }
+.chain-icon-sm { width: 14px; height: 14px; border-radius: 50%; object-fit: cover; }
+
+.cross-badge {
+  padding: 2px 8px; border-radius: var(--radius-full); font-size: 10px; font-weight: 700;
+  background: rgba(139, 92, 246, 0.15); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.swap-status { color: var(--accent); font-size: 12px; text-align: center; }

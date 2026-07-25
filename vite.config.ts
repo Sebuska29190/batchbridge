@@ -13,6 +13,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace('/api/paraswap', ''),
       },
+      '/api/relay': {
+        target: 'https://api.relay.link',
+        changeOrigin: true,
+        rewrite: (path) => path.replace('/api/relay', ''),
+      },
     },
   },
   build: {
