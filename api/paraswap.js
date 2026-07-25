@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*')
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
@@ -6,11 +6,11 @@ export default async function handler(req, res) {
     if (req.method === 'OPTIONS') return res.status(200).end()
 
     try {
-        const path = req.url.replace('/api/paraswap', '')
-        const url = `https://apiv5.paraswap.io${path}`
+        const url = req.url.replace('/api/paraswap', '')
+        const target = `https://apiv5.paraswap.io${url}`
         const fetchOpts = { method: req.method, headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' } }
         if (req.method === 'POST') fetchOpts.body = JSON.stringify(req.body || {})
-        const resp = await fetch(url, fetchOpts)
+        const resp = await fetch(target, fetchOpts)
         const data = await resp.json()
         return res.status(resp.ok ? 200 : resp.status).json(data)
     } catch {
