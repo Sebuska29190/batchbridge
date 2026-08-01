@@ -24,13 +24,15 @@
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^4.3.0",
     "assert": "^2.1.0",
     "crypto-browserify": "^3.12.1",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "stream-browserify": "^3.0.0",
     "tsx": "^4.0.0",
-    "typescript": "^5.0.0",
+    "typescript": "^5.9.3",
     "vite": "^7.3.1"
   },
   "engines": {
