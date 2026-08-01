@@ -2,7 +2,6 @@ import { mainnet, base, arbitrum } from 'viem/chains';
 import { createPublicClient, http, erc20Abi, formatUnits } from 'viem';
 import { getChainById } from './wagmi';
 
-const ALCHEMY_API_KEY = import.meta.env.VITE_ALCHEMY_API_KEY;
 const RELAY_API_BASE = 'https://api.relay.link';
 const TRANSFER_FEE_FUNCTIONS = [
     'transferFee',
@@ -28,12 +27,6 @@ const PUBLIC_RPC_URLS = {
     8453: ['https://mainnet.base.org', 'https://base.llamarpc.com'],
     42161: ['https://arb1.arbitrum.io/rpc', 'https://arbitrum.llamarpc.com'],
 };
-const ALCHEMY_RPC_URLS = {
-    1: `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    8453: `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    42161: `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-};
-
 
 export const RELAY_ERROR_CODES = {
     AMOUNT_TOO_LOW: 'AMOUNT_TOO_LOW',
@@ -109,10 +102,7 @@ const getPublicClient = (chainId) => {
     if (!chainInfo) throw new Error(`Unsupported chain ID: ${chainId}`);
 
     const rpcUrls = PUBLIC_RPC_URLS[chainNumeric];
-    const alchemyUrl = ALCHEMY_RPC_URLS[chainNumeric];
-    const rpcUrl = ALCHEMY_API_KEY && alchemyUrl
-        ? alchemyUrl
-        : rpcUrls?.[0];
+    const rpcUrl = rpcUrls?.[0];
     if (!rpcUrl) {
         throw new Error(`No RPC configured for chain ${chainId}`);
     }
