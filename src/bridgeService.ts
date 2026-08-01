@@ -373,12 +373,6 @@ export const checkTokenAllowance = async (chainId, tokenAddress, ownerAddress, s
     }
 };
 
-const getTokenLogoUrl = (chainId, tokenAddress) => {
-    if (!tokenAddress) return null;
-
-    return `https://api.sim.dune.com/beta/token/logo/${chainId}/${tokenAddress.toLowerCase()}`;
-};
-
 const isValidAddress = (address) => {
     return /^0x[a-fA-F0-9]{40}$/.test(address);
 };
@@ -443,107 +437,17 @@ export const fetchTokenBalance = async (chainId, tokenAddress, ownerAddress) => 
 
 
 
+// TODO(Task 16, Faza 2): rebuild on free Blockscout API + on-chain multicall
+// verification. Previously backed by Routescan, a paid API — removed
+// outright rather than left wired to a key-gated service. Stubbed to
+// return no holdings until the free replacement lands.
 export const fetchTokenHoldings = async (address, chainId) => {
     const chainInfo = getChainById(chainId);
     if (!chainInfo) {
         throw new Error(`Unsupported chain: ${chainId}`);
     }
 
-    let allItems = [];
-    let nextToken = null;
-    const LIMIT = 100;
-    const MAX_PAGES = 10;
-
-    for (let page = 0; page < MAX_PAGES; page++) {
-        let url = `/api/routescan?chainId=${chainId}&address=${address}&limit=${LIMIT}`;
-        if (nextToken) {
-            url += `&next=${encodeURIComponent(nextToken)}`;
-        }
-
-        const response = await fetch(url, {
-            headers: {
-                'accept': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            if (page === 0) throw new Error(`Failed to fetch holdings: ${response.status}`);
-            break;
-        }
-
-        const data = await response.json();
-        allItems = allItems.concat(data.items || []);
-
-        if (data.link?.nextToken) {
-            nextToken = data.link.nextToken;
-        } else {
-            break;
-        }
-    }
-
-    const filteredItems = allItems.filter(item => {
-        if (!item.tokenSymbol || !item.tokenAddress) return false;
-        if (item.tokenQuantity === '0') return false;
-        if (/[^\w\s.-]/.test(item.tokenSymbol)) return false;
-        const usdValue = parseFloat(item.tokenValueInUsd || '0');
-        if (usdValue <= 0) return false;
-        return true;
-    });
-
-    if (filteredItems.length === 0) {
-        return [];
-    }
-
-    const publicClient = getPublicClient(chainId);
-
-    const balanceCalls = filteredItems.map(item => ({
-        address: item.tokenAddress,
-        abi: erc20Abi,
-        functionName: 'balanceOf',
-        args: [address],
-    }));
-
-    let onChainBalances = [];
-    try {
-        onChainBalances = await publicClient.multicall({
-            contracts: balanceCalls,
-            allowFailure: true,
-        });
-    } catch (error) {
-        onChainBalances = filteredItems.map(() => ({ status: 'failure' }));
-    }
-
-    const verifiedHoldings = filteredItems
-        .map((item, index) => {
-            const onChainResult = onChainBalances[index];
-            let balance = item.tokenQuantity;
-            const decimals = Number.isFinite(Number(item.tokenDecimals)) ? Number(item.tokenDecimals) : 18;
-
-            if (onChainResult?.status === 'success' && onChainResult.result !== undefined) {
-                balance = onChainResult.result.toString();
-                if (balance === '0') return null;
-            }
-
-            return {
-                address: item.tokenAddress,
-                symbol: item.tokenSymbol,
-                name: item.tokenName || item.tokenSymbol,
-                decimals,
-                balance: balance,
-                balanceFormatted: formatBalance(balance, decimals),
-                price: item.tokenPrice ? parseFloat(item.tokenPrice) : 0,
-                valueUsd: item.tokenValueInUsd ? parseFloat(item.tokenValueInUsd) : 0,
-                chainId: Number(chainId),
-                logo: getTokenLogoUrl(chainId, item.tokenAddress),
-                verified: true,
-                routeAvailable: null,
-            };
-        })
-        .filter(Boolean)
-        .sort((a, b) => b.valueUsd - a.valueUsd);
-
-    const repricedHoldings = await applyRelayPrices(verifiedHoldings, chainId);
-    return repricedHoldings;
+    return [];
 };
 
 const routeCache = new Map();
@@ -552,22 +456,6 @@ const relayPriceCache = new Map();
 const RELAY_PRICE_CACHE_TTL = 5 * 60 * 1000;
 
 export const MAX_PRICE_IMPACT = 15;
-
-const mapWithConcurrency = async (items, limit, mapper) => {
-    const results = new Array(items.length);
-    let index = 0;
-
-    const runWorker = async () => {
-        while (index < items.length) {
-            const current = index++;
-            results[current] = await mapper(items[current], current);
-        }
-    };
-
-    const workers = Array.from({ length: Math.min(limit, items.length) }, runWorker);
-    await Promise.all(workers);
-    return results;
-};
 
 const normalizeRelayEndpoint = (endpoint) => {
     if (!endpoint) return null;
@@ -636,16 +524,6 @@ export const applyRelayPriceToToken = async (token, chainId) => {
         price: relayPrice,
         valueUsd,
     };
-};
-
-const applyRelayPrices = async (holdings, chainId) => {
-    const updated = await mapWithConcurrency(
-        holdings,
-        10,
-        token => applyRelayPriceToToken(token, chainId)
-    );
-
-    return updated.sort((a, b) => b.valueUsd - a.valueUsd);
 };
 
 const cleanExpiredCache = () => {

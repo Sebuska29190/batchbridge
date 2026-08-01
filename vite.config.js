@@ -21,30 +21,6 @@ export default defineConfig({
         hmr: {
             host: 'localhost',
         },
-        proxy: {
-            '/api/routescan': {
-                target: 'https://api.routescan.io',
-                changeOrigin: true,
-                rewrite: (path) => {
-                    const url = new URL(path, 'http://localhost');
-                    const chainId = url.searchParams.get('chainId');
-                    const address = url.searchParams.get('address');
-                    const limit = url.searchParams.get('limit') || '100';
-                    const next = url.searchParams.get('next');
-                    let apiPath = `/v2/network/mainnet/evm/${chainId}/address/${address}/erc20-holdings?limit=${limit}`;
-                    if (next) apiPath += `&next=${encodeURIComponent(next)}`;
-                    return apiPath;
-                },
-                configure: (proxy) => {
-                    proxy.on('proxyReq', (proxyReq) => {
-                        const apiKey = process.env.ROUTESCAN_API_KEY;
-                        if (apiKey) {
-                            proxyReq.setHeader('Authorization', `Bearer ${apiKey}`);
-                        }
-                    });
-                },
-            },
-        },
     },
     resolve: {
         alias: {
