@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 import nodePolyfills from 'rollup-plugin-polyfill-node'
 
 const MODE = process.env.NODE_ENV
@@ -8,6 +9,7 @@ const development = MODE === 'development'
 export default defineConfig({
     plugins: [
         react(),
+        tailwindcss(),
         development && nodePolyfills({
             include: ['node_modules/**/*.js', new RegExp('node_modules/.vite/.*js')],
             http: true,

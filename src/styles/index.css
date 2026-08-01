@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Dark is the default (not `prefers-color-scheme`-driven) per
+ * the redesign direction; light is an explicit override for users who toggle
+ * it (Task 39 wires the toggle switch, `data-theme` is the contract it sets
+ * on <html>). Reference point: Uniswap/Jupiter, not generic crypto templates
+ * - amber accent stays constant across both themes since chain-brand colors
+ * (Base blue, Polygon violet, Optimism red) need to read clearly against a
+ * neutral ground, and doubling up on blue/violet as our own accent would
+ * make those collide visually.
+ */
+:root {
+  --bg: #0e1116;
+  --surface: #161b22;
+  --surface-2: #1c222b;
+  --line: #232a35;
+  --line-strong: #323b49;
+  --ink: #e6eaf0;
+  --ink-2: #a3aebf;
+  --ink-3: #6e7a8c;
+  --accent: #e9a23a;
+  --accent-ink: #1a1205;
+  --accent-wash: rgb(233 162 58 / 13%);
+  --pos: #4ade80;
+  --neg: #f87171;
+  --radius: 18px;
+  --radius-sm: 11px;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 12px 32px -14px rgb(0 0 0 / 70%);
+
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-2: #eef1f6;
+    --line: #dde3eb;
+    --line-strong: #c6ced5;
+    --ink: #10141a;
+    --ink-2: #4a5566;
+    --ink-3: #78849a;
+    --accent-ink: #1a1205;
+    --accent-wash: rgb(233 162 58 / 10%);
+    --pos: #15803d;
+    --neg: #be3a2b;
+    --shadow: 0 1px 2px rgb(16 20 26 / 5%), 0 8px 24px -12px rgb(16 20 26 / 18%);
+
+    color-scheme: light;
+  }
+}
+
+:root[data-theme="light"] {
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --surface-2: #eef1f6;
+  --line: #dde3eb;
+  --line-strong: #c6ced5;
+  --ink: #10141a;
+  --ink-2: #4a5566;
+  --ink-3: #78849a;
+  --accent-ink: #1a1205;
+  --accent-wash: rgb(233 162 58 / 10%);
+  --pos: #15803d;
+  --neg: #be3a2b;
+  --shadow: 0 1px 2px rgb(16 20 26 / 5%), 0 8px 24px -12px rgb(16 20 26 / 18%);
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0e1116;
+  --surface: #161b22;
+  --surface-2: #1c222b;
+  --line: #232a35;
+  --line-strong: #323b49;
+  --ink: #e6eaf0;
+  --ink-2: #a3aebf;
+  --ink-3: #6e7a8c;
+  --accent-ink: #1a1205;
+  --accent-wash: rgb(233 162 58 / 13%);
+  --pos: #4ade80;
+  --neg: #f87171;
+  --shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 12px 32px -14px rgb(0 0 0 / 70%);
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Numbers are the content of this product - amounts, quotes, prices always
+   line up on a monospace grid with tabular figures, everywhere in the app. */
+.num,
+.font-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 8px;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
