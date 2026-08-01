@@ -43,7 +43,7 @@ describe('useTokenList', () => {
     expect(result.current.data).toEqual(swapTokens)
   })
 
-  it("calls getBridgeableTokens (not getSwappableTokens) and returns its result, in 'bridge' mode", async () => {
+  it("calls getBridgeableTokens (not getSwappableTokens) and maps its result to the full Token shape, in 'bridge' mode", async () => {
     const bridgeTokens = [{ symbol: 'USDC', address: '0x2', decimals: 6 }]
     vi.mocked(getBridgeableTokens).mockReturnValue(bridgeTokens as any)
 
@@ -53,7 +53,13 @@ describe('useTokenList', () => {
 
     expect(getBridgeableTokens).toHaveBeenCalledWith(8453)
     expect(getSwappableTokens).not.toHaveBeenCalled()
-    expect(result.current.data).toEqual(bridgeTokens)
+    // getBridgeableTokens only returns {symbol, address, decimals} - the hook
+    // maps it to the same Token shape getSwappableTokens produces (chainId
+    // filled in, name falls back to symbol, no logoURI) so callers get a
+    // uniform Token[] regardless of mode.
+    expect(result.current.data).toEqual([
+      { chainId: 8453, address: '0x2', symbol: 'USDC', name: 'USDC', decimals: 6 },
+    ])
   })
 
   it('never fires the query when chainId is undefined', async () => {
