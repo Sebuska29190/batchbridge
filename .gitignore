@@ -9,11 +9,9 @@ build/
 .env
 .env.local
 .env.*.local
-frontend/.env
 
 # Vercel
 .vercel/
-frontend/.vercel/
 
 # Editor directories
 .idea/

@@ -3,7 +3,7 @@ import { join } from 'path';
 import { minikitConfig } from '../minikit.config.ts';
 
 // Create .well-known directory if it doesn't exist
-const wellKnownDir = join(process.cwd(), '.well-known');
+const wellKnownDir = join(process.cwd(), 'public', '.well-known');
 if (!existsSync(wellKnownDir)) {
   mkdirSync(wellKnownDir, { recursive: true });
 }
