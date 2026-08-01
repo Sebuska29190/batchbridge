@@ -2,98 +2,14 @@ import { mainnet, base, arbitrum } from 'viem/chains';
 import { createPublicClient, http, erc20Abi, formatUnits } from 'viem';
 import { getChainById } from './wagmi';
 
+export { RELAY_ERROR_CODES, getRelayErrorMessage } from './services/errors';
+export { detectTransferFeeToken, detectTransferFeeTokensBatch } from './services/transferFee';
+
 const RELAY_API_BASE = 'https://api.relay.link';
-const TRANSFER_FEE_FUNCTIONS = [
-    'transferFee',
-    'transferFeeBps',
-    'transferFeeBP',
-    'transferFeeBasisPoints',
-];
-const TRANSFER_FEE_ABI = TRANSFER_FEE_FUNCTIONS.map(name => ({
-    name,
-    type: 'function',
-    stateMutability: 'view',
-    inputs: [],
-    outputs: [{ type: 'uint256' }],
-}));
-const KNOWN_TRANSFER_FEE_TOKENS = {
-    8453: {
-        '0xfb42da273158b0f642f59f2ba7cc1d5457481677': 125,
-    },
-};
-const transferFeeCache = new Map();
 const PUBLIC_RPC_URLS = {
     1: ['https://rpc.ankr.com/eth', 'https://eth.llamarpc.com'],
     8453: ['https://mainnet.base.org', 'https://base.llamarpc.com'],
     42161: ['https://arb1.arbitrum.io/rpc', 'https://arbitrum.llamarpc.com'],
-};
-
-export const RELAY_ERROR_CODES = {
-    AMOUNT_TOO_LOW: 'AMOUNT_TOO_LOW',
-    CHAIN_DISABLED: 'CHAIN_DISABLED',
-    EXTRA_TXS_NOT_SUPPORTED: 'EXTRA_TXS_NOT_SUPPORTED',
-    FORBIDDEN: 'FORBIDDEN',
-    INSUFFICIENT_FUNDS: 'INSUFFICIENT_FUNDS',
-    INSUFFICIENT_LIQUIDITY: 'INSUFFICIENT_LIQUIDITY',
-    INVALID_ADDRESS: 'INVALID_ADDRESS',
-    INVALID_EXTRA_TXS: 'INVALID_EXTRA_TXS',
-    INVALID_GAS_LIMIT_FOR_DEPOSIT_SPECIFIED_TXS: 'INVALID_GAS_LIMIT_FOR_DEPOSIT_SPECIFIED_TXS',
-    INVALID_INPUT_CURRENCY: 'INVALID_INPUT_CURRENCY',
-    INVALID_OUTPUT_CURRENCY: 'INVALID_OUTPUT_CURRENCY',
-    INVALID_SLIPPAGE_TOLERANCE: 'INVALID_SLIPPAGE_TOLERANCE',
-    NO_SWAP_ROUTES_FOUND: 'NO_SWAP_ROUTES_FOUND',
-    NO_INTERNAL_SWAP_ROUTES_FOUND: 'NO_INTERNAL_SWAP_ROUTES_FOUND',
-    NO_QUOTES: 'NO_QUOTES',
-    ROUTE_TEMPORARILY_RESTRICTED: 'ROUTE_TEMPORARILY_RESTRICTED',
-    SANCTIONED_CURRENCY: 'SANCTIONED_CURRENCY',
-    SANCTIONED_WALLET_ADDRESS: 'SANCTIONED_WALLET_ADDRESS',
-    SWAP_IMPACT_TOO_HIGH: 'SWAP_IMPACT_TOO_HIGH',
-    UNAUTHORIZED: 'UNAUTHORIZED',
-    UNSUPPORTED_CHAIN: 'UNSUPPORTED_CHAIN',
-    UNSUPPORTED_CURRENCY: 'UNSUPPORTED_CURRENCY',
-    UNSUPPORTED_EXECUTION_TYPE: 'UNSUPPORTED_EXECUTION_TYPE',
-    UNSUPPORTED_ROUTE: 'UNSUPPORTED_ROUTE',
-    USER_RECIPIENT_MISMATCH: 'USER_RECIPIENT_MISMATCH',
-    DESTINATION_TX_FAILED: 'DESTINATION_TX_FAILED',
-    ERC20_ROUTER_ADDRESS_NOT_FOUND: 'ERC20_ROUTER_ADDRESS_NOT_FOUND',
-    SWAP_QUOTE_FAILED: 'SWAP_QUOTE_FAILED',
-    PERMIT_FAILED: 'PERMIT_FAILED',
-    UNKNOWN_ERROR: 'UNKNOWN_ERROR',
-};
-
-export const getRelayErrorMessage = (errorCode, fallbackMessage) => {
-    const messages = {
-        [RELAY_ERROR_CODES.AMOUNT_TOO_LOW]: 'Amount is too low for this swap. Try a larger amount.',
-        [RELAY_ERROR_CODES.CHAIN_DISABLED]: 'This chain is temporarily disabled.',
-        [RELAY_ERROR_CODES.EXTRA_TXS_NOT_SUPPORTED]: 'Extra transactions are not supported for this route.',
-        [RELAY_ERROR_CODES.FORBIDDEN]: 'This request is not permitted.',
-        [RELAY_ERROR_CODES.INSUFFICIENT_FUNDS]: 'Insufficient balance to complete this swap.',
-        [RELAY_ERROR_CODES.INSUFFICIENT_LIQUIDITY]: 'Not enough liquidity available. Try a smaller amount or different token.',
-        [RELAY_ERROR_CODES.INVALID_ADDRESS]: 'Invalid wallet address.',
-        [RELAY_ERROR_CODES.INVALID_EXTRA_TXS]: 'Extra transactions exceed the intended output.',
-        [RELAY_ERROR_CODES.INVALID_GAS_LIMIT_FOR_DEPOSIT_SPECIFIED_TXS]: 'Invalid gas limit for deposit-specified transactions.',
-        [RELAY_ERROR_CODES.INVALID_INPUT_CURRENCY]: 'Unsupported input token for this route.',
-        [RELAY_ERROR_CODES.INVALID_OUTPUT_CURRENCY]: 'Unsupported output token for this route.',
-        [RELAY_ERROR_CODES.NO_SWAP_ROUTES_FOUND]: 'No route found for this swap. The token pair may not be supported.',
-        [RELAY_ERROR_CODES.NO_INTERNAL_SWAP_ROUTES_FOUND]: 'No internal swap route available for this token.',
-        [RELAY_ERROR_CODES.NO_QUOTES]: 'Unable to get a quote. Try again or use a different token.',
-        [RELAY_ERROR_CODES.ROUTE_TEMPORARILY_RESTRICTED]: 'This route is temporarily unavailable. Please try again later.',
-        [RELAY_ERROR_CODES.SANCTIONED_CURRENCY]: 'This token is restricted and cannot be swapped.',
-        [RELAY_ERROR_CODES.SANCTIONED_WALLET_ADDRESS]: 'This wallet address is restricted.',
-        [RELAY_ERROR_CODES.SWAP_IMPACT_TOO_HIGH]: 'Price impact is too high. Try a smaller amount.',
-        [RELAY_ERROR_CODES.UNSUPPORTED_CURRENCY]: 'This token is not supported for swapping.',
-        [RELAY_ERROR_CODES.UNSUPPORTED_CHAIN]: 'This chain is not currently supported.',
-        [RELAY_ERROR_CODES.UNSUPPORTED_EXECUTION_TYPE]: 'This execution type is not supported.',
-        [RELAY_ERROR_CODES.UNSUPPORTED_ROUTE]: 'This swap route is not supported.',
-        [RELAY_ERROR_CODES.UNAUTHORIZED]: 'Unauthorized request.',
-        [RELAY_ERROR_CODES.USER_RECIPIENT_MISMATCH]: 'Recipient must match the connected wallet for this route.',
-        [RELAY_ERROR_CODES.DESTINATION_TX_FAILED]: 'The transaction failed on the destination chain.',
-        [RELAY_ERROR_CODES.ERC20_ROUTER_ADDRESS_NOT_FOUND]: 'Routing contract not found for this token.',
-        [RELAY_ERROR_CODES.SWAP_QUOTE_FAILED]: 'Failed to calculate quote. Please try again.',
-        [RELAY_ERROR_CODES.PERMIT_FAILED]: 'Permit signature failed. Please try again.',
-        [RELAY_ERROR_CODES.INVALID_SLIPPAGE_TOLERANCE]: 'Invalid slippage value.',
-    };
-    return messages[errorCode] || fallbackMessage || 'An error occurred. Please try again.';
 };
 
 const getPublicClient = (chainId) => {
@@ -116,145 +32,6 @@ const getPublicClient = (chainId) => {
             multicall: true,
         },
     });
-};
-
-export const detectTransferFeeToken = async (chainId, tokenAddress) => {
-    if (!tokenAddress) return false;
-    const normalizedAddress = tokenAddress.toLowerCase();
-    if (normalizedAddress === '0x0000000000000000000000000000000000000000') return false;
-    const chainNumeric = Number(chainId);
-    if (!Number.isFinite(chainNumeric)) return false;
-
-    const cacheKey = `${chainNumeric}-${normalizedAddress}`;
-    if (transferFeeCache.has(cacheKey)) {
-        return transferFeeCache.get(cacheKey);
-    }
-
-    const knownFee = KNOWN_TRANSFER_FEE_TOKENS[chainNumeric]?.[normalizedAddress];
-    if (knownFee !== undefined) {
-        const isFee = Number(knownFee) > 0;
-        transferFeeCache.set(cacheKey, isFee);
-        return isFee;
-    }
-
-    const publicClient = getPublicClient(chainNumeric);
-
-    const contracts = TRANSFER_FEE_FUNCTIONS.map(functionName => ({
-        address: tokenAddress,
-        abi: TRANSFER_FEE_ABI,
-        functionName,
-    }));
-
-    let isFee = false;
-    try {
-        const results = await publicClient.multicall({
-            contracts,
-            allowFailure: true,
-        });
-
-        for (const result of results) {
-            if (result.status === 'success' && result.result !== undefined && result.result !== null) {
-                const feeValue = BigInt(result.result);
-                if (feeValue > 0n) {
-                    isFee = true;
-                    break;
-                }
-            }
-        }
-    } catch { }
-
-    transferFeeCache.set(cacheKey, isFee);
-    return isFee;
-};
-
-export const detectTransferFeeTokensBatch = async (chainId, tokenAddresses) => {
-    if (!Array.isArray(tokenAddresses) || tokenAddresses.length === 0) return new Map();
-    const chainNumeric = Number(chainId);
-    if (!Number.isFinite(chainNumeric)) return new Map();
-
-    const results = new Map();
-    const uncached = [];
-
-    for (const tokenAddress of tokenAddresses) {
-        if (!tokenAddress) continue;
-        const normalizedAddress = tokenAddress.toLowerCase();
-        if (normalizedAddress === '0x0000000000000000000000000000000000000000') {
-            results.set(normalizedAddress, false);
-            continue;
-        }
-
-        const cacheKey = `${chainNumeric}-${normalizedAddress}`;
-        if (transferFeeCache.has(cacheKey)) {
-            results.set(normalizedAddress, transferFeeCache.get(cacheKey));
-            continue;
-        }
-
-        const knownFee = KNOWN_TRANSFER_FEE_TOKENS[chainNumeric]?.[normalizedAddress];
-        if (knownFee !== undefined) {
-            const isFee = Number(knownFee) > 0;
-            transferFeeCache.set(cacheKey, isFee);
-            results.set(normalizedAddress, isFee);
-            continue;
-        }
-
-        uncached.push(normalizedAddress);
-    }
-
-    if (uncached.length === 0) return results;
-
-    const publicClient = getPublicClient(chainNumeric);
-
-    // Build all contracts for all tokens and all function names
-    const contracts = [];
-    for (const tokenAddress of uncached) {
-        for (const functionName of TRANSFER_FEE_FUNCTIONS) {
-            contracts.push({
-                address: tokenAddress,
-                abi: TRANSFER_FEE_ABI,
-                functionName,
-                _tokenAddress: tokenAddress,
-            });
-        }
-    }
-
-    try {
-        const multicallResults = await publicClient.multicall({
-            contracts: contracts.map(({ _tokenAddress, ...c }) => c),
-            allowFailure: true,
-        });
-
-        // Process results - each token has TRANSFER_FEE_FUNCTIONS.length results
-        const functionsCount = TRANSFER_FEE_FUNCTIONS.length;
-        for (let i = 0; i < uncached.length; i++) {
-            const tokenAddress = uncached[i];
-            const startIdx = i * functionsCount;
-            let isFee = false;
-
-            for (let j = 0; j < functionsCount; j++) {
-                const result = multicallResults[startIdx + j];
-                if (result.status === 'success' && result.result !== undefined && result.result !== null) {
-                    const feeValue = BigInt(result.result);
-                    if (feeValue > 0n) {
-                        isFee = true;
-                        break;
-                    }
-                }
-            }
-
-            const cacheKey = `${chainNumeric}-${tokenAddress}`;
-            transferFeeCache.set(cacheKey, isFee);
-            results.set(tokenAddress, isFee);
-        }
-    } catch {
-        // On error, mark all uncached as non-fee tokens
-        for (const tokenAddress of uncached) {
-            const cacheKey = `${chainNumeric}-${tokenAddress}`;
-            transferFeeCache.set(cacheKey, false);
-            results.set(tokenAddress, false);
-        }
-    }
-
-    return results;
 };
 
 const detectSmartWalletCapabilities = (capabilities) => Boolean(
@@ -528,14 +305,7 @@ const cleanExpiredCache = () => {
             relayPriceCache.delete(key);
         }
     }
-    // Limit transferFeeCache size to prevent memory growth
-    const MAX_TRANSFER_FEE_CACHE_SIZE = 500;
-    if (transferFeeCache.size > MAX_TRANSFER_FEE_CACHE_SIZE) {
-        const keysToDelete = Array.from(transferFeeCache.keys()).slice(0, transferFeeCache.size - MAX_TRANSFER_FEE_CACHE_SIZE);
-        for (const key of keysToDelete) {
-            transferFeeCache.delete(key);
-        }
-    }
+    // transferFeeCache now lives in and trims itself in services/transferFee.ts.
 };
 
 export const checkRouteAvailability = async (originChainId, destChainId, tokenAddress, userAddress, decimals = 18, destinationCurrency = '0x0000000000000000000000000000000000000000') => {
