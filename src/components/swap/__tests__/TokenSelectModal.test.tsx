@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach, beforeEach, beforeAll, afterAll } from 'vitest'
-import { render, screen, fireEvent, cleanup, within } from '@testing-library/react'
+import { render, screen, fireEvent, cleanup, within, waitFor } from '@testing-library/react'
 import { TokenSelectModal } from '../TokenSelectModal'
 import type { Token } from '../../../services/tokenRegistry'
 
@@ -142,6 +142,35 @@ describe('TokenSelectModal', () => {
 
     expect(onSelect).toHaveBeenCalledWith(weth)
     expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('ArrowDown from the search box moves focus into the row list, and ArrowUp/ArrowDown rove between rows', async () => {
+    render(<TokenSelectModal isOpen onClose={vi.fn()} chainId={1} mode="swap" onSelect={vi.fn()} />)
+
+    const searchBox = screen.getByRole('textbox', { name: 'Search tokens' })
+    fireEvent.keyDown(searchBox, { key: 'ArrowDown' })
+
+    const usdcRow = screen.getByRole('button', { name: /USDC/ })
+    await waitFor(() => expect(usdcRow).toHaveFocus())
+    expect(usdcRow).toHaveAttribute('tabIndex', '0')
+
+    fireEvent.keyDown(usdcRow, { key: 'ArrowDown' })
+    const wethRow = screen.getByRole('button', { name: /WETH/ })
+    await waitFor(() => expect(wethRow).toHaveFocus())
+    expect(usdcRow).toHaveAttribute('tabIndex', '-1')
+
+    fireEvent.keyDown(wethRow, { key: 'ArrowUp' })
+    await waitFor(() => expect(usdcRow).toHaveFocus())
+  })
+
+  it('End jumps keyboard focus to the last row', async () => {
+    render(<TokenSelectModal isOpen onClose={vi.fn()} chainId={1} mode="swap" onSelect={vi.fn()} />)
+
+    const usdcRow = screen.getByRole('button', { name: /USDC/ })
+    usdcRow.focus()
+    fireEvent.keyDown(usdcRow, { key: 'End' })
+
+    await waitFor(() => expect(screen.getByRole('button', { name: /DAI/ })).toHaveFocus())
   })
 
   it('shows skeleton rows while the token list is loading', () => {

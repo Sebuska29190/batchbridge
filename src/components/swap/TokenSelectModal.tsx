@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { Modal } from '../common/Modal'
 import { TokenIcon } from '../common/TokenIcon'
@@ -29,7 +29,9 @@ export const TokenSelectModal: React.FC<TokenSelectModalProps> = ({
   onSelect,
 }) => {
   const [query, setQuery] = useState('')
+  const [activeIndex, setActiveIndex] = useState(0)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const optionRefs = useRef<Map<number, HTMLButtonElement>>(new Map())
 
   const trimmedQuery = query.trim()
   const isAddressQuery = ADDRESS_RE.test(trimmedQuery)
@@ -86,12 +88,64 @@ export const TokenSelectModal: React.FC<TokenSelectModalProps> = ({
 
   const isListLoading = tokenListQuery.isLoading || (Boolean(ownerAddress) && heldTokensQuery.isLoading)
 
+  // The row list changes shape whenever the search query changes - an index
+  // that was valid for the old list may point past the end of a shorter
+  // filtered one, so keyboard focus resets to the top each time. This only
+  // updates state (no DOM focus call), so it never steals focus from the
+  // search input while the user is still typing.
+  useEffect(() => {
+    setActiveIndex(0)
+  }, [rows.length])
+
+  // Scrolls `index` into view (rows outside the overscan window aren't
+  // mounted yet) then focuses it once React commits the newly-rendered
+  // button. Only called from an explicit key press below - never from an
+  // effect - so it can't fire on mount or steal focus from the search input.
+  const focusRowAtIndex = (index: number) => {
+    virtualizer.scrollToIndex(index, { align: 'auto' })
+    requestAnimationFrame(() => {
+      optionRefs.current.get(index)?.focus()
+    })
+  }
+
+  const handleListKeyDown = (event: React.KeyboardEvent) => {
+    if (rows.length === 0) return
+    let nextIndex: number | null = null
+    switch (event.key) {
+      case 'ArrowDown':
+        nextIndex = Math.min(activeIndex + 1, rows.length - 1)
+        break
+      case 'ArrowUp':
+        nextIndex = Math.max(activeIndex - 1, 0)
+        break
+      case 'Home':
+        nextIndex = 0
+        break
+      case 'End':
+        nextIndex = rows.length - 1
+        break
+      default:
+        return
+    }
+    event.preventDefault()
+    setActiveIndex(nextIndex)
+    focusRowAtIndex(nextIndex)
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Select a token">
       <input
         type="text"
         value={query}
         onChange={(event) => setQuery(event.target.value)}
+        onKeyDown={(event) => {
+          // ArrowDown from the search box hands keyboard focus straight to
+          // the list, instead of requiring an extra Tab press first.
+          if (event.key === 'ArrowDown' && rows.length > 0) {
+            event.preventDefault()
+            focusRowAtIndex(activeIndex)
+          }
+        }}
         placeholder="Search name or paste address"
         aria-label="Search tokens"
         className="w-full rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--surface-2)] px-3 py-2 text-[var(--ink)] outline-none focus:border-[var(--line-strong)]"
@@ -130,15 +184,22 @@ export const TokenSelectModal: React.FC<TokenSelectModalProps> = ({
         ) : rows.length === 0 ? (
           <p className="px-3 py-4 text-sm text-[var(--ink-3)]">No tokens found.</p>
         ) : (
-          <div ref={scrollContainerRef} className="max-h-96 overflow-y-auto">
+          <div ref={scrollContainerRef} className="max-h-96 overflow-y-auto" onKeyDown={handleListKeyDown}>
             <div style={{ height: virtualizer.getTotalSize(), position: 'relative', width: '100%' }}>
               {virtualizer.getVirtualItems().map((virtualRow) => {
                 const token = rows[virtualRow.index]
                 const held = heldByAddress.get(token.address.toLowerCase())
+                const isActive = virtualRow.index === activeIndex
                 return (
                   <button
                     key={token.address}
+                    ref={(el) => {
+                      if (el) optionRefs.current.set(virtualRow.index, el)
+                      else optionRefs.current.delete(virtualRow.index)
+                    }}
                     type="button"
+                    tabIndex={isActive ? 0 : -1}
+                    onFocus={() => setActiveIndex(virtualRow.index)}
                     onClick={() => handleSelect(token)}
                     style={{
                       position: 'absolute',
