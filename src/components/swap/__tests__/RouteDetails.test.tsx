@@ -51,7 +51,7 @@ describe('RouteDetails', () => {
     expect(screen.getByText('≈ $2.50')).toBeInTheDocument()
   })
 
-  it('shows the BatchBridge fee row as Free when feeUsd is 0, not omitted', () => {
+  it('shows the provider fee row as Free when feeUsd is 0, not omitted', () => {
     const quote = makeQuote({ feeUsd: 0 })
     render(
       <RouteDetails
@@ -63,7 +63,7 @@ describe('RouteDetails', () => {
       />
     )
 
-    expect(screen.getByText('BatchBridge fee')).toBeInTheDocument()
+    expect(screen.getByText('Provider fee')).toBeInTheDocument()
     expect(screen.getByText('Free')).toBeInTheDocument()
   })
 

@@ -37,14 +37,18 @@ export const RouteDetails: React.FC<RouteDetailsProps> = ({ quote, toDecimals, t
 
   const minReceived = formatTokenAmount(quote.toAmountMin, toDecimals)
   const networkFee = `≈ ${formatUsd(quote.estimatedGasUsd)}`
-  const bbFee = quote.feeUsd === 0 ? 'Free' : `≈ ${formatUsd(quote.feeUsd)}`
+  // quote.feeUsd is the winning aggregator's OWN routing/relayer fee (Relay's
+  // relayer fee, LI.FI's feeCosts, etc.) - money that goes to that provider,
+  // never to BatchBridge, which adds zero fee on top of any route. Labeling
+  // this "BatchBridge fee" would say the opposite of what's actually true.
+  const providerFee = quote.feeUsd === 0 ? 'Free' : `≈ ${formatUsd(quote.feeUsd)}`
   const duration = formatDuration(quote.durationSeconds)
 
   return (
     <dl className="flex flex-col" data-testid="route-details">
       <DetailRow label="Minimum received" value={`${minReceived} ${toSymbol}`} />
       <DetailRow label="Network fee" value={networkFee} />
-      <DetailRow label="BatchBridge fee" value={bbFee} />
+      <DetailRow label="Provider fee" value={providerFee} />
       <DetailRow label="Estimated time" value={duration} />
     </dl>
   )
