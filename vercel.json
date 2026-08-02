@@ -16,6 +16,13 @@
         "NODE_VERSION": "20"
     },
     
+    "rewrites": [
+        { "source": "/api/lifi/(.*)", "destination": "/api/lifi" },
+        { "source": "/api/rubic/(.*)", "destination": "/api/rubic" },
+        { "source": "/api/relay/(.*)", "destination": "/api/relay" },
+        { "source": "/api/paraswap/(.*)", "destination": "/api/paraswap" }
+    ],
+
     "redirects": [
         {
             "source": "/:path*",
