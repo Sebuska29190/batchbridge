@@ -4,7 +4,7 @@ import App from './App'
 import { Providers } from './Providers'
 import './styles/index.css'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <Providers>
             <App />

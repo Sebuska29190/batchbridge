@@ -4,9 +4,9 @@ import type { ReactNode } from 'react'
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useBatchQuote } from '../useBatchQuote'
-import { getMultiInputQuote } from '../../bridgeService'
+import { getMultiInputQuote } from '../../services/batchQuote'
 
-vi.mock('../../bridgeService', () => ({
+vi.mock('../../services/batchQuote', () => ({
   getMultiInputQuote: vi.fn(),
 }))
 

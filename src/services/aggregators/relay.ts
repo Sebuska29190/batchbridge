@@ -1,4 +1,4 @@
-import { RELAY_ERROR_CODES, getRelayErrorMessage } from '../errors'
+import { getRelayErrorMessage } from '../errors'
 import { CHAINS } from '../../config/chains'
 import type { Aggregator, Quote, QuoteRequest, QuoteStep } from './types'
 

@@ -31,8 +31,8 @@ export const RELAY_ERROR_CODES = {
     UNKNOWN_ERROR: 'UNKNOWN_ERROR',
 };
 
-export const getRelayErrorMessage = (errorCode, fallbackMessage) => {
-    const messages = {
+export const getRelayErrorMessage = (errorCode?: string, fallbackMessage?: string): string => {
+    const messages: Record<string, string> = {
         [RELAY_ERROR_CODES.AMOUNT_TOO_LOW]: 'Amount is too low for this swap. Try a larger amount.',
         [RELAY_ERROR_CODES.CHAIN_DISABLED]: 'This chain is temporarily disabled.',
         [RELAY_ERROR_CODES.EXTRA_TXS_NOT_SUPPORTED]: 'Extra transactions are not supported for this route.',
@@ -63,5 +63,5 @@ export const getRelayErrorMessage = (errorCode, fallbackMessage) => {
         [RELAY_ERROR_CODES.PERMIT_FAILED]: 'Permit signature failed. Please try again.',
         [RELAY_ERROR_CODES.INVALID_SLIPPAGE_TOLERANCE]: 'Invalid slippage value.',
     };
-    return messages[errorCode] || fallbackMessage || 'An error occurred. Please try again.';
+    return (errorCode ? messages[errorCode] : undefined) || fallbackMessage || 'An error occurred. Please try again.';
 };

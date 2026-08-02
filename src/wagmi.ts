@@ -4,7 +4,7 @@ import { CHAINS } from './config/chains'
 
 const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID
 
-export const getChainById = (chainId) => CHAINS.find(c => c.id === Number(chainId))
+export const getChainById = (chainId: number) => CHAINS.find(c => c.id === Number(chainId))
 
 // All 16 configured chains, mapped to the network shape AppKit/wagmi expect.
 // Built from src/config/chains.ts (the single source of chain metadata) so
@@ -59,30 +59,6 @@ createAppKit({
     enableCoinbase: true,       // Popular mobile wallet
     allWallets: 'SHOW',         // Show all available wallets for mobile users
     themeMode: 'dark',
-    
-    // Mobile-specific wallet configuration
-    mobileWallets: [
-        {
-            id: 'metamask',
-            name: 'MetaMask',
-            links: { native: 'metamask://', universal: 'https://metamask.app.link' }
-        },
-        {
-            id: 'trust',
-            name: 'Trust Wallet',
-            links: { native: 'trust://', universal: 'https://link.trustwallet.com' }
-        },
-        {
-            id: 'rainbow',
-            name: 'Rainbow',
-            links: { native: 'rainbow://', universal: 'https://rainbow.me' }
-        },
-        {
-            id: 'zerion',
-            name: 'Zerion',
-            links: { native: 'zerion://', universal: 'https://wallet.zerion.io' }
-        }
-    ],
 
     features: {
         analytics: false,

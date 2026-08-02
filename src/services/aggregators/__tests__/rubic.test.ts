@@ -118,7 +118,7 @@ const baseRequest: QuoteRequest = {
 const DECIMALS_6_RPC_RESULT = '0x0000000000000000000000000000000000000000000000000000000000000006'
 
 function stubFetch(rubicResponseBody: unknown) {
-  const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+  const fetchMock = vi.fn(async (input: RequestInfo | URL, _init?: RequestInit) => {
     const url = String(input)
     if (url.includes('/api/rubic/')) {
       return new Response(JSON.stringify(rubicResponseBody), {

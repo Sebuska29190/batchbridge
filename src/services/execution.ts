@@ -2,20 +2,19 @@ import { createPublicClient, http, erc20Abi } from 'viem'
 import { getChainConfig } from '../config/chains'
 
 const RELAY_API_BASE = 'https://api.relay.link'
-const APPROVE_SELECTOR = '0x095ea7b3'
 
 /**
  * Reads on-chain ERC-20 allowance. Uses the 16-chain config (unlike the
- * legacy 3-chain getPublicClient still living in bridgeService.ts) since
- * this is new execution-layer code meant to work across all configured
- * chains, not just the original 3.
+ * legacy 3-chain getPublicClient the old bridgeService.ts used before it was
+ * deleted in Task 36/40) since this is execution-layer code meant to work
+ * across all configured chains, not just an original 3.
  */
 export const checkTokenAllowance = async (
-    chainId,
-    tokenAddress,
-    ownerAddress,
-    spenderAddress
-) => {
+    chainId: number,
+    tokenAddress: string,
+    ownerAddress: string,
+    spenderAddress: string | undefined,
+): Promise<bigint> => {
     try {
         if (!spenderAddress) return BigInt(0)
 
@@ -36,99 +35,15 @@ export const checkTokenAllowance = async (
     }
 }
 
-const parseApproveData = (calldata) => {
-    if (!calldata) return null
-    const normalized = calldata.toLowerCase()
-    if (!normalized.startsWith(APPROVE_SELECTOR)) return null
-    const payload = normalized.slice(10)
-    if (payload.length < 128) return null
-    const spenderChunk = payload.slice(0, 64)
-    const amountChunk = payload.slice(64, 128)
-    const spender = `0x${spenderChunk.slice(24)}`
-    const amount = BigInt(`0x${amountChunk}`)
-    return { spender, amount }
+interface RelayErrorData {
+    message?: string
+    errorCode?: string
+    errorData?: unknown
+    requestId?: string
 }
 
-const isApprovalStepId = (stepId) => stepId === 'approve' || stepId === 'approval'
-
-/**
- * Drops approve steps from a quote's step list when the owner already has
- * sufficient on-chain allowance for that spender, so the execution flow
- * doesn't ask the user to re-approve a token they've already approved.
- * Ported from bridgeService.js (original lines ~989-1057), logic unchanged.
- */
-export const filterApproveStepsByAllowance = async (quote, ownerAddress) => {
-    if (!quote?.steps || !ownerAddress) {
-        return quote
-    }
-
-    const approvalTargets = new Map()
-
-    for (const step of quote.steps) {
-        if (!isApprovalStepId(step.id)) continue
-        for (const item of step.items || []) {
-            const tokenAddress = item.data?.to
-            const parsed = parseApproveData(item.data?.data)
-            if (!tokenAddress || !parsed) continue
-            const chainId = Number(item.data?.chainId)
-            const key = `${chainId}-${tokenAddress.toLowerCase()}-${parsed.spender.toLowerCase()}`
-            const existing = approvalTargets.get(key)
-            if (!existing || parsed.amount > existing.requiredAmount) {
-                approvalTargets.set(key, {
-                    chainId,
-                    tokenAddress,
-                    spender: parsed.spender,
-                    requiredAmount: parsed.amount,
-                })
-            }
-        }
-    }
-
-    if (approvalTargets.size === 0) {
-        return quote
-    }
-
-    const allowanceEntries = await Promise.all(
-        Array.from(approvalTargets.entries()).map(async ([key, entry]) => {
-            const allowance = await checkTokenAllowance(
-                entry.chainId,
-                entry.tokenAddress,
-                ownerAddress,
-                entry.spender
-            )
-            return [key, allowance]
-        })
-    )
-
-    const allowanceMap = new Map(allowanceEntries)
-
-    const filteredSteps = quote.steps
-        .map(step => {
-            if (!isApprovalStepId(step.id)) return step
-
-            const items = (step.items || []).filter(item => {
-                const tokenAddress = item.data?.to
-                const parsed = parseApproveData(item.data?.data)
-                if (!tokenAddress || !parsed) return true
-                const chainId = Number(item.data?.chainId)
-                const key = `${chainId}-${tokenAddress.toLowerCase()}-${parsed.spender.toLowerCase()}`
-                const allowance = allowanceMap.get(key)
-                const required = approvalTargets.get(key)?.requiredAmount
-                if (allowance !== undefined && required !== undefined && allowance >= required) {
-                    return false
-                }
-                return true
-            })
-
-            return { ...step, items }
-        })
-        .filter(step => !isApprovalStepId(step.id) || (step.items && step.items.length > 0))
-
-    return { ...quote, steps: filteredSteps }
-}
-
-const buildRelayError = async (response, fallbackMessage) => {
-    let data: { message?: string; errorCode?: string; errorData?: unknown; requestId?: string } = {}
+export const buildRelayError = async (response: Response, fallbackMessage: string): Promise<Error> => {
+    let data: RelayErrorData = {}
     try {
         data = await response.json()
     } catch {
@@ -143,42 +58,7 @@ const buildRelayError = async (response, fallbackMessage) => {
     return error
 }
 
-const normalizeRelayEndpoint = (endpoint) => {
-    if (!endpoint) return null
-    if (endpoint.startsWith('http')) return endpoint
-    if (endpoint.startsWith('/')) return `${RELAY_API_BASE}${endpoint}`
-    return `${RELAY_API_BASE}/${endpoint}`
-}
-
-/** Submits a signed permit back to Relay. Ported from bridgeService.js unchanged. */
-export const submitRelaySignature = async ({ signature, post }) => {
-    if (!signature) {
-        throw new Error('Missing signature for permit submission')
-    }
-    if (!post?.endpoint) {
-        throw new Error('Missing permit submission endpoint')
-    }
-
-    const endpoint = normalizeRelayEndpoint(post.endpoint)
-    const method = (post.method || 'POST').toUpperCase()
-    const hasBody = method !== 'GET' && method !== 'HEAD'
-    const url = new URL(endpoint)
-    url.searchParams.set('signature', signature)
-
-    const response = await fetch(url.toString(), {
-        method,
-        headers: hasBody ? { 'Content-Type': 'application/json' } : undefined,
-        body: hasBody && post.body ? JSON.stringify(post.body) : undefined,
-    })
-
-    if (!response.ok) {
-        throw await buildRelayError(response, `Permit submission failed: ${response.status}`)
-    }
-
-    return await response.json().catch(() => ({}))
-}
-
-const normalizeStatusEndpoint = (endpointOrRequestId) => {
+const normalizeStatusEndpoint = (endpointOrRequestId: string): string | null => {
     if (!endpointOrRequestId) return null
     if (endpointOrRequestId.startsWith('http')) return endpointOrRequestId
     if (endpointOrRequestId.startsWith('/')) {
@@ -187,23 +67,33 @@ const normalizeStatusEndpoint = (endpointOrRequestId) => {
     return `${RELAY_API_BASE}/intents/status/v3?requestId=${endpointOrRequestId}`
 }
 
+interface BridgeStatusResult {
+    success: boolean
+    status?: unknown
+    error?: string
+}
+
 /**
  * Polls Relay for cross-chain bridge status until success/failure or
  * maxAttempts is reached. Ported from bridgeService.js unchanged.
  */
-export const pollBridgeStatus = async (endpointOrRequestId, maxAttempts = 60, intervalMs = 2000) => {
+export const pollBridgeStatus = async (
+    endpointOrRequestId: string,
+    maxAttempts = 60,
+    intervalMs = 2000,
+): Promise<BridgeStatusResult> => {
     const statusUrl = normalizeStatusEndpoint(endpointOrRequestId)
     if (!statusUrl) {
         return { success: false, error: 'Missing status endpoint' }
     }
 
-    let lastStatus = null
+    let lastStatus: { status?: string } | null = null
     for (let i = 0; i < maxAttempts; i++) {
         try {
             const response = await fetch(statusUrl)
 
             if (!response.ok) {
-                await new Promise(r => setTimeout(r, intervalMs))
+                await new Promise((r) => setTimeout(r, intervalMs))
                 continue
             }
 
@@ -219,9 +109,9 @@ export const pollBridgeStatus = async (endpointOrRequestId, maxAttempts = 60, in
                 return { success: false, status, error: 'Bridge transaction failed' }
             }
 
-            await new Promise(r => setTimeout(r, intervalMs))
+            await new Promise((r) => setTimeout(r, intervalMs))
         } catch {
-            await new Promise(r => setTimeout(r, intervalMs))
+            await new Promise((r) => setTimeout(r, intervalMs))
         }
     }
 
@@ -237,17 +127,24 @@ export const pollBridgeStatus = async (endpointOrRequestId, maxAttempts = 60, in
     return { success: false, error: 'Timeout waiting for bridge confirmation' }
 }
 
-/** True if the error looks like the user rejected/cancelled a wallet prompt, not a real failure. */
-export const isUserRejection = (error) => {
-    if (!error) return false
-    const message = (error.message || error.shortMessage || '').toLowerCase()
-    const revertHint = message.includes('revert') || message.includes('reverted') ||
-        message.includes('execution reverted') || message.includes('simulation')
-    if ((error.code === 4001 || error.code === 'ACTION_REJECTED') && !revertHint) {
+interface RejectableError {
+    message?: string
+    shortMessage?: string
+    code?: string | number
+}
+
+/** True if the error looks like the user rejected/cancelled a wallet prompt, not a real failure. Takes `unknown` since it's always called from a `catch` block. */
+export const isUserRejection = (error: unknown): boolean => {
+    if (!error || typeof error !== 'object') return false
+    const { message, shortMessage, code } = error as RejectableError
+    const combined = (message || shortMessage || '').toLowerCase()
+    const revertHint = combined.includes('revert') || combined.includes('reverted') ||
+        combined.includes('execution reverted') || combined.includes('simulation')
+    if ((code === 4001 || code === 'ACTION_REJECTED') && !revertHint) {
         return true
     }
-    return message.includes('rejected') || message.includes('denied') ||
-        message.includes('cancelled') || message.includes('canceled') ||
-        message.includes('user refused') || message.includes('user declined') ||
-        message.includes('user closed') || message.includes('user rejected')
+    return combined.includes('rejected') || combined.includes('denied') ||
+        combined.includes('cancelled') || combined.includes('canceled') ||
+        combined.includes('user refused') || combined.includes('user declined') ||
+        combined.includes('user closed') || combined.includes('user rejected')
 }

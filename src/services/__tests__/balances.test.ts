@@ -1,25 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { erc20Abi, multicall3Abi, encodeFunctionResult, decodeFunctionData } from 'viem'
-import { fetchTokenHoldings } from '../../bridgeService'
 import { fetchBalances, discoverHeldTokens, NATIVE_TOKEN_ADDRESS } from '../balances'
-
-describe('fetchTokenHoldings', () => {
-  beforeEach(() => {
-    vi.stubGlobal('fetch', vi.fn(() => {
-      throw new Error('fetch should not be called: Routescan is a paid API and must not be used')
-    }))
-  })
-
-  it('never calls the paid Routescan API', async () => {
-    const result = await fetchTokenHoldings('0x0000000000000000000000000000000000dEaD', 8453)
-    expect(result).toEqual([])
-    expect(fetch).not.toHaveBeenCalled()
-  })
-})
-
-// ---------------------------------------------------------------------------
-// New multicall/Blockscout-backed balances module below.
-// ---------------------------------------------------------------------------
 
 const OWNER = '0x000000000000000000000000000000000000dEaD'
 
