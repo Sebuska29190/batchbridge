@@ -106,7 +106,7 @@ describe('relayAggregator', () => {
       referrer: 'relay.link',
       useDepositAddress: false,
       topupGas: false,
-      slippageTolerance: '0.5',
+      slippageTolerance: '50',
     })
   })
 

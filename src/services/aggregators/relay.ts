@@ -32,9 +32,12 @@ export const relayAggregator: Aggregator = {
       referrer: 'relay.link',
       useDepositAddress: false,
       topupGas: false,
-      // Relay wants slippageTolerance as a percentage string ("0.5" == 0.5%),
-      // while our request carries it in basis points (50 == 0.5%).
-      slippageTolerance: String(req.slippageBps / 100),
+      // Relay wants slippageTolerance as an integer string IN BASIS POINTS
+      // directly ("50" == 0.5%) - confirmed against the live API, which
+      // rejects a percentage string like "0.5" with INVALID_SLIPPAGE_TOLERANCE
+      // ("must be an integer in the form of a string, between 0 and 10000 bps").
+      // Our request already carries slippageBps in the same unit, no conversion needed.
+      slippageTolerance: String(req.slippageBps),
     }
 
     const response = await fetch(`${RELAY_PROXY_BASE}/quote/v2`, {

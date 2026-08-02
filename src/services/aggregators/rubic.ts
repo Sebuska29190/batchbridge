@@ -6,7 +6,11 @@ const RUBIC_PROXY_BASE = '/api/rubic'
 const NATIVE_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 // Placeholder — swap in the real Rubic integrator address before production.
-export const RUBIC_INTEGRATOR_ADDRESS = '0x0000000000000000000000000000000000dEaD'
+// Must be a validly-checksummed 40-hex-char address: Rubic's API rejects
+// anything else with "isn't a correct wallet address" (confirmed live -
+// a previous version of this constant was missing 2 leading zeros and
+// silently 400'd every quote).
+export const RUBIC_INTEGRATOR_ADDRESS = '0x000000000000000000000000000000000000dEaD'
 
 /**
  * chainId -> Rubic's own text blockchain identifier. Rubic doesn't accept
