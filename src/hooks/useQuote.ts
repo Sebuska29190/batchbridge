@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { getQuotes } from '../services/quoteEngine'
+import { getQuotes, NoRouteError } from '../services/quoteEngine'
 import { ALL_AGGREGATORS } from '../services/aggregators'
 import type { Quote, QuoteRequest } from '../services/aggregators/types'
 
@@ -53,11 +53,19 @@ export const useQuote = (request: QuoteRequest | null) => {
   const failures = query.data?.failures ?? []
   const bestQuote = quotes[0] ?? null
 
+  // 'unsupported-pair': no aggregator even claims to support this chain
+  // combination - a structurally missing route, not a liquidity problem.
+  // 'no-liquidity': aggregators were tried and all came back empty/failed.
+  // null: no error, or a request hasn't settled/fired yet.
+  const noRouteReason: 'unsupported-pair' | 'no-liquidity' | null =
+    query.error instanceof NoRouteError ? query.error.reason : query.error ? 'no-liquidity' : null
+
   return {
     ...query,
     quotes,
     failures,
     bestQuote,
+    noRouteReason,
     isLoading: query.isLoading,
     error: query.error,
   }

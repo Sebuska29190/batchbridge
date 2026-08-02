@@ -6,9 +6,13 @@ import { useQuote } from '../useQuote'
 import { getQuotes } from '../../services/quoteEngine'
 import type { Quote, QuoteRequest } from '../../services/aggregators/types'
 
-vi.mock('../../services/quoteEngine', () => ({
-  getQuotes: vi.fn(),
-}))
+vi.mock('../../services/quoteEngine', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../services/quoteEngine')>()
+  return {
+    ...actual,
+    getQuotes: vi.fn(),
+  }
+})
 
 vi.mock('../../services/aggregators', () => ({
   ALL_AGGREGATORS: [],

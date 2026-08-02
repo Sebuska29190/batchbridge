@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { getQuotes } from '../quoteEngine'
+import { getQuotes, NoRouteError } from '../quoteEngine'
 import type { Aggregator, Quote, QuoteRequest } from '../aggregators/types'
 
 const baseRequest: QuoteRequest = {
@@ -86,6 +86,27 @@ describe('getQuotes', () => {
 
     await expect(getQuotes(baseRequest, [a, b])).rejects.toThrow(/a: no route/)
     await expect(getQuotes(baseRequest, [a, b])).rejects.toThrow(/b: rate limited/)
+  })
+
+  it('tags the error as no-liquidity when eligible aggregators tried and failed', async () => {
+    const a = mockAggregator('a', { getQuote: async () => { throw new Error('boom') } })
+
+    await expect(getQuotes(baseRequest, [a])).rejects.toMatchObject({
+      name: 'NoRouteError',
+      reason: 'no-liquidity',
+    })
+  })
+
+  it('tags the error as unsupported-pair when no aggregator even claims to support the chains', async () => {
+    const unsupported = mockAggregator('unsupported', {
+      supportsChain: () => false,
+      getQuote: async () => makeQuote('unsupported', 1),
+    })
+
+    const error = await getQuotes(baseRequest, [unsupported]).catch((e) => e)
+
+    expect(error).toBeInstanceOf(NoRouteError)
+    expect(error.reason).toBe('unsupported-pair')
   })
 
   it('only queries aggregators that support the requested chains', async () => {

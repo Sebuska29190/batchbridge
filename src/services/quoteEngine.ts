@@ -11,6 +11,18 @@ export interface QuoteEngineResult {
   failures: QuoteFailure[]
 }
 
+/**
+ * Distinguishes "nobody even supports this chain pair" from "aggregators
+ * tried and found nothing" - the UI shows a different message for each (see
+ * SwapCard/BridgeCard's `noRouteReason`).
+ */
+export class NoRouteError extends Error {
+  constructor(public readonly reason: 'unsupported-pair' | 'no-liquidity', message: string) {
+    super(message)
+    this.name = 'NoRouteError'
+  }
+}
+
 const AGGREGATOR_TIMEOUT_MS = 8000
 
 const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> =>
@@ -56,6 +68,13 @@ export const getQuotes = async (
       (!isCrossChain || a.supportsCrossChain),
   )
 
+  if (eligible.length === 0) {
+    throw new NoRouteError(
+      'unsupported-pair',
+      `No aggregator supports a route between chain ${req.fromChainId} and ${req.toChainId}.`,
+    )
+  }
+
   const settled = await Promise.allSettled(
     eligible.map((a) => withTimeout(a.getQuote(req), AGGREGATOR_TIMEOUT_MS)),
   )
@@ -75,7 +94,7 @@ export const getQuotes = async (
 
   if (quotes.length === 0) {
     const reasons = failures.map((f) => `${f.aggregator}: ${f.error}`).join('; ')
-    throw new Error(`No quotes available from any aggregator. ${reasons}`)
+    throw new NoRouteError('no-liquidity', `No quotes available from any aggregator. ${reasons}`)
   }
 
   return { quotes, failures }

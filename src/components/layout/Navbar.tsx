@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import type { KeyboardEvent } from 'react'
 import { Button } from '../common/Button'
+import { ThemeToggle } from '../common/ThemeToggle'
 
 export type AppMode = 'swap' | 'bridge' | 'batch'
 
@@ -80,7 +81,8 @@ export const Navbar: React.FC<NavbarProps> = ({
         })}
       </div>
 
-      <div className="shrink-0">
+      <div className="flex shrink-0 items-center gap-2">
+        <ThemeToggle />
         {isConnected ? (
           <Button type="button" variant="secondary" onClick={() => onDisconnectClick?.()}>
             <span className="num">{address ? truncateAddress(address) : 'Connected'}</span>

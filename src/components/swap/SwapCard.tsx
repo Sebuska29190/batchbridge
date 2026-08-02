@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { useAccount, useWalletClient } from 'wagmi'
+import { useAccount, useSwitchChain, useWalletClient } from 'wagmi'
 import { formatUnits, parseUnits } from 'viem'
 import { Button } from '../common/Button'
 import { ChainIcon } from '../common/ChainIcon'
@@ -39,8 +39,9 @@ function toWeiAmount(amount: string, decimals: number): string | null {
  * request and displays what comes back.
  */
 export const SwapCard: React.FC = () => {
-  const { address, isConnected } = useAccount()
+  const { address, isConnected, chainId: connectedChainId } = useAccount()
   const { data: walletClient } = useWalletClient()
+  const { switchChain, isPending: isSwitchingChain } = useSwitchChain()
 
   const [fromChainId, setFromChainId] = useState(DEFAULT_FROM_CHAIN_ID)
   const [toChainId, setToChainId] = useState(DEFAULT_TO_CHAIN_ID)
@@ -77,7 +78,7 @@ export const SwapCard: React.FC = () => {
     }
   }, [fromChainId, toChainId, fromToken, toToken, fromWeiAmount, address, slippageBps])
 
-  const { quotes, failures, bestQuote, isLoading: isQuoteLoading } = useQuote(quoteRequest)
+  const { quotes, failures, bestQuote, noRouteReason, isLoading: isQuoteLoading } = useQuote(quoteRequest)
   const { status: executionStatus, error: executionError, execute, reset: resetExecution } = useSwapExecution()
 
   const toAmountDisplay = bestQuote && toToken ? formatUnits(BigInt(bestQuote.toAmount), toToken.decimals) : ''
@@ -115,19 +116,35 @@ export const SwapCard: React.FC = () => {
     await execute(bestQuote, address)
   }
 
+  // Wrong-chain check only applies once a wallet is actually connected -
+  // `connectedChainId` is undefined while disconnected, which must not be
+  // mistaken for "on the wrong chain".
+  const isWrongChain = isConnected && connectedChainId !== undefined && connectedChainId !== fromChainId
+
+  const insufficientBalance =
+    fromBalanceWei !== undefined && fromWeiAmount !== null && BigInt(fromWeiAmount) > BigInt(fromBalanceWei)
+
+  const handleSwitchChain = () => switchChain?.({ chainId: fromChainId })
+
   const canSwap =
-    isConnected && Boolean(walletClient) && Boolean(bestQuote) && executionStatus !== 'approving' &&
-    executionStatus !== 'executing' && executionStatus !== 'bridging'
+    isConnected && !isWrongChain && !insufficientBalance && Boolean(walletClient) && Boolean(bestQuote) &&
+    executionStatus !== 'approving' && executionStatus !== 'executing' && executionStatus !== 'bridging'
 
   const swapButtonLabel = (() => {
     if (!isConnected) return 'Connect wallet'
+    if (isWrongChain) return `Switch to ${getChainConfig(fromChainId)?.name ?? 'the right chain'}`
     if (!fromToken || !toToken) return 'Select tokens'
     if (!amount || !fromWeiAmount) return 'Enter an amount'
+    if (insufficientBalance) return 'Insufficient balance'
     if (executionStatus === 'approving') return 'Approving…'
     if (executionStatus === 'executing') return 'Swapping…'
     if (executionStatus === 'bridging') return 'Bridging…'
     if (executionStatus === 'success') return 'Swapped'
-    if (!bestQuote) return 'No route found'
+    if (!bestQuote) {
+      if (noRouteReason === 'unsupported-pair') return 'Route not supported'
+      if (noRouteReason === 'no-liquidity') return 'No liquidity found'
+      return 'No route found'
+    }
     return `Swap ${fromToken.symbol} for ${toToken.symbol}`
   })()
 
@@ -198,9 +215,12 @@ export const SwapCard: React.FC = () => {
           className="mt-3 w-full"
           variant="primary"
           size="lg"
-          disabled={!canSwap}
-          isLoading={executionStatus === 'approving' || executionStatus === 'executing' || executionStatus === 'bridging'}
-          onClick={handleSwapClick}
+          disabled={isWrongChain ? isSwitchingChain : !canSwap}
+          isLoading={
+            (isWrongChain && isSwitchingChain) ||
+            executionStatus === 'approving' || executionStatus === 'executing' || executionStatus === 'bridging'
+          }
+          onClick={isWrongChain ? handleSwitchChain : handleSwapClick}
         >
           {swapButtonLabel}
         </Button>

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { useAccount, useWalletClient } from 'wagmi'
+import { useAccount, useSwitchChain, useWalletClient } from 'wagmi'
 import { formatUnits, parseUnits } from 'viem'
 import { Button } from '../common/Button'
 import { ChainSelect } from './ChainSelect'
@@ -10,7 +10,7 @@ import { useQuote } from '../../hooks/useQuote'
 import { useTokenBalances } from '../../hooks/useBalances'
 import { useSwapExecution } from '../../hooks/useSwapExecution'
 import type { ExecutionStatus } from '../../hooks/useSwapExecution'
-import { CHAINS } from '../../config/chains'
+import { CHAINS, getChainConfig } from '../../config/chains'
 import { getBridgeableTokens, getEquivalent } from '../../config/bridgeableAssets'
 import type { Token } from '../../services/tokenRegistry'
 
@@ -88,8 +88,9 @@ function buildTransferSteps(status: ExecutionStatus): TransferStep[] {
  * bridgeable symbols rather than a full token-search modal.
  */
 export const BridgeCard: React.FC = () => {
-  const { address, isConnected } = useAccount()
+  const { address, isConnected, chainId: connectedChainId } = useAccount()
   const { data: walletClient } = useWalletClient()
+  const { switchChain, isPending: isSwitchingChain } = useSwitchChain()
 
   const [fromChainId, setFromChainId] = useState(DEFAULT_FROM_CHAIN_ID)
   const [toChainId, setToChainId] = useState(DEFAULT_TO_CHAIN_ID)
@@ -164,7 +165,7 @@ export const BridgeCard: React.FC = () => {
     }
   }, [fromToken, selectedSymbol, fromWeiAmount, address, fromChainId, toChainId])
 
-  const { bestQuote, isLoading: isQuoteLoading } = useQuote(quoteRequest)
+  const { bestQuote, noRouteReason, isLoading: isQuoteLoading } = useQuote(quoteRequest)
   const { status: executionStatus, error: executionError, execute } = useSwapExecution()
 
   const toAmountDisplay = bestQuote && toToken ? formatUnits(BigInt(bestQuote.toAmount), toToken.decimals) : ''
@@ -174,8 +175,20 @@ export const BridgeCard: React.FC = () => {
     await execute(bestQuote, address)
   }
 
+  // Wrong-chain check only applies once a wallet is actually connected -
+  // `connectedChainId` is undefined while disconnected, which must not be
+  // mistaken for "on the wrong chain".
+  const isWrongChain = isConnected && connectedChainId !== undefined && connectedChainId !== fromChainId
+
+  const insufficientBalance =
+    fromBalanceWei !== undefined && fromWeiAmount !== null && BigInt(fromWeiAmount) > BigInt(fromBalanceWei)
+
+  const handleSwitchChain = () => switchChain?.({ chainId: fromChainId })
+
   const canBridge =
     isConnected &&
+    !isWrongChain &&
+    !insufficientBalance &&
     Boolean(walletClient) &&
     Boolean(bestQuote) &&
     executionStatus !== 'approving' &&
@@ -184,13 +197,19 @@ export const BridgeCard: React.FC = () => {
 
   const bridgeButtonLabel = (() => {
     if (!isConnected) return 'Connect wallet'
+    if (isWrongChain) return `Switch to ${getChainConfig(fromChainId)?.name ?? 'the right chain'}`
     if (!selectedSymbol) return 'Select asset'
     if (!amount || !fromWeiAmount) return 'Enter an amount'
+    if (insufficientBalance) return 'Insufficient balance'
     if (executionStatus === 'approving') return 'Approving…'
     if (executionStatus === 'executing') return 'Bridging…'
     if (executionStatus === 'bridging') return 'Bridging…'
     if (executionStatus === 'success') return 'Bridged'
-    if (!bestQuote) return 'No route found'
+    if (!bestQuote) {
+      if (noRouteReason === 'unsupported-pair') return 'Route not supported'
+      if (noRouteReason === 'no-liquidity') return 'No liquidity found'
+      return 'No route found'
+    }
     return `Bridge ${selectedSymbol}`
   })()
 
@@ -257,9 +276,12 @@ export const BridgeCard: React.FC = () => {
           className="mt-3 w-full"
           variant="primary"
           size="lg"
-          disabled={!canBridge}
-          isLoading={executionStatus === 'approving' || executionStatus === 'executing' || executionStatus === 'bridging'}
-          onClick={handleBridgeClick}
+          disabled={isWrongChain ? isSwitchingChain : !canBridge}
+          isLoading={
+            (isWrongChain && isSwitchingChain) ||
+            executionStatus === 'approving' || executionStatus === 'executing' || executionStatus === 'bridging'
+          }
+          onClick={isWrongChain ? handleSwitchChain : handleBridgeClick}
         >
           {bridgeButtonLabel}
         </Button>

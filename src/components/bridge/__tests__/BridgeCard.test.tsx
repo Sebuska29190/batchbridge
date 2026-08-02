@@ -1,6 +1,6 @@
 import { afterEach, describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, within, cleanup } from '@testing-library/react'
-import { useAccount, useWalletClient } from 'wagmi'
+import { useAccount, useSwitchChain, useWalletClient } from 'wagmi'
 import { BridgeCard } from '../BridgeCard'
 import { useQuote } from '../../../hooks/useQuote'
 import { useTokenBalances } from '../../../hooks/useBalances'
@@ -13,8 +13,9 @@ import { getEquivalent } from '../../../config/bridgeableAssets'
 afterEach(cleanup)
 
 vi.mock('wagmi', () => ({
-  useAccount: vi.fn(() => ({ address: undefined, isConnected: false })),
+  useAccount: vi.fn(() => ({ address: undefined, isConnected: false, chainId: undefined })),
   useWalletClient: vi.fn(() => ({ data: undefined })),
+  useSwitchChain: vi.fn(() => ({ switchChain: vi.fn(), isPending: false })),
 }))
 
 vi.mock('../../../hooks/useQuote', () => ({
@@ -112,6 +113,21 @@ describe('BridgeCard', () => {
     fireEvent.change(screen.getByRole('textbox'), { target: { value: '1' } })
 
     expect(screen.getByText('Approving…')).toBeInTheDocument()
+  })
+
+  it('prompts to switch chains when the connected wallet is on a different chain than the "from" side, and switches on click', () => {
+    const switchChain = vi.fn()
+    vi.mocked(useAccount).mockReturnValue({ address: '0xOwner', isConnected: true, chainId: 10 } as any)
+    vi.mocked(useSwitchChain).mockReturnValue({ switchChain, isPending: false } as any)
+
+    render(<BridgeCard />)
+
+    // Default fromChainId is Ethereum (1); connected wallet is on Optimism (10).
+    const button = screen.getByRole('button', { name: 'Switch to Ethereum' })
+    expect(button).not.toBeDisabled()
+    fireEvent.click(button)
+
+    expect(switchChain).toHaveBeenCalledWith({ chainId: 1 })
   })
 
   it('does not render TransferProgress before execution starts, renders once status is not idle', () => {
